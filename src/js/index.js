@@ -6,7 +6,7 @@ const screenWidth = screen.width;
 const screenHeight = screen.height;
 
 const main = document.getElementById('main');
-main.style = `width:${screenWidth}px;height:${screenHeight}px;`;
+main.style = `position:relative;width:${screenWidth}px;height:${screenHeight}px;`;
 
 const app = new App({elem: main, screenSize: {
     width: screenWidth,
