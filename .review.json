@@ -1,0 +1,16 @@
+{
+  "team": "21-bife-summer",
+  "org": "21BIFESUMMER",
+  "countOfReviewer": 2,
+  "talkRoomId": 12787,
+  "labels": [
+    {
+      "name": "머지금지",
+      "display": "머지금지"
+    },
+    {
+      "name": "긴급",
+      "display": "긴급"
+    }
+  ]
+}
