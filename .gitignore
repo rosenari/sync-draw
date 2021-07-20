@@ -1,0 +1,9 @@
+node_modules
+
+.idea
+
+chris-syncdraw.iml
+
+coverage
+
+dist
