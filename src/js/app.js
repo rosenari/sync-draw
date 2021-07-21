@@ -2,25 +2,29 @@ import ComponentRepository from './service/ComponentRepository';
 import EventController from './service/EventController';
 import Board from './component/Board';
 import PageMenubar from './component/PageMenubar';
+import ItemMenubar from './component/ItemMenubar';
+import ZoomMenubar from './component/ZoomMenubar';
+import StyleMenubar from './component/StyleMenubar';
+import HistoryMenubar from './component/HistoryMenubar';
 
 export default class App {
     _id = 'app';
     _elem = null;
     _board = null;
     _pageMenubar = null;
+    _itemMenubar = null;
+    _zoomMenubar = null;
+    _styleMenubar = null;
+    _historyMenubar = null;
     _controller = null;
 
-    constructor({elem ,screenSize = { width: 1000, height: 1000 }}) {
+    constructor({ elem }) {
         this.elem = elem;
         ComponentRepository.getInstance().setComponentById(this.id,this);
 
         this.board = new Board({
             parentId: this.id,
             classList: [],
-            screenSize: {
-                width: screenSize.width,
-                height: screenSize.height
-            },
             handlers: {
                 clickHandler: function(e) {
                     console.log('board click !!');
@@ -29,6 +33,22 @@ export default class App {
         });
 
         this.pageMenubar = new PageMenubar({
+            parentId: this.id
+        });
+
+        this.itemMenubar = new ItemMenubar({
+            parentId: this.id
+        });
+
+        this.zoomMenubar = new ZoomMenubar({
+            parentId: this.id
+        });
+
+        this.styleMenubar = new StyleMenubar({
+            parentId: this.id
+        });
+
+        this.historyMenubar = new HistoryMenubar({
             parentId: this.id
         });
 
@@ -66,6 +86,38 @@ export default class App {
 
     set pageMenubar(value) {
         this._pageMenubar = value;
+    }
+
+    get itemMenubar() {
+        return this._itemMenubar;
+    }
+
+    set itemMenubar(value) {
+        this._itemMenubar = value;
+    }
+
+    get zoomMenubar() {
+        return this._zoomMenubar;
+    }
+
+    set zoomMenubar(value) {
+        this._zoomMenubar = value;
+    }
+
+    get styleMenubar() {
+        return this._styleMenubar;
+    }
+
+    set styleMenubar(value) {
+        this._styleMenubar = value;
+    }
+
+    get historyMenubar() {
+        return this._historyMenubar;
+    }
+
+    set historyMenubar(value) {
+        this._historyMenubar = value;
     }
 
     get controller() {
