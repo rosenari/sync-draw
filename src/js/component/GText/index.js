@@ -1,5 +1,6 @@
 import GraphicElement from '../GraphicElement';
 import CustomElement from "../CustomElement";
+import {getOverflowHeight, isOverflowHeight} from '../../service/util';
 
 export default class GText extends GraphicElement {
     _foreignObj = null;
@@ -26,9 +27,14 @@ export default class GText extends GraphicElement {
                 }
             }
         });
-        this.textBox.elem.setAttribute('style','display:inline-block;width:100%;height:100%;');
+        this.textBox.elem.setAttribute('style','display:inline-block;width:100%;height:100%;word-break:break-word;');
         this.textBox.elem.addEventListener('blur',(e) => {
             this.textBox.elem.setAttribute('contenteditable','false');
+        });
+        this.textBox.elem.addEventListener('keydown',(e) => {
+            if(isOverflowHeight(this.textBox.elem)){
+                this.height += getOverflowHeight(this.textBox.elem);
+            }
         });
 
         this.x = x;
@@ -38,7 +44,7 @@ export default class GText extends GraphicElement {
     }
 
     get x(){
-        this.foreignObj.elem.getAttribute('x');
+        return +this.foreignObj.elem.getAttribute('x');
     }
 
     set x(value){
@@ -46,7 +52,7 @@ export default class GText extends GraphicElement {
     }
 
     get y(){
-        this.foreignObj.elem.getAttribute('y');
+        return +this.foreignObj.elem.getAttribute('y');
     }
 
     set y(value){
@@ -54,7 +60,7 @@ export default class GText extends GraphicElement {
     }
 
     get width(){
-        this.foreignObj.elem.getAttribute('width');
+        return +this.foreignObj.elem.getAttribute('width');
     }
 
     set width(value){
@@ -62,7 +68,7 @@ export default class GText extends GraphicElement {
     }
 
     get height(){
-        this.foreignObj.elem.getAttribute('height');
+        return +this.foreignObj.elem.getAttribute('height');
     }
 
     set height(value){
