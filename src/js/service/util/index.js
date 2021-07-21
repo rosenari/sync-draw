@@ -29,3 +29,11 @@ function genRandom8Hex(){
 export function tinyGUID(){
     return `${genRandom8Hex()}`;
 }
+
+export function isOverflowHeight(elem){
+    return elem.scrollHeight > elem.clientHeight;
+}
+
+export function getOverflowHeight(elem){
+    return elem.scrollHeight - elem.clientHeight;
+}
