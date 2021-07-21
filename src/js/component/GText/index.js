@@ -31,7 +31,7 @@ export default class GText extends GraphicElement {
         this.textBox.elem.addEventListener('blur',(e) => {
             this.textBox.elem.setAttribute('contenteditable','false');
         });
-        this.textBox.elem.addEventListener('keydown',(e) => {
+        this.textBox.elem.addEventListener('keyup',(e) => {
             if(isOverflowHeight(this.textBox.elem)){
                 this.height += getOverflowHeight(this.textBox.elem);
             }
