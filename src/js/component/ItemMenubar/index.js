@@ -1,5 +1,6 @@
 import CustomElement from '../CustomElement';
 import CustomButton from '../CustomButton';
+import ComponentRepository from '../../service/ComponentRepository';
 import {
     DISK_ICON,
     DOCUMENT_ICON,
@@ -15,6 +16,7 @@ import {
 import './index.css';
 
 export default class ItemMenubar extends CustomElement{
+    _selectMenu = null;
     _handBtn = null; //화면 이동 탭
     _mouseBtn = null; //마우스 탭
     _textBtn = null; //텍스트 탭
@@ -43,9 +45,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-hand-btn',
             content: `<img src='data:image/svg+xml;base64,${HAND_GRAB}' style='pointer-events: none;' width='35' height='35' />`,
             classList:['item-btn','item-hand-btn'],
+            cursorType: 'grab',
             handlers:{
-                clickHandler: function(e) {
-                    console.log('hand button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.handBtn;
                 }
             }
         });
@@ -56,8 +59,8 @@ export default class ItemMenubar extends CustomElement{
             content: `<img src='data:image/svg+xml;base64,${MOUSE_CURSOR}' style='pointer-events: none;' width='35' height='35' />`,
             classList: ['item-btn','item-mouse-btn'],
             handlers: {
-                clickHandler: function(e) {
-                    console.log('mouse button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.mouseBtn;
                 }
             }
         });
@@ -67,9 +70,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-text-btn',
             content: 'Text',
             classList: ['item-btn','item-text-btn'],
+            cursorType: 'crosshair',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('text button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.textBtn;
                 }
             }
         });
@@ -79,9 +83,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-terminal-btn',
             content: `<img src='data:image/svg+xml;base64,${TERMINAL_ICON}' style='pointer-events: none;' width='34' height='18' />`,
             classList: ['item-btn','item-terminal-btn'],
+            cursorType: 'crosshair',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('terminal button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.terminalGBtn;
                 }
             }
         });
@@ -91,9 +96,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-ready-btn',
             content: `<img src='data:image/svg+xml;base64,${READY_ICON}' style='pointer-events: none;' width='34' height='18' />`,
             classList: ['item-btn','item-ready-btn'],
+            cursorType: 'crosshair',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('ready button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.readyGBtn;
                 }
             }
         });
@@ -103,9 +109,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-process-btn',
             content: `<img src='data:image/svg+xml;base64,${PROCESS_ICON}' style='pointer-events: none;' width='34' height='18' />`,
             classList: ['item-btn','item-process-btn'],
+            cursorType: 'crosshair',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('process button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.processGBtn;
                 }
             }
         });
@@ -115,9 +122,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-judgment-btn',
             content: `<img src='data:image/svg+xml;base64,${JUDGMENT_ICON}' style='pointer-events: none;' width='34' height='18' />`,
             classList: ['item-btn','item-judgment-btn'],
+            cursorType: 'crosshair',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('judgment button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.judgmentGBtn;
                 }
             }
         });
@@ -127,9 +135,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-line-btn',
             content: `<img src='data:image/svg+xml;base64,${LINE_ICON}' style='pointer-events: none;' width='34' height='10' />`,
             classList: ['item-btn','item-line-btn'],
+            cursorType: 's-resize',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('line button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.lineGBtn;
                 }
             }
         });
@@ -139,9 +148,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-polyline-btn',
             content: `<img src='data:image/svg+xml;base64,${POLYLINE_ICON}' style='pointer-events: none;' width='34' height='45' />`,
             classList: ['item-btn','item-polyline-btn'],
+            cursorType: 's-resize',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('polyline button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.ployLineGBtn;
                 }
             }
         });
@@ -151,9 +161,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-pageconn-btn',
             content: `<img src='data:image/svg+xml;base64,${PAGECONN_ICON}' style='pointer-events: none;' width='40' height='40' />`,
             classList: ['item-btn','item-pageconn-btn'],
+            cursorType: 'crosshair',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('pageconnect button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.pageConnGBtn;
                 }
             }
         });
@@ -163,9 +174,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-doc-btn',
             content: `<img src='data:image/svg+xml;base64,${DOCUMENT_ICON}' style='pointer-events: none;' width='35' height='35' />`,
             classList: ['item-btn','item-doc-btn'],
+            cursorType: 'crosshair',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('document button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.docGBtn;
                 }
             }
         });
@@ -175,9 +187,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-disk-btn',
             content: `<img src='data:image/svg+xml;base64,${DISK_ICON}' style='pointer-events: none;' width='35' height='35' />`,
             classList: ['item-btn','item-disk-btn'],
+            cursorType: 'crosshair',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('disk button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.diskGBtn;
                 }
             }
         });
@@ -187,9 +200,10 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-io-btn',
             content: `<img src='data:image/svg+xml;base64,${IO_ICON}' style='pointer-events: none;' width='34' height='18' />`,
             classList: ['item-btn','item-io-btn'],
+            cursorType: 'crosshair',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('io button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.ioGBtn;
                 }
             }
         });
@@ -199,13 +213,28 @@ export default class ItemMenubar extends CustomElement{
             id: 'item-pinput-btn',
             content: `<img src='data:image/svg+xml;base64,${PINPUT_ICON}' style='pointer-events: none;' width='34' height='34' />`,
             classList: ['item-btn','item-pinput-btn'],
+            cursorType: 'crosshair',
             handlers: {
-                clickHandler: function(e) {
-                    console.log('pinput button !');
+                clickHandler: (e) => {
+                    this.selectMenu = this.pInputGBtn;
                 }
             }
         });
 
+        this.selectMenu = this.mouseBtn;
+    }
+
+    get selectMenu() {
+        return this._selectMenu;
+    }
+
+    set selectMenu(value) {
+        for(const key in this){
+            if(this[key] instanceof CustomButton) this[key].elem.classList.remove('item-btn-active');
+        }
+        value.elem.classList.add('item-btn-active');
+        changeCursor(value.cursorType);
+        this._selectMenu = value.id;
     }
 
     get handBtn() {
@@ -319,4 +348,10 @@ export default class ItemMenubar extends CustomElement{
     set pInputGBtn(value) {
         this._pInputGBtn = value;
     }
+}
+
+function changeCursor(type){
+    const repository = ComponentRepository.getInstance();
+    const style = repository.getComponentById('board').elem.getAttribute('style');
+    repository.getComponentById('board').elem.setAttribute('style',style+`cursor:${type};`)
 }

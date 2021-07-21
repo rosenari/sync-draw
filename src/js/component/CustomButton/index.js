@@ -1,7 +1,8 @@
 import CustomElement from '../CustomElement';
 
 export default class CustomButton extends CustomElement{
-    constructor({parentId, id, content, classList, handlers = {}}) {
+    _cursorType = null;
+    constructor({parentId, id, content, classList, cursorType = 'default', handlers = {}}) {
         super({
             parentId,
             id,
@@ -10,5 +11,14 @@ export default class CustomButton extends CustomElement{
             classList,
             handlers
         });
+        this.cursorType = cursorType;
+    }
+
+    get cursorType() {
+        return this._cursorType;
+    }
+
+    set cursorType(value) {
+        this._cursorType = value;
     }
 }
