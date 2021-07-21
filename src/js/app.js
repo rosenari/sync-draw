@@ -6,7 +6,7 @@ import ItemMenubar from './component/ItemMenubar';
 import ZoomMenubar from './component/ZoomMenubar';
 import StyleMenubar from './component/StyleMenubar';
 import HistoryMenubar from './component/HistoryMenubar';
-import CustomElement from "./component/CustomElement";
+import CustomElement from './component/CustomElement';
 
 export default class App {
     _id = 'app';
