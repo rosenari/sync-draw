@@ -41,7 +41,7 @@ export default class ItemMenubar extends CustomElement{
         this.handBtn = new CustomButton({
             parentId: this.id,
             id: 'item-hand-btn',
-            content: `<img src=\'data:image/svg+xml;base64,${HAND_GRAB}\' style=\'pointer-events: none;\' width="35" height="35" />`,
+            content: `<img src='data:image/svg+xml;base64,${HAND_GRAB}' style='pointer-events: none;' width='35' height='35' />`,
             classList:['item-btn','item-hand-btn'],
             handlers:{
                 clickHandler: function(e) {
@@ -53,7 +53,7 @@ export default class ItemMenubar extends CustomElement{
         this.mouseBtn = new CustomButton({
             parentId: this.id,
             id: 'item-mouse-btn',
-            content: `<img src='data:image/svg+xml;base64,${MOUSE_CURSOR}' style='pointer-events: none;' width="35" height="35" />`,
+            content: `<img src='data:image/svg+xml;base64,${MOUSE_CURSOR}' style='pointer-events: none;' width='35' height='35' />`,
             classList: ['item-btn','item-mouse-btn'],
             handlers: {
                 clickHandler: function(e) {
@@ -77,7 +77,7 @@ export default class ItemMenubar extends CustomElement{
         this.terminalGBtn = new CustomButton({
             parentId: this.id,
             id: 'item-terminal-btn',
-            content: `<img src='data:image/svg+xml;base64,${TERMINAL_ICON}' style='pointer-events: none;' width="34" height="18" />`,
+            content: `<img src='data:image/svg+xml;base64,${TERMINAL_ICON}' style='pointer-events: none;' width='34' height='18' />`,
             classList: ['item-btn','item-terminal-btn'],
             handlers: {
                 clickHandler: function(e) {
@@ -89,7 +89,7 @@ export default class ItemMenubar extends CustomElement{
         this.readyGBtn = new CustomButton({
             parentId: this.id,
             id: 'item-ready-btn',
-            content: `<img src='data:image/svg+xml;base64,${READY_ICON}' style='pointer-events: none;' width="34" height="18" />`,
+            content: `<img src='data:image/svg+xml;base64,${READY_ICON}' style='pointer-events: none;' width='34' height='18' />`,
             classList: ['item-btn','item-ready-btn'],
             handlers: {
                 clickHandler: function(e) {
@@ -101,7 +101,7 @@ export default class ItemMenubar extends CustomElement{
         this.processGBtn = new CustomButton({
             parentId: this.id,
             id: 'item-process-btn',
-            content: `<img src='data:image/svg+xml;base64,${PROCESS_ICON}' style='pointer-events: none;' width="34" height="18" />`,
+            content: `<img src='data:image/svg+xml;base64,${PROCESS_ICON}' style='pointer-events: none;' width='34' height='18' />`,
             classList: ['item-btn','item-process-btn'],
             handlers: {
                 clickHandler: function(e) {
@@ -113,7 +113,7 @@ export default class ItemMenubar extends CustomElement{
         this.judgmentGBtn = new CustomButton({
             parentId: this.id,
             id: 'item-judgment-btn',
-            content: `<img src='data:image/svg+xml;base64,${JUDGMENT_ICON}' style='pointer-events: none;' width="34" height="18" />`,
+            content: `<img src='data:image/svg+xml;base64,${JUDGMENT_ICON}' style='pointer-events: none;' width='34' height='18' />`,
             classList: ['item-btn','item-judgment-btn'],
             handlers: {
                 clickHandler: function(e) {
@@ -125,7 +125,7 @@ export default class ItemMenubar extends CustomElement{
         this.lineGBtn = new CustomButton({
             parentId: this.id,
             id: 'item-line-btn',
-            content: `<img src='data:image/svg+xml;base64,${LINE_ICON}' style='pointer-events: none;' width="34" height="10" />`,
+            content: `<img src='data:image/svg+xml;base64,${LINE_ICON}' style='pointer-events: none;' width='34' height='10' />`,
             classList: ['item-btn','item-line-btn'],
             handlers: {
                 clickHandler: function(e) {
@@ -137,7 +137,7 @@ export default class ItemMenubar extends CustomElement{
         this.ployLineGBtn = new CustomButton({
             parentId: this.id,
             id: 'item-polyline-btn',
-            content: `<img src='data:image/svg+xml;base64,${POLYLINE_ICON}' style='pointer-events: none;' width="34" height="45" />`,
+            content: `<img src='data:image/svg+xml;base64,${POLYLINE_ICON}' style='pointer-events: none;' width='34' height='45' />`,
             classList: ['item-btn','item-polyline-btn'],
             handlers: {
                 clickHandler: function(e) {
@@ -149,7 +149,7 @@ export default class ItemMenubar extends CustomElement{
         this.pageConnGBtn = new CustomButton({
             parentId: this.id,
             id: 'item-pageconn-btn',
-            content: `<img src='data:image/svg+xml;base64,${PAGECONN_ICON}' style='pointer-events: none;' width="40" height="40" />`,
+            content: `<img src='data:image/svg+xml;base64,${PAGECONN_ICON}' style='pointer-events: none;' width='40' height='40' />`,
             classList: ['item-btn','item-pageconn-btn'],
             handlers: {
                 clickHandler: function(e) {
@@ -161,7 +161,7 @@ export default class ItemMenubar extends CustomElement{
         this.docGBtn = new CustomButton({
             parentId: this.id,
             id: 'item-doc-btn',
-            content: `<img src='data:image/svg+xml;base64,${DOCUMENT_ICON}' style='pointer-events: none;' width="35" height="35" />`,
+            content: `<img src='data:image/svg+xml;base64,${DOCUMENT_ICON}' style='pointer-events: none;' width='35' height='35' />`,
             classList: ['item-btn','item-doc-btn'],
             handlers: {
                 clickHandler: function(e) {
@@ -173,7 +173,7 @@ export default class ItemMenubar extends CustomElement{
         this.diskGBtn = new CustomButton({
             parentId: this.id,
             id: 'item-disk-btn',
-            content: `<img src='data:image/svg+xml;base64,${DISK_ICON}' style='pointer-events: none;' width="35" height="35" />`,
+            content: `<img src='data:image/svg+xml;base64,${DISK_ICON}' style='pointer-events: none;' width='35' height='35' />`,
             classList: ['item-btn','item-disk-btn'],
             handlers: {
                 clickHandler: function(e) {
@@ -185,7 +185,7 @@ export default class ItemMenubar extends CustomElement{
         this.ioGBtn = new CustomButton({
             parentId: this.id,
             id: 'item-io-btn',
-            content: `<img src='data:image/svg+xml;base64,${IO_ICON}' style='pointer-events: none;' width="34" height="18" />`,
+            content: `<img src='data:image/svg+xml;base64,${IO_ICON}' style='pointer-events: none;' width='34' height='18' />`,
             classList: ['item-btn','item-io-btn'],
             handlers: {
                 clickHandler: function(e) {
@@ -197,7 +197,7 @@ export default class ItemMenubar extends CustomElement{
         this.pInputGBtn = new CustomButton({
             parentId: this.id,
             id: 'item-pinput-btn',
-            content: `<img src='data:image/svg+xml;base64,${PINPUT_ICON}' style='pointer-events: none;' width="34" height="34" />`,
+            content: `<img src='data:image/svg+xml;base64,${PINPUT_ICON}' style='pointer-events: none;' width='34' height='34' />`,
             classList: ['item-btn','item-pinput-btn'],
             handlers: {
                 clickHandler: function(e) {
