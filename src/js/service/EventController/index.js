@@ -11,6 +11,8 @@ export default class EventController {
         this.rootElem.addEventListener('mousedown',this.mouseDownHandler);
         this.rootElem.addEventListener('mousemove',this.mouseMoveHandler);
         this.rootElem.addEventListener('mouseup',this.mouseUpHandler);
+        this.rootElem.addEventListener('blur',this.blurHandler,true);
+        this.rootElem.addEventListener('keyup',this.keyUpHandler);
     }
 
     get rootElem(){
@@ -44,10 +46,26 @@ export default class EventController {
     mouseMoveHandler(e){
         const target = ComponentRepository.getInstance().getComponentById(e.target.id);
         if(target?.mouseMoveHandler) target.mouseMoveHandler(e);
+        if(EventController.mouseMoveHandler) EventController.mouseMoveHandler(e);
     }
+
+    static mouseMoveHandler = null;
 
     mouseUpHandler(e) {
         const target = ComponentRepository.getInstance().getComponentById(e.target.id);
         if(target?.mouseUpHandler) target.mouseUpHandler(e);
+        if(EventController.mouseUpHandler) EventController.mouseUpHandler(e);
+    }
+
+    static mouseUpHandler = null;
+
+    blurHandler(e) {
+        const target = ComponentRepository.getInstance().getComponentById(e.target.id);
+        if(target?.blurHandler) target.blurHandler(e);
+    }
+
+    keyUpHandler(e) {
+        const target = ComponentRepository.getInstance().getComponentById(e.target.id);
+        if(target?.keyUpHandler) target.keyUpHandler(e);
     }
 }
