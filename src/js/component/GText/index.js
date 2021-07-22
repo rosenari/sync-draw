@@ -27,18 +27,18 @@ export default class GText extends GraphicElement {
                 },
                 clickHandler: (e) => {
                     this.clickHandler(e);
+                },
+                blurHandler: (e) => {
+                    this.textBox.elem.setAttribute('contenteditable','false');
+                },
+                keyUpHandler: (e) => {
+                    if(isOverflowHeight(this.textBox.elem)){
+                        this.height += getOverflowHeight(this.textBox.elem);
+                    }
                 }
             }
         });
         this.textBox.elem.setAttribute('style','display:inline-block;width:100%;height:100%;word-break:break-word;');
-        this.textBox.elem.addEventListener('blur',(e) => {
-            this.textBox.elem.setAttribute('contenteditable','false');
-        });
-        this.textBox.elem.addEventListener('keyup',(e) => {
-            if(isOverflowHeight(this.textBox.elem)){
-                this.height += getOverflowHeight(this.textBox.elem);
-            }
-        });
 
         this.x = x;
         this.y = y;
