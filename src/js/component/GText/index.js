@@ -43,7 +43,7 @@ export default class GText extends GraphicElement {
                 }
             }
         });
-        this.textBox.elem.setAttribute('style','display:inline-block;width:100%;height:100%;word-break:break-word;');
+        this.textBox.elem.setAttribute('style','display:inline-block;width:100%;height:100%;word-break:break-word;user-select:none;');
 
         this.x = x;
         this.y = y;

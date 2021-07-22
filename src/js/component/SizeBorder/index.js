@@ -6,7 +6,7 @@ import EventController from '../../service/EventController';
 
 export default class SizeBorder extends Border {
     static startPoint = {};
-    static correctionSize = 2;
+    static correctionSize = 10;
     _ratios = [0, 0.5 ,1];
     _points = [];
     _target = null;
@@ -23,7 +23,6 @@ export default class SizeBorder extends Border {
         this.y = this.target.y - SizeBorder.correctionSize;
         this.width = this.target.width + SizeBorder.correctionSize * 2;
         this.height = this.target.height + SizeBorder.correctionSize * 2;
-        this.elem.setAttribute('stroke-dasharray', '3');
         this.elem.setAttribute('style','cursor:move;');
 
         this.createEdge();

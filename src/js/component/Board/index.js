@@ -19,11 +19,6 @@ export default class Board extends GraphicElement{
         super({ parentId, id: 'board', tagName: 'svg', content, classList, handlers});
         this.elem.setAttribute('style',`width: 100%; height: 100%;`);
 
-        this.tempGroup = new Group({
-            parentId:this.id,
-            id:'temp-group'
-        });
-
         this.borderGroup = new Group({
             parentId:this.id,
             id:'border-group'
@@ -32,6 +27,11 @@ export default class Board extends GraphicElement{
         this.shapeGroup = new Group({
             parentId:this.id,
             id:'shape-group'
+        });
+
+        this.tempGroup = new Group({
+            parentId:this.id,
+            id:'temp-group'
         });
     }
 
@@ -139,6 +139,8 @@ export default class Board extends GraphicElement{
             y += dy;
         }
 
+        console.log(x);
+        console.log(y);
         this.border.x = x;
         this.border.y = y;
         this.border.width = Math.abs(width);
