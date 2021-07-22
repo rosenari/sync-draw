@@ -66,6 +66,7 @@ export default class Board extends GraphicElement{
     }
 
     clickHandler(e) {
+
     }
 
     mouseDownHandler(e) {
@@ -104,12 +105,13 @@ export default class Board extends GraphicElement{
         }
     }
 
-    createBorder(e ,type){
+    createBorder(e ,type, shape = null){
         Board.startPoint.x = e.pageX;
         Board.startPoint.y = e.pageY;
         this.border = new type({
             parentId: this.tempGroup.id,
-            id: 'border'
+            id: 'border',
+            shape
         });
         this.border.x = Board.startPoint.x;
         this.border.y = Board.startPoint.y;

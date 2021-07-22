@@ -1,6 +1,6 @@
 import GraphicElement from '../GraphicElement';
-import CustomElement from "../CustomElement";
-import {getOverflowHeight, isOverflowHeight} from '../../service/util';
+import CustomElement from '../CustomElement';
+import { getOverflowHeight, isOverflowHeight } from '../../service/util';
 
 export default class GText extends GraphicElement {
     _foreignObj = null;
@@ -24,6 +24,9 @@ export default class GText extends GraphicElement {
                     console.log('dbclick !!');
                     this.textBox.elem.setAttribute('contenteditable','true');
                     this.textBox.elem.focus();
+                },
+                clickHandler: (e) => {
+                    this.clickHandler(e);
                 }
             }
         });
@@ -89,5 +92,9 @@ export default class GText extends GraphicElement {
 
     set textBox(value) {
         this._textBox = value;
+    }
+
+    clickHandler(e){
+        console.log('gtext click !');
     }
 }
