@@ -11,16 +11,25 @@ export default class CustomElement {
         this.parentId = parentId;
         this.id = id;
 
-        if(xmlns) this.elem = document.createElementNS(xmlns, tagName);
-        else this.elem = document.createElement(tagName);
+        if(xmlns){
+            this.elem = document.createElementNS(xmlns, tagName);
+        }else{
+            this.elem = document.createElement(tagName);
+        }
 
-        if(content) this.elem.innerHTML = content;
-        if(classList.length > 0) this.elem.setAttribute('class', classFor(classList));
+        if(content){
+            this.elem.innerHTML = content;
+        }
+        if(classList.length > 0){
+            this.elem.setAttribute('class', classFor(classList));
+        }
 
         const parent = ComponentRepository.getInstance().getComponentById(this.parentId);
         parent.elem.appendChild(this.elem);
 
-        for(const name in handlers) this[name] = handlers[name];
+        for(const name in handlers){
+            this[name] = handlers[name];
+        }
 
         this.elem.setAttribute('id', this.id);
         ComponentRepository.getInstance().setComponentById(this.id, this);
