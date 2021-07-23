@@ -86,38 +86,11 @@ export default class Board extends GraphicElement{
         setPointerEvent(true);
         const repository = ComponentRepository.getInstance();
         const itemMenubar = repository.getComponentById('item-menu-bar');
-        if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
-            this.createBorder(e, Border);
-        }
-        if(itemMenubar.selectMenu === itemMenubar.textBtn.id){
-            this.createBorder(e, CreateBorder);
-        }
-        if(itemMenubar.selectMenu === itemMenubar.terminalGBtn.id){
-            this.createBorder(e, CreateBorder, this.createPlaceHolder(GTerminal));
-        }
-        if(itemMenubar.selectMenu === itemMenubar.judgmentGBtn.id){
-            this.createBorder(e, CreateBorder, this.createPlaceHolder(GJudgment));
-        }
-        if(itemMenubar.selectMenu === itemMenubar.readyGBtn.id){
-            this.createBorder(e, CreateBorder, this.createPlaceHolder(GReady));
-        }
-        if(itemMenubar.selectMenu === itemMenubar.processGBtn.id){
-            this.createBorder(e, CreateBorder, this.createPlaceHolder(GProcess));
-        }
-        if(itemMenubar.selectMenu === itemMenubar.pageConnGBtn.id){
-            this.createBorder(e, CreateBorder, this.createPlaceHolder(GPageconn));
-        }
-        if(itemMenubar.selectMenu === itemMenubar.docGBtn.id){
-            this.createBorder(e, CreateBorder, this.createPlaceHolder(GDocument));
-        }
-        if(itemMenubar.selectMenu === itemMenubar.diskGBtn.id){
-            this.createBorder(e, CreateBorder, this.createPlaceHolder(GDisk));
-        }
-        if(itemMenubar.selectMenu === itemMenubar.ioGBtn.id){
-            this.createBorder(e, CreateBorder, this.createPlaceHolder(GInputoutput));
-        }
-        if(itemMenubar.selectMenu === itemMenubar.pInputGBtn.id){
-            this.createBorder(e, CreateBorder, this.createPlaceHolder(GPinput));
+        if(itemMenubar.selectMenu){
+            const selected = repository.getComponentById(itemMenubar.selectMenu);
+            if(selected.relatedBorder){
+                this.createBorder(e, selected.relatedBorder, this.createPlaceHolder(selected.relatedClass));
+            }
         }
 
         EventController.mouseMoveHandler = (e) => {
@@ -131,35 +104,9 @@ export default class Board extends GraphicElement{
             if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
                 if(this.border instanceof SizeBorder) return;
             }
-            if(itemMenubar.selectMenu === itemMenubar.textBtn.id){
-                target = this.createShape(GText);
-            }
-            if(itemMenubar.selectMenu === itemMenubar.terminalGBtn.id){
-                target = this.createShape(GTerminal);
-            }
-            if(itemMenubar.selectMenu === itemMenubar.judgmentGBtn.id){
-                target = this.createShape(GJudgment);
-            }
-            if(itemMenubar.selectMenu === itemMenubar.readyGBtn.id){
-                target = this.createShape(GReady);
-            }
-            if(itemMenubar.selectMenu === itemMenubar.processGBtn.id){
-                target = this.createShape(GProcess);
-            }
-            if(itemMenubar.selectMenu === itemMenubar.pageConnGBtn.id){
-                target = this.createShape(GPageconn);
-            }
-            if(itemMenubar.selectMenu === itemMenubar.docGBtn.id){
-                target = this.createShape(GDocument);
-            }
-            if(itemMenubar.selectMenu === itemMenubar.diskGBtn.id){
-                target = this.createShape(GDisk);
-            }
-            if(itemMenubar.selectMenu === itemMenubar.ioGBtn.id){
-                target = this.createShape(GInputoutput);
-            }
-            if(itemMenubar.selectMenu === itemMenubar.pInputGBtn.id){
-                target = this.createShape(GPinput);
+            const selected = repository.getComponentById(itemMenubar.selectMenu);
+            if(selected?.relatedClass) {
+                target = this.createShape(selected.relatedClass);
             }
 
             this.destroyBorder(e);
@@ -215,6 +162,8 @@ export default class Board extends GraphicElement{
     }
 
     createPlaceHolder(type){
+        if(!type || type === GText) return null;
+
         const placeholder =  new type({
             parentId: this.tempGroup.id,
             id: 'placeholder'
