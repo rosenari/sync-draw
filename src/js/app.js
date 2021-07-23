@@ -1,58 +1,78 @@
 import ComponentRepository from './service/ComponentRepository';
 import EventController from './service/EventController';
 import Board from './component/Board';
+import PageMenubar from './component/PageMenubar';
 
 export default class App {
-    id = 'app';
-    elem = null;
-    board = null;
-    controller = null;
+    _id = 'app';
+    _elem = null;
+    _board = null;
+    _pageMenubar = null;
+    _controller = null;
 
     constructor({elem ,screenSize = { width: 1000, height: 1000 }}) {
-        this.setElem(elem);
-        ComponentRepository.getInstance().setComponentById(this.getId(),this);
+        this.elem = elem;
+        ComponentRepository.getInstance().setComponentById(this.id,this);
 
-        this.setBoard(new Board({
-            parentId: this.getId(),
+        this.board = new Board({
+            parentId: this.id,
             classList: [],
             screenSize: {
                 width: screenSize.width,
                 height: screenSize.height
+            },
+            handlers: {
+                clickHandler: function(e) {
+                    console.log('board click !!');
+                }
             }
-        }));
+        });
 
-        this.setController(new EventController(this.getElem()));
+        this.pageMenubar = new PageMenubar({
+            parentId: this.id
+        });
+
+        this.controller = new EventController(this.elem);
     }
 
-    getId(){
-        return this.id;
+
+    get id() {
+        return this._id;
     }
 
-    setId(id){
-        this.id = id;
+    set id(value) {
+        this._id = value;
     }
 
-    getElem(){
-        return this.elem;
+    get elem(){
+        return this._elem;
     }
 
-    setElem(elem){
-        this.elem = elem;
+    set elem(value){
+        this._elem = value;
     }
 
-    setBoard(board){
-        this.board = board;
+    get board() {
+        return this._board;
     }
 
-    getBoard(){
-        return this.board;
+    set board(value) {
+        this._board = value;
     }
 
-    setController(controller){
-        this.controller = controller;
+    get pageMenubar() {
+        return this._pageMenubar;
     }
 
-    getController(){
-        return this.controller;
+    set pageMenubar(value) {
+        this._pageMenubar = value;
+    }
+
+    get controller() {
+        return this._controller;
+    }
+
+    set controller(value) {
+        this._controller = value;
     }
 }

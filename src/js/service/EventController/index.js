@@ -1,19 +1,19 @@
 import ComponentRepository from '../ComponentRepository';
 
 export default class EventController {
-    rootElem = null;
+    _rootElem = null;
 
     constructor(elem){
-        this.setRootElem(elem);
-        this.getRootElem().addEventListener('click',this.clickHandler);
-    }
-
-    setRootElem(elem){
         this.rootElem = elem;
+        this.rootElem.addEventListener('click',this.clickHandler);
     }
 
-    getRootElem(){
-        return this.rootElem;
+    get rootElem(){
+        return this._rootElem;
+    }
+
+    set rootElem(value){
+        this._rootElem = value;
     }
 
     clickHandler(e) {

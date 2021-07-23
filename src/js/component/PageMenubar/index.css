@@ -1,0 +1,35 @@
+.page-menu-bar{
+    display: flex;
+    position: absolute;
+    top:10px;
+    left:10px;
+    width:160px;
+    height:50px;
+    z-index:99;
+}
+
+.page-btn {
+    width:40px;
+    height:40px;
+    background: #FEE500;
+    border:1px solid #ccc;
+    border-radius: 4px;
+    color:white;
+    font-size:1.1em;
+    cursor: pointer;
+}
+
+.page-new-btn{
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right:10px;
+}
+
+.page-save-btn{
+    margin-top: 5px;
+    margin-right:10px;
+}
+
+.page-load-btn{
+    margin-top: 5px;
+}

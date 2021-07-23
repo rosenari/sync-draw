@@ -2,49 +2,51 @@ import ComponentRepository from '../../service/ComponentRepository';
 import { classFor } from '../../service/util';
 
 export default class CustomElement {
-    parentId = null;
-    id = null;
-    elem = null;
+    _parentId = null;
+    _id = null;
+    _elem = null;
 
     constructor({ parentId, id, tagName, content = '', classList,
-                    xmlns = null }) {
-        this.setParentId(parentId);
-        this.setId(id);
-
-        if(xmlns) this.setElem(document.createElementNS(xmlns, tagName));
-        else this.setElem(document.createElement(tagName));
-
-        this.getElem().innerText = content;
-        if(classList.length > 0) this.getElem().setAttribute('class', classFor(classList));
-
-        const parent = ComponentRepository.getInstance().getComponentById(this.getParentId());
-        parent.getElem().appendChild(this.getElem());
-
-        this.getElem().setAttribute('id', this.getId());
-        ComponentRepository.getInstance().setComponentById(this.getId(), this);
-    }
-
-    getParentId() {
-        return this.parentId;
-    }
-
-    setParentId(id) {
-        this.parentId = id;
-    }
-
-    getId(){
-        return this.id;
-    }
-
-    setId(id){
+                    xmlns = null, handlers = {} }) {
+        this.parentId = parentId;
         this.id = id;
+
+        if(xmlns) this.elem = document.createElementNS(xmlns, tagName);
+        else this.elem = document.createElement(tagName);
+
+        if(content) this.elem.innerHTML = content;
+        if(classList.length > 0) this.elem.setAttribute('class', classFor(classList));
+
+        const parent = ComponentRepository.getInstance().getComponentById(this.parentId);
+        parent.elem.appendChild(this.elem);
+
+        for(const name in handlers) this[name] = handlers[name];
+
+        this.elem.setAttribute('id', this.id);
+        ComponentRepository.getInstance().setComponentById(this.id, this);
     }
 
-    getElem() {
-        return this.elem;
+    get id(){
+        return this._id;
     }
 
-    setElem(elem) {
-        this.elem = elem;
+    get elem() {
+        return this._elem;
+    }
+
+    get parentId() {
+        return this._parentId;
+    }
+
+    set id(value){
+        this._id = value;
+    }
+
+    set elem(value) {
+        this._elem = value;
+    }
+
+    set parentId(value) {
+        this._parentId = value;
     }
 }
