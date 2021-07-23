@@ -15,9 +15,11 @@ export default class Border extends GraphicElement{
             tagName: 'polyline'
         });
         this.shape = shape;
-        if(this.shape) this.shape.elem.setAttribute('stroke','orange');
-        if(this.shape) this.shape.elem.setAttribute('stroke-width','3');
-        if(this.shape) this.shape.elem.setAttribute('stroke-dasharray','6');
+        if(this.shape){
+            this.shape.elem.setAttribute('stroke','orange');
+            this.shape.elem.setAttribute('stroke-width','3');
+            this.shape.elem.setAttribute('stroke-dasharray','6');
+        }
         this.elem.setAttribute('style','pointer-events: none;');
         this.elem.setAttribute('stroke', '#FEE500');
         this.elem.setAttribute('fill', 'none');
