@@ -1,4 +1,5 @@
 import Border from '../Border';
+import './index.css';
 
 export default class CreateBorder extends Border {
     constructor({ parentId, shape }) {
@@ -7,6 +8,7 @@ export default class CreateBorder extends Border {
             id:'create-border',
             shape
         });
+        this.elem.setAttribute('class','create-border');
         this.elem.setAttribute('stroke-dasharray', '6');
     }
 }
