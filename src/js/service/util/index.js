@@ -13,3 +13,10 @@ export function debounce(func, time) {
         }, time);
     }
 }
+
+export function classFor(classList) {
+    if(!Array.isArray(classList)){
+        throw new Error(`${classList} is not Array`);
+    }
+    return classList.join(' ');
+}
