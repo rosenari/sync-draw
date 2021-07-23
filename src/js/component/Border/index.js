@@ -33,6 +33,10 @@ export default class Border extends GraphicElement{
         const startY = this.y;
         const endX = startX + this.width;
         const endY = startY + this.height;
+        console.log(startX);
+        console.log(startY);
+        console.log(endX);
+        console.log(endY);
         this.elem.setAttribute('points',`${startX},${startY} ${endX},${startY} ${endX},${endY} ${startX},${endY} ${startX},${startY}`);
     }
 

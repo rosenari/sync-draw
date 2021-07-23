@@ -6,6 +6,10 @@ export default class GTerminal extends Rect{
         super({ parentId, id, x, y, width, height, classList, handlers });
     }
 
+    get height(){
+        return super.height;
+    }
+
     set height(value) {
         super.height = value;
         this.elem.setAttribute('ry', (value * 0.5).toFixed(2));
