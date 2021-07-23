@@ -1,4 +1,6 @@
 import GraphicElement from '../GraphicElement';
+import ComponentRepository from "../../service/ComponentRepository";
+import SizeBorder from "../SizeBorder";
 
 export default class Shape extends GraphicElement{
     _x = 0;
@@ -8,7 +10,7 @@ export default class Shape extends GraphicElement{
 
     constructor({ parentId, id, tagName, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, tagName, classList, handlers });
-        this.elem.setAttribute('fill','none');
+        this.elem.setAttribute('fill','white');
         this.elem.setAttribute('stroke', '#555');
         this.elem.setAttribute('stroke-width', '3');
     }
@@ -43,5 +45,15 @@ export default class Shape extends GraphicElement{
 
     set height(value) {
         this._height = value;
+    }
+
+    clickHandler(e) {
+        const repository = ComponentRepository.getInstance();
+        const board = repository.getComponentById('board');
+        board.destroyBorder();
+        board.border = new SizeBorder({
+            parentId: 'temp-group',
+            target: this
+        });
     }
 }
