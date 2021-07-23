@@ -51,35 +51,35 @@ export default class GText extends GraphicElement {
         this.height = height;
     }
 
-    get x(){
+    get x() {
         return +this.foreignObj.elem.getAttribute('x');
     }
 
-    set x(value){
+    set x(value) {
         this.foreignObj.elem.setAttribute('x', value);
     }
 
-    get y(){
+    get y() {
         return +this.foreignObj.elem.getAttribute('y');
     }
 
-    set y(value){
+    set y(value) {
         this.foreignObj.elem.setAttribute('y', value);
     }
 
-    get width(){
+    get width() {
         return +this.foreignObj.elem.getAttribute('width');
     }
 
-    set width(value){
+    set width(value) {
         this.foreignObj.elem.setAttribute('width', value);
     }
 
-    get height(){
+    get height() {
         return +this.foreignObj.elem.getAttribute('height');
     }
 
-    set height(value){
+    set height(value) {
         this.foreignObj.elem.setAttribute('height', value);
     }
 
@@ -99,7 +99,7 @@ export default class GText extends GraphicElement {
         this._textBox = value;
     }
 
-    clickHandler(e){
+    clickHandler(e) {
         const repository = ComponentRepository.getInstance();
         const board = repository.getComponentById('board');
         board.destroyBorder();

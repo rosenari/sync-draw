@@ -1,10 +1,11 @@
 import Border from '../Border';
 
 export default class CreateBorder extends Border {
-    constructor({ parentId }) {
+    constructor({ parentId, shape }) {
         super({
             parentId,
-            id:'create-border'
+            id:'create-border',
+            shape
         });
         this.elem.setAttribute('stroke-dasharray', '6');
     }
