@@ -1,0 +1,72 @@
+.item-menu-bar{
+    display: flex;
+    position: absolute;
+    top:10px;
+    left:200px;
+    width:710px;
+    height:50px;
+    border:1px solid #ddd;
+    border-radius: 5px;
+    background: #FEE500;
+    z-index:99;
+}
+
+.item-btn {
+    margin-top:5px;
+    margin-left:10px;
+    width:40px;
+    height:40px;
+    background: white;
+    border:1px solid #ccc;
+    border-radius: 4px;
+    color:white;
+    font-size:1.0em;
+    color:#555;
+    cursor: pointer;
+}
+
+.item-hand-btn{
+    padding-right:1px;
+}
+
+.item-mouse-btn{
+    padding-left:3px;
+}
+
+.item-terminal-btn{
+    padding-top:3px;
+}
+
+.item-ready-btn{
+    padding-top:3px;
+}
+
+.item-process-btn{
+    padding-top:3px;
+}
+
+.item-judgment-btn{
+    padding-top:3px;
+}
+
+.item-line-btn{}
+
+.item-polyline-btn{}
+
+.item-pageconn-btn{}
+
+.item-doc-btn{
+    padding-top:3px;
+}
+
+.item-disk-btn{
+    padding-top:3px;
+}
+
+.item-io-btn{
+    padding-top:3px;
+}
+
+.item-pinput-btn{
+    padding-top:2px;
+}
