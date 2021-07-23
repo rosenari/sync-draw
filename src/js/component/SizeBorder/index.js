@@ -6,7 +6,7 @@ import EventController from '../../service/EventController';
 
 export default class SizeBorder extends Border {
     static startPoint = {};
-    static correctionSize = 10;
+    static correctionSize = 4;
     _ratios = [0, 0.5 ,1];
     _points = [];
     _target = null;
@@ -97,7 +97,7 @@ export default class SizeBorder extends Border {
                 point.elem.setAttribute('r','5');
                 point.elem.setAttribute('cx',this.x + this.ratios[j] * this.width);
                 point.elem.setAttribute('cy',this.y + this.ratios[i] * this.height);
-                point.elem.setAttribute('fill','skyblue');
+                point.elem.setAttribute('fill','orange');
                 point.elem.setAttribute('cursor','grab');
                 this.points.push(point.elem);
             }
