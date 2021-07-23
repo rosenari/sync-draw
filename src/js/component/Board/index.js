@@ -16,6 +16,7 @@ import GDocument from '../Shape/Path/GDocument';
 import GDisk from '../Shape/Path/GDisk';
 import GInputoutput from '../Shape/Polygon/GInputoutput';
 import GPinput from '../Shape/Polygon/GPinput';
+import './index.css';
 
 export default class Board extends GraphicElement{
     static startPoint = {};
@@ -214,10 +215,12 @@ export default class Board extends GraphicElement{
     }
 
     createPlaceHolder(type){
-        return new type({
+        const placeholder =  new type({
             parentId: this.tempGroup.id,
             id: 'placeholder'
-        })
+        });
+        placeholder.elem.setAttribute('class','shape-place-holder');
+        return placeholder;
     }
 
     createShape(type){
