@@ -33,19 +33,10 @@ export default class ZoomMenubar extends CustomElement{
             classList:['zoom-btn'],
             handlers:{
                 clickHandler: (e) => {
-                    const board = ComponentRepository.getComponentById('board');
-                    const centerX = document.body.clientWidth / 2;
-                    const centerY = document.body.clientHeight / 2;
                     const scale = TransformManager.scale + 0.25;
                     if(scale > 2) return;
-                    const translateX = (1-scale) * centerX;
-                    const translateY = (1-scale) * centerY;
-                    this.ratioText.elem.innerText = `${scale * 100}%`;
-                    board.destroyBorder();
 
-                    TransformManager.translateX = translateX;
-                    TransformManager.translateY = translateY;
-                    TransformManager.scale = scale;
+                    this.zoom(scale);
                 }
             }
         });
@@ -57,22 +48,27 @@ export default class ZoomMenubar extends CustomElement{
             classList:['zoom-btn'],
             handlers:{
                 clickHandler: (e) => {
-                    const board = ComponentRepository.getComponentById('board');
-                    const centerX = document.body.clientWidth / 2;
-                    const centerY = document.body.clientHeight / 2;
                     const scale = TransformManager.scale - 0.25;
                     if(scale < 0.25) return;
-                    this.ratioText.elem.innerText = `${scale * 100}%`;
-                    board.destroyBorder();
-                    const translateX = (1-scale) * centerX;
-                    const translateY = (1-scale) * centerY;
 
-                    TransformManager.translateX = translateX;
-                    TransformManager.translateY = translateY;
-                    TransformManager.scale = scale;
+                    this.zoom(scale);
                 }
             }
         });
+    }
+
+    zoom(scale){
+        const board = ComponentRepository.getComponentById('board');
+        const centerX = document.body.clientWidth / 2;
+        const centerY = document.body.clientHeight / 2;
+        const translateX = (1-scale) * centerX;
+        const translateY = (1-scale) * centerY;
+        this.ratioText.elem.innerText = `${scale * 100}%`;
+        board.destroyBorder();
+
+        TransformManager.translateX = translateX;
+        TransformManager.translateY = translateY;
+        TransformManager.scale = scale;
     }
 
     get ratioText() {
