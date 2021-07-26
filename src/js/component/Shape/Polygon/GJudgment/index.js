@@ -18,39 +18,6 @@ class GJudgment extends Polygon{
         const leftY = rightY;
         this.elem.setAttribute('points',`${topX},${topY} ${rightX},${rightY} ${bottomX},${bottomY} ${leftX},${leftY}`);
     }
-
-    get x() {
-        return super.x;
-    }
-
-    set x(value) {
-        super.x = value;
-    }
-
-    get y() {
-        return super.y;
-    }
-
-    set y(value) {
-        super.y = value;
-    }
-
-    get width() {
-        return super.width;
-    }
-
-    set width(value) {
-        super.width = value;
-    }
-
-    get height() {
-        return super.height;
-    }
-
-    set height(value) {
-        super.height = value;
-    }
-
 }
 
 export default TransformManager.wrapShape(GJudgment);
