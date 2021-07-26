@@ -1,6 +1,7 @@
 import Polygon from '../index';
+import TransformManager from '../../../../service/TransformManager';
 
-export default class GPinput extends Polygon{
+class GPinput extends Polygon{
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });
@@ -18,3 +19,5 @@ export default class GPinput extends Polygon{
         this.elem.setAttribute('points',`${leftTopX},${leftTopY} ${rightTopX},${rightTopY} ${rightBottomX},${rightBottomY} ${leftBottomX},${leftBottomY}`);
     }
 }
+
+export default TransformManager.wrapShape(GPinput);
