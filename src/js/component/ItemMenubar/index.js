@@ -322,5 +322,5 @@ export default class ItemMenubar extends CustomElement{
 function changeCursor(type){
     const repository = ComponentRepository.getInstance();
     const style = repository.getComponentById('board').elem.getAttribute('style');
-    repository.getComponentById('board').elem.setAttribute('style',style+`cursor:${type};`)
+    repository.getComponentById('board').elem.setAttribute('style',`width:100%;height:100%;cursor:${type};`)
 }

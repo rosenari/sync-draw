@@ -2,20 +2,9 @@ import ComponentRepository from '../../service/ComponentRepository';
 import GraphicElement from '../GraphicElement';
 import Group from '../Group';
 import GText from '../GText';
-import Border from '../Border';
-import CreateBorder from '../CreateBorder';
 import {tinyGUID} from '../../service/util';
 import SizeBorder from '../SizeBorder';
 import EventController from '../../service/EventController';
-import GTerminal from '../Shape/Rect/GTerminal';
-import GJudgment from '../Shape/Polygon/GJudgment';
-import GReady from '../Shape/Polygon/GReady';
-import GProcess from '../Shape/Rect/GProcess';
-import GPageconn from '../Shape/Polygon/GPageconn';
-import GDocument from '../Shape/Path/GDocument';
-import GDisk from '../Shape/Path/GDisk';
-import GInputoutput from '../Shape/Polygon/GInputoutput';
-import GPinput from '../Shape/Polygon/GPinput';
 import './index.css';
 
 export default class Board extends GraphicElement{
@@ -38,6 +27,8 @@ export default class Board extends GraphicElement{
             parentId:this.id,
             id:'shape-group'
         });
+
+        //this.shapeGroup.elem.setAttribute('transform','scale(2) translate(40,50)');
 
         this.tempGroup = new Group({
             parentId:this.id,
@@ -160,6 +151,9 @@ export default class Board extends GraphicElement{
 
     destroyBorder(e){
         Board.startPoint = {};
+        //placeholder 제거
+        const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
+        if(placeholder) placeholder.parentNode.removeChild(placeholder);
         this.tempGroup.elem.innerHTML = '';
         this.border = null;
     }
@@ -168,7 +162,7 @@ export default class Board extends GraphicElement{
         if(!type || type === GText) return null;
 
         const placeholder =  new type({
-            parentId: this.tempGroup.id,
+            parentId: this.shapeGroup.id,
             id: 'placeholder'
         });
         placeholder.elem.setAttribute('class','shape-place-holder');

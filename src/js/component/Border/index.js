@@ -1,5 +1,4 @@
 import GraphicElement from '../GraphicElement';
-import ComponentRepository from '../../service/ComponentRepository';
 
 export default class Border extends GraphicElement{
     _shape = null;
@@ -24,7 +23,6 @@ export default class Border extends GraphicElement{
             this.shape.elem.setAttribute('stroke','orange');
             this.shape.elem.setAttribute('stroke-width','3');
             this.shape.elem.setAttribute('stroke-dasharray','6');
-            this.createShape();
         }
     }
 
@@ -90,11 +88,5 @@ export default class Border extends GraphicElement{
 
     set shape(value) {
         this._shape = value;
-    }
-
-    createShape() {
-        const repository = ComponentRepository.getInstance();
-        const tempGroup = repository.getComponentById(this.parentId);
-        tempGroup.elem.appendChild(this.shape.elem);
     }
 }
