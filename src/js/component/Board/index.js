@@ -5,9 +5,8 @@ import GText from '../GText';
 import {tinyGUID} from '../../service/util';
 import SizeBorder from '../SizeBorder';
 import EventController from '../../service/EventController';
+import TransformManager from '../../service/TransformManager';
 import './index.css';
-import ItemMenubar from "../ItemMenubar";
-import TransformManager from "../../service/TransformManager";
 
 export default class Board extends GraphicElement{
     static startPoint = {};
