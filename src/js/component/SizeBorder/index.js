@@ -84,18 +84,12 @@ export default class SizeBorder extends Border {
         this._target = value;
     }
 
-    getOppositionIndex(index){
-        const oppInfo = {
-            0: 7,
-            1: 6,
-            2: 5,
-            3: 4,
-            4: 3,
-            5: 2,
-            6: 1,
-            7: 0
+    getOppositionIndex(maxIndex,index){
+        if(index < 0 || index > maxIndex){
+            throw new Error(`${index} is wrong input (0 < input <= ${maxIndex}`);
         }
-        return oppInfo[index];
+
+        return maxIndex - index;
     }
 
     createEdge(){
@@ -112,9 +106,9 @@ export default class SizeBorder extends Border {
                         mouseDownHandler: (e) => {
                             e.stopPropagation();
                             SizeBorder.startPoint.x = TransformManager.changeDocXToSvgX(+e.target.getAttribute('cx'));
-                            SizeBorder.startPoint.oppX = TransformManager.changeDocXToSvgX(this.points[this.getOppositionIndex(e.target.dataset.index)].getAttribute('cx'));
+                            SizeBorder.startPoint.oppX = TransformManager.changeDocXToSvgX(this.points[this.getOppositionIndex(this.points.length-1,e.target.dataset.index)].getAttribute('cx'));
                             SizeBorder.startPoint.y = TransformManager.changeDocYToSvgY(+e.target.getAttribute('cy'));
-                            SizeBorder.startPoint.oppY = TransformManager.changeDocYToSvgY(this.points[this.getOppositionIndex(e.target.dataset.index)].getAttribute('cy'));
+                            SizeBorder.startPoint.oppY = TransformManager.changeDocYToSvgY(this.points[this.getOppositionIndex(this.points.length-1,e.target.dataset.index)].getAttribute('cy'));
                             SizeBorder.startPoint.id = e.target.id;
 
                             EventController.mouseMoveHandler = (e) => {
