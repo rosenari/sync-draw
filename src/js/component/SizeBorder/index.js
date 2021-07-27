@@ -105,16 +105,14 @@ export default class SizeBorder extends Border {
                     handlers: {
                         mouseDownHandler: (e) => {
                             e.stopPropagation();
+                            const currentPointIndexInfo = {
+                                maxIndex: this.points.length-1,
+                                index: e.target.dataset.index
+                            };
                             SizeBorder.startPoint.x = TransformManager.changeDocXToSvgX(+e.target.getAttribute('cx'));
-                            SizeBorder.startPoint.oppX = TransformManager.changeDocXToSvgX(this.points[this.getOppositionIndex({
-                                maxIndex:this.points.length-1
-                                ,index:e.target.dataset.index
-                            })].getAttribute('cx'));
+                            SizeBorder.startPoint.oppX = TransformManager.changeDocXToSvgX(this.points[this.getOppositionIndex(currentPointIndexInfo)].getAttribute('cx'));
                             SizeBorder.startPoint.y = TransformManager.changeDocYToSvgY(+e.target.getAttribute('cy'));
-                            SizeBorder.startPoint.oppY = TransformManager.changeDocYToSvgY(this.points[this.getOppositionIndex({
-                                maxIndex:this.points.length-1
-                                ,index:e.target.dataset.index
-                            })].getAttribute('cy'));
+                            SizeBorder.startPoint.oppY = TransformManager.changeDocYToSvgY(this.points[this.getOppositionIndex(currentPointIndexInfo)].getAttribute('cy'));
                             SizeBorder.startPoint.id = e.target.id;
 
                             EventController.mouseMoveHandler = (e) => {
