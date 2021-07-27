@@ -138,17 +138,11 @@ export default class SizeBorder extends Border {
                                 }
                                 if(x >= SizeBorder.startPoint.x) {
                                     width = SizeBorder.startPoint.target.width - dx;
-                                    x = SizeBorder.startPoint.target.x + dx;
-                                    if (width < 0) {
-                                        x = SizeBorder.startPoint.oppX;
-                                    }
+                                    x = width < 0 ? SizeBorder.startPoint.oppX : SizeBorder.startPoint.target.x + dx;
                                 }
                                 if(y >= SizeBorder.startPoint.y){
                                     height = SizeBorder.startPoint.target.height - dy;
-                                    y = SizeBorder.startPoint.target.y + dy;
-                                    if(height < 0){
-                                        y = SizeBorder.startPoint.oppY;
-                                    }
+                                    y = height < 0 ? SizeBorder.startPoint.oppY: SizeBorder.startPoint.target.y + dy;
                                 }
 
                                 if(id === this.points[1].id || id === this.points[6].id){
