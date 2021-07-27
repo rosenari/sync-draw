@@ -6,7 +6,7 @@ export default class CustomElement {
     _id = null;
     _elem = null;
 
-    constructor({ parentId, id, tagName, content = '', classList,
+    constructor({ parentId, id, tagName, content = '', classList = [],
                     xmlns = null, handlers = {} }) {
         this.parentId = parentId;
         this.id = id;

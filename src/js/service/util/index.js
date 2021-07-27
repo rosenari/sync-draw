@@ -20,3 +20,20 @@ export function classFor(classList) {
     }
     return classList.join(' ');
 }
+
+function genRandom8Hex(){
+    return Math.floor((Math.random() + 1) * 0x10000000)
+        .toString(16);
+}
+
+export function tinyGUID(){
+    return `${genRandom8Hex()}`;
+}
+
+export function isOverflowHeight(elem){
+    return elem.scrollHeight > elem.clientHeight;
+}
+
+export function getOverflowHeight(elem){
+    return elem.scrollHeight - elem.clientHeight;
+}
