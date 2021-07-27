@@ -8,7 +8,7 @@ import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
 import './index.css';
 
-export default class Board extends GraphicElement{
+export default class Board extends GraphicElement {
     static startPoint = {};
     _shapeGroup = null;
     _borderGroup = null;
@@ -28,8 +28,6 @@ export default class Board extends GraphicElement{
             parentId:this.id,
             id:'shape-group'
         });
-
-        //this.shapeGroup.elem.setAttribute('transform','scale(2) translate(40,50)');
 
         this.tempGroup = new Group({
             parentId:this.id,
@@ -79,13 +77,75 @@ export default class Board extends GraphicElement{
 
     _mouseDownHandler(e) {
         setPointerEvent(true);
+        Board.startPoint.x = e.pageX;
+        Board.startPoint.y = e.pageY;
         const repository = ComponentRepository.getInstance();
         const itemMenubar = repository.getComponentById('item-menu-bar');
         let selected = null;
         if(itemMenubar.selectMenu){
             selected = repository.getComponentById(itemMenubar.selectMenu);
             if(selected.relatedBorder){
-                this.createBorder(e, selected.relatedBorder, this.createPlaceHolder(selected.relatedClass));
+                this.createBorder(e, selected.relatedBorder, this.createShapePlaceHolder(selected.relatedClass));
+            }
+
+            if(selected.id === itemMenubar.lineGBtn.id){
+                if(!Board.startPoint.line) {
+                    Board.startPoint.clickCount = 1;
+                    Board.startPoint.lineplaceholder = this.createLinePlaceHolder(selected.relatedClass);
+                    Board.startPoint.lineplaceholder.addPoint({
+                        x: e.pageX,
+                        y: e.pageY
+                    });
+                    Board.startPoint.line = this.createLine(selected.relatedClass);
+                }else {
+                    Board.startPoint.line.addPoint({
+                        x: e.pageX,
+                        y: e.pageY
+                    });
+                    Board.startPoint.lineplaceholder.addPoint({
+                        x: e.pageX,
+                        y: e.pageY
+                    });
+
+                    if(++Board.startPoint.clickCount === 2){
+                        Board.startPoint = {};
+                        EventController.mouseMoveHandler = null;
+                        setPointerEvent(false);
+                        this.destroyBorder();
+                        itemMenubar.selectMenu = itemMenubar.mouseBtn;
+                        return;
+                    }
+                }
+            }
+
+            if(selected.id === itemMenubar.ploylineGBtn.id){
+                if(!Board.startPoint.line) {
+                    Board.startPoint.lineplaceholder = this.createLinePlaceHolder(selected.relatedClass);
+                    Board.startPoint.lineplaceholder.addPoint({
+                        x: e.pageX,
+                        y: e.pageY
+                    });
+                    Board.startPoint.line = this.createLine(selected.relatedClass);
+
+                    EventController.dbClickHandler = (e) => {
+                        Board.startPoint = {};
+                        setPointerEvent(false);
+                        this.destroyBorder();
+                        itemMenubar.selectMenu = itemMenubar.mouseBtn;
+                        EventController.mouseMoveHandler = null;
+                        EventController.dbClickHandler = null;
+                        return;
+                    }
+                }else {
+                    Board.startPoint.line.addPoint({
+                        x: e.pageX,
+                        y: e.pageY
+                    });
+                    Board.startPoint.lineplaceholder.addPoint({
+                        x: e.pageX,
+                        y: e.pageY
+                    });
+                }
             }
 
             if(selected.id === itemMenubar.handBtn.id){
@@ -94,8 +154,6 @@ export default class Board extends GraphicElement{
                 Board.startPoint.translateY = TransformManager.translateY;
                 Board.startPoint.moveX = TransformManager.moveX;
                 Board.startPoint.moveY = TransformManager.moveY;
-                Board.startPoint.x = e.pageX;
-                Board.startPoint.y = e.pageY;
             }
         }
 
@@ -109,10 +167,25 @@ export default class Board extends GraphicElement{
                 TransformManager.translateX = Board.startPoint.translateX + dx;
                 TransformManager.translateY = Board.startPoint.translateY + dy;
             }
+            if(selected?.id === itemMenubar.lineGBtn.id || selected?.id === itemMenubar.ploylineGBtn.id){
+                const lineplaceholder = Board.startPoint.lineplaceholder;
+                lineplaceholder.points[lineplaceholder.points.length - 1] = {
+                    x: e.pageX,
+                    y: e.pageY
+                };
+                lineplaceholder.render();
+            }
 
             if(!this.border) return;
 
             this.renderBorder(e);
+        }
+
+        if(selected?.id === itemMenubar.lineGBtn.id){
+            return;
+        }
+        if(selected?.id === itemMenubar.ploylineGBtn.id){
+            return;
         }
 
         EventController.mouseUpHandler = (e) => {
@@ -142,7 +215,7 @@ export default class Board extends GraphicElement{
         }
     }
 
-    createBorder(e ,type, shape = null){
+    createBorder(e ,type, shape = null) {
         Board.startPoint.x = e.pageX;
         Board.startPoint.y = e.pageY;
         this.border = new type({
@@ -154,7 +227,7 @@ export default class Board extends GraphicElement{
         this.border.y = Board.startPoint.y;
     }
 
-    renderBorder(e){
+    renderBorder(e) {
         if(!Board.startPoint.x || !Board.startPoint.y) return;
         //이동한 변위
         const dx = e.pageX - Board.startPoint.x;
@@ -178,7 +251,7 @@ export default class Board extends GraphicElement{
         this.border.height = Math.abs(height);
     }
 
-    destroyBorder(e){
+    destroyBorder(e) {
         Board.startPoint = {};
         //placeholder 제거
         const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
@@ -187,18 +260,32 @@ export default class Board extends GraphicElement{
         this.border = null;
     }
 
-    createPlaceHolder(type){
+    createShapePlaceHolder(type) {
         if(!type || type === GText) return null;
 
         const placeholder =  new type({
             parentId: this.shapeGroup.id,
             id: 'placeholder'
         });
-        placeholder.elem.setAttribute('class','shape-place-holder');
+        placeholder.elem.setAttribute('class','place-holder');
         return placeholder;
     }
 
-    createShape(type){
+    createLinePlaceHolder(type) {
+        const placeholder = new type({
+            parentId: this.shapeGroup.id,
+            id: 'placeholder',
+            startX: Board.startPoint.x,
+            startY: Board.startPoint.y
+        });
+        placeholder.line.elem.setAttribute('stroke','orange');
+        placeholder.arrow?.elem.setAttribute('fill','orange');
+        placeholder.line.elem.setAttribute('stroke-dasharray', '6');
+        placeholder.line.elem.setAttribute('class', 'place-holder');
+        return placeholder;
+    }
+
+    createShape(type) {
         return new type({
             parentId: this.shapeGroup.id,
             id: tinyGUID(),
@@ -208,9 +295,18 @@ export default class Board extends GraphicElement{
             height: this.border.height
         });
     }
+
+    createLine(type) {
+        return new type({
+           parentId: this.shapeGroup.id,
+           id: tinyGUID(),
+           startX: Board.startPoint.x,
+           startY: Board.startPoint.y,
+        });
+    }
 }
 
-function setPointerEvent(disable){
+function setPointerEvent(disable) {
     const repository = ComponentRepository.getInstance();
     const menuBar = [ repository.getComponentById('page-menu-bar'),
         repository.getComponentById('item-menu-bar'),
