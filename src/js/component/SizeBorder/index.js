@@ -114,16 +114,22 @@ export default class SizeBorder extends Border {
                             SizeBorder.startPoint.y = TransformManager.changeDocYToSvgY(+e.target.getAttribute('cy'));
                             SizeBorder.startPoint.oppY = TransformManager.changeDocYToSvgY(this.points[this.getOppositionIndex(currentPointIndexInfo)].getAttribute('cy'));
                             SizeBorder.startPoint.id = e.target.id;
+                            SizeBorder.startPoint.target = {
+                                x: this.target.x,
+                                y: this.target.y,
+                                width: this.target.width,
+                                height: this.target.height
+                            }
 
                             EventController.mouseMoveHandler = (e) => {
                                 e.stopPropagation();
                                 const id = SizeBorder.startPoint.id;
                                 let dx = TransformManager.changeDocXToSvgX(e.pageX) - SizeBorder.startPoint.x;
                                 let dy = TransformManager.changeDocYToSvgY(e.pageY) - SizeBorder.startPoint.y;
-                                let width = this.target.width + dx;
-                                let height = this.target.height + dy;
-                                let x = this.target.x;
-                                let y = this.target.y;
+                                let width = SizeBorder.startPoint.target.width + dx;
+                                let height = SizeBorder.startPoint.target.height + dy;
+                                let x = SizeBorder.startPoint.target.x;
+                                let y = SizeBorder.startPoint.target.y;
                                 if(width < 0){
                                     x = SizeBorder.startPoint.x + dx;
                                 }
@@ -131,25 +137,25 @@ export default class SizeBorder extends Border {
                                     y = SizeBorder.startPoint.y + dy;
                                 }
                                 if(x >= SizeBorder.startPoint.x) {
-                                    width = this.target.width - dx;
-                                    x = this.target.x + dx;
+                                    width = SizeBorder.startPoint.target.width - dx;
+                                    x = SizeBorder.startPoint.target.x + dx;
                                     if (width < 0) {
                                         x = SizeBorder.startPoint.oppX;
                                     }
                                 }
                                 if(y >= SizeBorder.startPoint.y){
-                                    height = this.target.height - dy;
-                                    y = this.target.y + dy;
+                                    height = SizeBorder.startPoint.target.height - dy;
+                                    y = SizeBorder.startPoint.target.y + dy;
                                     if(height < 0){
                                         y = SizeBorder.startPoint.oppY;
                                     }
                                 }
 
                                 if(id === this.points[1].id || id === this.points[6].id){
-                                    width = this.target.width;
+                                    width = SizeBorder.startPoint.target.width;
                                 }
                                 if(id === this.points[3].id || id === this.points[4].id){
-                                    height = this.target.height;
+                                    height = SizeBorder.startPoint.target.height;
                                 }
 
                                 //최소 크기 설정
@@ -161,6 +167,7 @@ export default class SizeBorder extends Border {
                                 this.height = Math.abs(height);
 
                                 this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
+                                this.renderTarget();
                             }
 
                             EventController.mouseUpHandler = (e) => {
@@ -203,15 +210,21 @@ export default class SizeBorder extends Border {
         e.stopPropagation();
         SizeBorder.startPoint.x = TransformManager.changeDocXToSvgX(e.pageX);
         SizeBorder.startPoint.y = TransformManager.changeDocYToSvgY(e.pageY);
+        SizeBorder.startPoint.target = {
+            x: this.target.x,
+            y: this.target.y,
+            width: this.target.width,
+            height: this.target.height
+        }
 
         EventController.mouseMoveHandler = (e) => {
             e.stopPropagation();
             const dx = TransformManager.changeDocXToSvgX(e.pageX) - SizeBorder.startPoint.x;
             const dy = TransformManager.changeDocYToSvgY(e.pageY) - SizeBorder.startPoint.y;
-            let x = this.target.x + dx;
-            let y = this.target.y + dy;
-            let width = this.target.width;
-            let height = this.target.height;
+            let x = SizeBorder.startPoint.target.x + dx;
+            let y = SizeBorder.startPoint.target.y + dy;
+            let width = SizeBorder.startPoint.target.width;
+            let height = SizeBorder.startPoint.target.height;
 
             this.x = x;
             this.y = y;
@@ -219,6 +232,7 @@ export default class SizeBorder extends Border {
             this.height = height;
 
             this.renderEdge({ x:this.x, y:this.y, width:this.width, height:this.height });
+            this.renderTarget();
         }
 
         EventController.mouseUpHandler = (e) => {
