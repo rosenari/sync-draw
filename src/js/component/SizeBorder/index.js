@@ -85,7 +85,7 @@ export default class SizeBorder extends Border {
     }
 
     getOppositionIndex(index){
-        const info = {
+        const oppInfo = {
             0: 7,
             1: 6,
             2: 5,
@@ -95,7 +95,7 @@ export default class SizeBorder extends Border {
             6: 1,
             7: 0
         }
-        return info[index];
+        return oppInfo[index];
     }
 
     createEdge(){
