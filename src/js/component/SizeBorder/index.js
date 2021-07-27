@@ -12,7 +12,7 @@ export default class SizeBorder extends Border {
     _target = null;
 
     constructor({ parentId, target
-    }) {
+                }) {
         super({
             parentId,
             id:'size-border'
@@ -84,6 +84,20 @@ export default class SizeBorder extends Border {
         this._target = value;
     }
 
+    getOppositionIndex(index){
+        const info = {
+            0: 7,
+            1: 6,
+            2: 5,
+            3: 4,
+            4: 3,
+            5: 2,
+            6: 1,
+            7: 0
+        }
+        return info[index];
+    }
+
     createEdge(){
         const repository = ComponentRepository.getInstance();
         const tempGroup = repository.getComponentById('temp-group');
@@ -91,60 +105,78 @@ export default class SizeBorder extends Border {
             for(const j in this.ratios){
                 if(i == 1 && j == 1) continue;
                 const point = new GraphicElement({
-                   parentId: tempGroup.id,
-                   id: tinyGUID(),
-                   tagName: 'circle',
-                   handlers: {
-                       mouseDownHandler: (e) => {
-                           e.stopPropagation();
-                           SizeBorder.startPoint.x = TransformManager.changeDocXToSvgX(+e.target.getAttribute('cx'));
-                           SizeBorder.startPoint.y = TransformManager.changeDocYToSvgY(+e.target.getAttribute('cy'));
-                           SizeBorder.startPoint.id = e.target.id;
+                    parentId: tempGroup.id,
+                    id: tinyGUID(),
+                    tagName: 'circle',
+                    handlers: {
+                        mouseDownHandler: (e) => {
+                            e.stopPropagation();
+                            SizeBorder.startPoint.x = TransformManager.changeDocXToSvgX(+e.target.getAttribute('cx'));
+                            SizeBorder.startPoint.oppX = TransformManager.changeDocXToSvgX(this.points[this.getOppositionIndex(e.target.dataset.index)].getAttribute('cx'));
+                            SizeBorder.startPoint.y = TransformManager.changeDocYToSvgY(+e.target.getAttribute('cy'));
+                            SizeBorder.startPoint.oppY = TransformManager.changeDocYToSvgY(this.points[this.getOppositionIndex(e.target.dataset.index)].getAttribute('cy'));
+                            SizeBorder.startPoint.id = e.target.id;
 
-                           EventController.mouseMoveHandler = (e) => {
-                               e.stopPropagation();
-                               const id = SizeBorder.startPoint.id;
-                               let dx = TransformManager.changeDocXToSvgX(e.pageX) - SizeBorder.startPoint.x;
-                               let dy = TransformManager.changeDocYToSvgY(e.pageY) - SizeBorder.startPoint.y;
-                               let width = this.target.width + dx;
-                               let height = this.target.height + dy;
-                               let x = this.target.x;
-                               let y = this.target.y;
-                               if(x >= SizeBorder.startPoint.x){
-                                   width = this.target.width - dx;
-                                   x = this.target.x + dx;
-                               }
-                               if(y >= SizeBorder.startPoint.y){
-                                   height = this.target.height - dy;
-                                   y = this.target.y + dy;
-                               }
+                            EventController.mouseMoveHandler = (e) => {
+                                e.stopPropagation();
+                                const id = SizeBorder.startPoint.id;
+                                let dx = TransformManager.changeDocXToSvgX(e.pageX) - SizeBorder.startPoint.x;
+                                let dy = TransformManager.changeDocYToSvgY(e.pageY) - SizeBorder.startPoint.y;
+                                let width = this.target.width + dx;
+                                let height = this.target.height + dy;
+                                let x = this.target.x;
+                                let y = this.target.y;
+                                if(x >= SizeBorder.startPoint.x){
+                                    width = this.target.width - dx;
+                                    x = this.target.x + dx;
+                                    if(width < 0){
+                                        x = SizeBorder.startPoint.oppX;
+                                    }
+                                }else{
+                                    if(width < 0){
+                                        x = SizeBorder.startPoint.x + dx;
+                                    }
+                                }
+                                if(y >= SizeBorder.startPoint.y){
+                                    height = this.target.height - dy;
+                                    y = this.target.y + dy;
+                                    if(height < 0){
+                                        y = SizeBorder.startPoint.oppY;
+                                    }
+                                }else{
+                                    if(height < 0){
+                                        y = SizeBorder.startPoint.y + dy;
+                                    }
+                                }
 
-                               if(id === this.points[1].id || id === this.points[6].id){
-                                   width = this.target.width;
-                               }
-                               if(id === this.points[3].id || id === this.points[4].id){
-                                   height = this.target.height;
-                               }
-                               //최소 크기 설정
-                               if(width < 50 || height < 50) return;
+                                if(id === this.points[1].id || id === this.points[6].id){
+                                    width = this.target.width;
+                                }
+                                if(id === this.points[3].id || id === this.points[4].id){
+                                    height = this.target.height;
+                                }
 
-                               this.x = x;
-                               this.y = y;
-                               this.width = Math.abs(width);
-                               this.height = Math.abs(height);
 
-                               this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
-                           }
+                                //최소 크기 설정
+                                //if(width < 50 || height < 50) return;
 
-                           EventController.mouseUpHandler = (e) => {
-                               e.stopPropagation();
-                               SizeBorder.startPoint = {};
-                               this.renderTarget();
-                               EventController.mouseMoveHandler = null;
-                               EventController.mouseUpHandler = null;
-                           }
-                       }
-                   }
+                                this.x = x;
+                                this.y = y;
+                                this.width = Math.abs(width);
+                                this.height = Math.abs(height);
+
+                                this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
+                            }
+
+                            EventController.mouseUpHandler = (e) => {
+                                e.stopPropagation();
+                                SizeBorder.startPoint = {};
+                                this.renderTarget();
+                                EventController.mouseMoveHandler = null;
+                                EventController.mouseUpHandler = null;
+                            }
+                        }
+                    }
                 });
 
                 point.elem.setAttribute('r','5');
@@ -152,6 +184,7 @@ export default class SizeBorder extends Border {
                 point.elem.setAttribute('cy',this.y + this.ratios[i] * this.height);
                 point.elem.setAttribute('fill','orange');
                 point.elem.setAttribute('cursor','grab');
+                point.elem.setAttribute('data-index',this.points.length);
                 this.points.push(point.elem);
             }
         }

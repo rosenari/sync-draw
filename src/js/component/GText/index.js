@@ -3,8 +3,9 @@ import CustomElement from '../CustomElement';
 import { getOverflowHeight, isOverflowHeight } from '../../service/util';
 import ComponentRepository from '../../service/ComponentRepository';
 import SizeBorder from '../SizeBorder';
+import TransformManager from '../../service/TransformManager';
 
-export default class GText extends GraphicElement {
+class GText extends GraphicElement {
     _foreignObj = null;
     _textBox = null;
 
@@ -115,3 +116,5 @@ function destroyBorder(){
     const board = repository.getComponentById('board');
     board.destroyBorder();
 }
+
+export default TransformManager.wrapShape(GText);
