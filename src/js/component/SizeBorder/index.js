@@ -126,15 +126,17 @@ export default class SizeBorder extends Border {
                                 let height = this.target.height + dy;
                                 let x = this.target.x;
                                 let y = this.target.y;
-                                if(x >= SizeBorder.startPoint.x){
+                                if(width < 0){
+                                    x = SizeBorder.startPoint.x + dx;
+                                }
+                                if(height < 0){
+                                    y = SizeBorder.startPoint.y + dy;
+                                }
+                                if(x >= SizeBorder.startPoint.x) {
                                     width = this.target.width - dx;
                                     x = this.target.x + dx;
-                                    if(width < 0){
+                                    if (width < 0) {
                                         x = SizeBorder.startPoint.oppX;
-                                    }
-                                }else{
-                                    if(width < 0){
-                                        x = SizeBorder.startPoint.x + dx;
                                     }
                                 }
                                 if(y >= SizeBorder.startPoint.y){
@@ -142,10 +144,6 @@ export default class SizeBorder extends Border {
                                     y = this.target.y + dy;
                                     if(height < 0){
                                         y = SizeBorder.startPoint.oppY;
-                                    }
-                                }else{
-                                    if(height < 0){
-                                        y = SizeBorder.startPoint.y + dy;
                                     }
                                 }
 
