@@ -24,8 +24,8 @@ import GDocument from '../Shape/Path/GDocument';
 import GInputoutput from '../Shape/Polygon/GInputoutput';
 import GPinput from '../Shape/Polygon/GPinput';
 import GText from '../GText';
+import GDisk from '../Shape/Path/GDisk';
 import './index.css';
-import GDisk from "../Shape/Path/GDisk";
 
 export default class ItemMenubar extends CustomElement{
     _selectMenu = null;
@@ -180,12 +180,15 @@ export default class ItemMenubar extends CustomElement{
             return button;
         }
 
+        const commonBtn = ['hand','mouse','text'];
+
         const registerButton = (button) => {
-            if(button.name === 'hand' || button.name === 'mouse' || button.name === 'text'){
+            if(commonBtn.includes(button.name)){
                 this[`${button.name}Btn`] = button;
-            }else{
-                this[`${button.name}GBtn`] = button;
+                return;
             }
+
+            this[`${button.name}GBtn`] = button;
         }
 
         buttonInfos.map(createButton).forEach(registerButton);
