@@ -84,7 +84,7 @@ export default class SizeBorder extends Border {
         this._target = value;
     }
 
-    getOppositionIndex(maxIndex,index){
+    getOppositionIndex({ maxIndex, index }){
         if(index < 0 || index > maxIndex){
             throw new Error(`${index} is wrong input (0 < input <= ${maxIndex})`);
         }
@@ -106,9 +106,15 @@ export default class SizeBorder extends Border {
                         mouseDownHandler: (e) => {
                             e.stopPropagation();
                             SizeBorder.startPoint.x = TransformManager.changeDocXToSvgX(+e.target.getAttribute('cx'));
-                            SizeBorder.startPoint.oppX = TransformManager.changeDocXToSvgX(this.points[this.getOppositionIndex(this.points.length-1,-1)].getAttribute('cx'));
+                            SizeBorder.startPoint.oppX = TransformManager.changeDocXToSvgX(this.points[this.getOppositionIndex({
+                                maxIndex:this.points.length-1
+                                ,index:e.target.dataset.index
+                            })].getAttribute('cx'));
                             SizeBorder.startPoint.y = TransformManager.changeDocYToSvgY(+e.target.getAttribute('cy'));
-                            SizeBorder.startPoint.oppY = TransformManager.changeDocYToSvgY(this.points[this.getOppositionIndex(this.points.length-1,e.target.dataset.index)].getAttribute('cy'));
+                            SizeBorder.startPoint.oppY = TransformManager.changeDocYToSvgY(this.points[this.getOppositionIndex({
+                                maxIndex:this.points.length-1
+                                ,index:e.target.dataset.index
+                            })].getAttribute('cy'));
                             SizeBorder.startPoint.id = e.target.id;
 
                             EventController.mouseMoveHandler = (e) => {
