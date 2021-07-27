@@ -1,6 +1,8 @@
 import GraphicElement from '../GraphicElement';
 import CustomElement from '../CustomElement';
 import { getOverflowHeight, isOverflowHeight } from '../../service/util';
+import ComponentRepository from '../../service/ComponentRepository';
+import SizeBorder from '../SizeBorder';
 
 export default class GText extends GraphicElement {
     _foreignObj = null;
@@ -21,9 +23,10 @@ export default class GText extends GraphicElement {
             content: 'text',
             handlers: {
                 dbClickHandler: (e) => {
-                    console.log('dbclick !!');
                     this.textBox.elem.setAttribute('contenteditable','true');
                     this.textBox.elem.focus();
+
+                    destroyBorder();
                 },
                 clickHandler: (e) => {
                     this.clickHandler(e);
@@ -35,10 +38,12 @@ export default class GText extends GraphicElement {
                     if(isOverflowHeight(this.textBox.elem)){
                         this.height += getOverflowHeight(this.textBox.elem);
                     }
+
+                    destroyBorder();
                 }
             }
         });
-        this.textBox.elem.setAttribute('style','display:inline-block;width:100%;height:100%;word-break:break-word;');
+        this.textBox.elem.setAttribute('style','display:inline-block;width:100%;height:100%;word-break:break-word;user-select:none;');
 
         this.x = x;
         this.y = y;
@@ -95,6 +100,18 @@ export default class GText extends GraphicElement {
     }
 
     clickHandler(e){
-        console.log('gtext click !');
+        const repository = ComponentRepository.getInstance();
+        const board = repository.getComponentById('board');
+        board.destroyBorder();
+        board.border = new SizeBorder({
+            parentId: 'temp-group',
+            target: this
+        });
     }
+}
+
+function destroyBorder(){
+    const repository = ComponentRepository.getInstance();
+    const board = repository.getComponentById('board');
+    board.destroyBorder();
 }

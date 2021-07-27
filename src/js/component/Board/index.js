@@ -5,6 +5,8 @@ import GText from '../GText';
 import Border from '../Border';
 import CreateBorder from '../CreateBorder';
 import {tinyGUID} from '../../service/util';
+import SizeBorder from '../SizeBorder';
+import EventController from '../../service/EventController';
 
 export default class Board extends GraphicElement{
     static startPoint = {};
@@ -17,14 +19,14 @@ export default class Board extends GraphicElement{
         super({ parentId, id: 'board', tagName: 'svg', content, classList, handlers});
         this.elem.setAttribute('style',`width: 100%; height: 100%;`);
 
-        this.shapeGroup = new Group({
-            parentId:this.id,
-            id:'shape-group'
-        });
-
         this.borderGroup = new Group({
             parentId:this.id,
             id:'border-group'
+        });
+
+        this.shapeGroup = new Group({
+            parentId:this.id,
+            id:'shape-group'
         });
 
         this.tempGroup = new Group({
@@ -66,11 +68,12 @@ export default class Board extends GraphicElement{
     }
 
     clickHandler(e) {
-
+        //this.destroyBorder();
     }
 
     mouseDownHandler(e) {
         e.stopPropagation();
+        setPointerEvent(true);
         const repository = ComponentRepository.getInstance();
         const itemMenubar = repository.getComponentById('item-menu-bar');
         if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
@@ -79,29 +82,30 @@ export default class Board extends GraphicElement{
         if(itemMenubar.selectMenu === itemMenubar.textBtn.id){
             this.createBorder(e, CreateBorder);
         }
-    }
 
-    mouseMoveHandler(e) {
-        const repository = ComponentRepository.getInstance();
-        const itemMenubar = repository.getComponentById('item-menu-bar');
-        if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
-            this.renderBorder(e);
+        EventController.mouseMoveHandler = (e) => {
+            if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
+                this.renderBorder(e);
+            }
+            if(itemMenubar.selectMenu === itemMenubar.textBtn.id){
+                this.renderBorder(e);
+            }
         }
-        if(itemMenubar.selectMenu === itemMenubar.textBtn.id){
-            this.renderBorder(e);
-        }
-    }
 
-    mouseUpHandler(e) {
-        const repository = ComponentRepository.getInstance();
-        const itemMenubar = repository.getComponentById('item-menu-bar');
-        if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
-            this.destroyBorder(e);
-        }
-        if(itemMenubar.selectMenu === itemMenubar.textBtn.id){
-            this.createGText();
-            this.destroyBorder(e);
-            itemMenubar.selectMenu = itemMenubar.mouseBtn;
+        EventController.mouseUpHandler = (e) => {
+            if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
+                if(this.border instanceof SizeBorder) return;
+                this.destroyBorder(e);
+            }
+            if(itemMenubar.selectMenu === itemMenubar.textBtn.id){
+                const target = this.createGText();
+                this.destroyBorder(e);
+                itemMenubar.selectMenu = itemMenubar.mouseBtn;
+                target.clickHandler();
+            }
+            setPointerEvent(false);
+            EventController.mouseMoveHandler = null;
+            EventController.mouseUpHandler = null;
         }
     }
 
@@ -135,6 +139,8 @@ export default class Board extends GraphicElement{
             y += dy;
         }
 
+        console.log(x);
+        console.log(y);
         this.border.x = x;
         this.border.y = y;
         this.border.width = Math.abs(width);
@@ -148,7 +154,7 @@ export default class Board extends GraphicElement{
     }
 
     createGText(){
-        new GText({
+        return new GText({
             parentId: this.shapeGroup.id,
             id: tinyGUID(),
             x: this.border.x,
@@ -156,5 +162,19 @@ export default class Board extends GraphicElement{
             width: this.border.width,
             height: this.border.height
         });
+    }
+}
+
+function setPointerEvent(disable){
+    const repository = ComponentRepository.getInstance();
+    const menuBar = [ repository.getComponentById('page-menu-bar'),
+        repository.getComponentById('item-menu-bar'),
+        repository.getComponentById('style-menu-bar'),
+    repository.getComponentById('history-menu-bar')];
+
+    if(disable){
+        menuBar.forEach(menu => menu.elem.classList.add('disable-pointer-event'));
+    } else {
+        menuBar.forEach(menu => menu.elem.classList.remove('disable-pointer-event'));
     }
 }
