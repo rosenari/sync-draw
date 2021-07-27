@@ -154,7 +154,6 @@ export default class SizeBorder extends Border {
                                     height = this.target.height;
                                 }
 
-
                                 //최소 크기 설정
                                 //if(width < 50 || height < 50) return;
 
