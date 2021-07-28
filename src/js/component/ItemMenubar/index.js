@@ -17,7 +17,7 @@ import {
     TERMINAL_ICON
 } from '../../images';
 import Border from '../Border';
-import CreateBorder from '../CreateBorder';
+import CreateBorder from '../Border/CreateBorder';
 import GTerminal from '../Shape/Rect/GTerminal';
 import GReady from '../Shape/Polygon/GReady';
 import GProcess from '../Shape/Rect/GProcess';

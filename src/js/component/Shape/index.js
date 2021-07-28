@@ -1,6 +1,6 @@
 import GraphicElement from '../GraphicElement';
 import ComponentRepository from '../../service/ComponentRepository';
-import SizeBorder from '../SizeBorder';
+import SizeBorder from '../Border/SizeBorder';
 import {BOARD_ID, COLOR_BLACK, ITEM_MENU_BAR_ID, TEMP_GROUP_ID} from '../../service/constant';
 
 export default class Shape extends GraphicElement{

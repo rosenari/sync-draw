@@ -2,7 +2,7 @@ import GraphicElement from '../GraphicElement';
 import CustomElement from '../CustomElement';
 import { getOverflowHeight, isOverflowHeight } from '../../service/util';
 import ComponentRepository from '../../service/ComponentRepository';
-import SizeBorder from '../SizeBorder';
+import SizeBorder from '../Border/SizeBorder';
 import TransformManager from '../../service/TransformManager';
 import { BOARD_ID, TEMP_GROUP_ID } from '../../service/constant';
 

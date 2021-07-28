@@ -1,6 +1,6 @@
-import Border from '../Border';
+import Border from '../index';
 import './index.css';
-import { CREATE_BORDER_ID } from '../../service/constant';
+import { CREATE_BORDER_ID } from '../../../service/constant';
 
 export default class CreateBorder extends Border {
     constructor({ parentId, shape }) {

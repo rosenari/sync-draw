@@ -3,7 +3,7 @@ import GraphicElement from '../GraphicElement';
 import Group from '../Group';
 import GText from '../GText';
 import {tinyGUID} from '../../service/util';
-import SizeBorder from '../SizeBorder';
+import SizeBorder from '../Border/SizeBorder';
 import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
 import Line from '../Line';
