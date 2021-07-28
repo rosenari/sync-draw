@@ -99,6 +99,7 @@ class TransformManager {
     }
 
     wrapShape(shape){
+        const manager = this;
         return class extends shape {
             constructor(args) {
                 super(args);
@@ -109,7 +110,7 @@ class TransformManager {
             }
 
             set x(value) {
-                super.x = +((value - TransformManager.translateX) / TransformManager.scale).toFixed(0);
+                super.x = +((value - manager.translateX) / manager.scale).toFixed(0);
             }
 
             get y() {
@@ -117,7 +118,7 @@ class TransformManager {
             }
 
             set y(value) {
-                super.y = +((value - TransformManager.translateY) / TransformManager.scale).toFixed(0);
+                super.y = +((value - manager.translateY) / manager.scale).toFixed(0);
             }
 
             get width(){
@@ -125,7 +126,7 @@ class TransformManager {
             }
 
             set width(value) {
-                super.width = +(value / TransformManager.scale).toFixed(0);
+                super.width = +(value / manager.scale).toFixed(0);
             }
 
             get height(){
@@ -133,7 +134,7 @@ class TransformManager {
             }
 
             set height(value) {
-                super.height = +(value / TransformManager.scale).toFixed(0);
+                super.height = +(value / manager.scale).toFixed(0);
             }
         }
     }
