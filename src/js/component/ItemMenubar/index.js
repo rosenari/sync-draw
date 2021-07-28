@@ -13,7 +13,19 @@ import {
     READY_ICON,
     TERMINAL_ICON
 } from '../../images';
+import Border from '../Border';
+import CreateBorder from '../CreateBorder';
+import GTerminal from '../Shape/Rect/GTerminal';
+import GReady from '../Shape/Polygon/GReady';
+import GProcess from '../Shape/Rect/GProcess';
+import GJudgment from '../Shape/Polygon/GJudgment';
+import GPageconn from '../Shape/Polygon/GPageconn';
+import GDocument from '../Shape/Path/GDocument';
+import GInputoutput from '../Shape/Polygon/GInputoutput';
+import GPinput from '../Shape/Polygon/GPinput';
+import GText from '../GText';
 import './index.css';
+import GDisk from "../Shape/Path/GDisk";
 
 export default class ItemMenubar extends CustomElement{
     _selectMenu = null;
@@ -25,12 +37,12 @@ export default class ItemMenubar extends CustomElement{
     _processGBtn = null; //처리 요소 탭
     _judgmentGBtn = null; //판단 요소 탭
     _lineGBtn = null; //흐름선 요소 탭
-    _ployLineGBtn = null; //직선 요소 탭
-    _pageConnGBtn = null; //페이지 연결자 요소 탭
+    _ploylineGBtn = null; //직선 요소 탭
+    _pageconnGBtn = null; //페이지 연결자 요소 탭
     _docGBtn = null; //서류 요소 탭
     _diskGBtn = null; //디스크 요소 탭
     _ioGBtn = null; //입출력 요소 탭
-    _pInputGBtn = null; //수동입력 요소 탭
+    _pinputGBtn = null; //수동입력 요소 탭
 
     constructor({parentId}) {
         super({
@@ -40,186 +52,143 @@ export default class ItemMenubar extends CustomElement{
             classList:['item-menu-bar']
         });
 
-        this.handBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-hand-btn',
-            content: `<img src='data:image/svg+xml;base64,${HAND_GRAB}' style='pointer-events: none;' width='35' height='35' />`,
-            classList:['item-btn','item-hand-btn'],
-            cursorType: 'grab',
-            handlers:{
-                clickHandler: (e) => {
-                    this.selectMenu = this.handBtn;
-                }
+        const buttonInfos = [
+            {
+                name: 'hand',
+                icon: HAND_GRAB,
+                iconSize: { width: '35', height: '35' },
+                cursorType: 'grab'
+            },
+            {
+                name: 'mouse',
+                icon: MOUSE_CURSOR,
+                iconSize: { width: '35', height: '35' },
+                relatedBorder: Border
+            },
+            {
+                name: 'text',
+                content: 'Text',
+                cursorType: 'crosshair',
+                relatedBorder: CreateBorder,
+                relatedClass: GText
+            },
+            {
+                name: 'terminal',
+                icon: TERMINAL_ICON,
+                iconSize: { width: '34', height: '18' },
+                cursorType: 'crosshair',
+                relatedBorder: CreateBorder,
+                relatedClass: GTerminal
+            },
+            {
+                name: 'ready',
+                icon: READY_ICON,
+                iconSize: { width:'34', height: '18' },
+                cursorType: 'crosshair',
+                relatedBorder: CreateBorder,
+                relatedClass: GReady
+            },
+            {
+                name: 'process',
+                icon: PROCESS_ICON,
+                iconSize: { width: '34', height: '18'},
+                cursorType: 'crosshair',
+                relatedBorder: CreateBorder,
+                relatedClass: GProcess
+            },
+            {
+                name: 'judgment',
+                icon: JUDGMENT_ICON,
+                iconSize: { width:'34', height:'18' },
+                cursorType: 'crosshair',
+                relatedBorder: CreateBorder,
+                relatedClass: GJudgment
+            },
+            {
+                name: 'line',
+                icon: LINE_ICON,
+                iconSize: { width:'34', height:'10' },
+                cursorType: 's-resize'
+            },
+            {
+                name: 'ployline',
+                icon: POLYLINE_ICON,
+                iconSize: { width:'34', height:'45' },
+                cursorType: 's-resize'
+            },
+            {
+                name: 'pageconn',
+                icon: PAGECONN_ICON,
+                iconSize: { width: '40', height: '40' },
+                cursorType: 'crosshair',
+                relatedBorder: CreateBorder,
+                relatedClass: GPageconn
+            },
+            {
+                name: 'doc',
+                icon: DOCUMENT_ICON,
+                iconSize: { width: '35', height: '35' },
+                cursorType: 'crosshair',
+                relatedBorder: CreateBorder,
+                relatedClass: GDocument
+            },
+            {
+                name: 'disk',
+                icon: DISK_ICON,
+                iconSize: { width: '35', height: '35' },
+                cursorType: 'crosshair',
+                relatedBorder: CreateBorder,
+                relatedClass: GDisk
+            },
+            {
+                name: 'io',
+                icon: IO_ICON,
+                iconSize: { width: '34', height: '18' },
+                cursorType: 'crosshair',
+                relatedBorder: CreateBorder,
+                relatedClass: GInputoutput
+            },
+            {
+                name: 'pinput',
+                icon: PINPUT_ICON,
+                iconSize: { width: '34', height: '34' },
+                cursorType: 'crosshair',
+                relatedBorder: CreateBorder,
+                relatedClass: GPinput
             }
-        });
+        ];
 
-        this.mouseBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-mouse-btn',
-            content: `<img src='data:image/svg+xml;base64,${MOUSE_CURSOR}' style='pointer-events: none;' width='35' height='35' />`,
-            classList: ['item-btn','item-mouse-btn'],
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.mouseBtn;
+        const createButton = ({ name, content, icon, iconSize, cursorType, relatedBorder = null, relatedClass = null}) => {
+            const button =  new CustomButton({
+                parentId: this.id,
+                id: `item-${name}-btn`,
+                content: content || `<img src='data:image/svg+xml;base64,${icon}' style='pointer-events: none;' width=${iconSize.width} height=${iconSize.height} />`,
+                classList: ['item-btn',`item-${name}-btn`],
+                cursorType,
+                handlers: {
+                    clickHandler: (e) => {
+                        const repository = ComponentRepository.getInstance();
+                        const selected = repository.getComponentById(e.target.id);
+                        this.selectMenu = selected;
+                    }
                 }
-            }
-        });
+            });
+            button.name = name;
+            button.relatedBorder = relatedBorder;
+            button.relatedClass = relatedClass;
 
-        this.textBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-text-btn',
-            content: 'Text',
-            classList: ['item-btn','item-text-btn'],
-            cursorType: 'crosshair',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.textBtn;
-                }
-            }
-        });
+            return button;
+        }
 
-        this.terminalGBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-terminal-btn',
-            content: `<img src='data:image/svg+xml;base64,${TERMINAL_ICON}' style='pointer-events: none;' width='34' height='18' />`,
-            classList: ['item-btn','item-terminal-btn'],
-            cursorType: 'crosshair',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.terminalGBtn;
-                }
+        const registerButton = (button) => {
+            if(button.name === 'hand' || button.name === 'mouse' || button.name === 'text'){
+                this[`${button.name}Btn`] = button;
+            }else{
+                this[`${button.name}GBtn`] = button;
             }
-        });
+        }
 
-        this.readyGBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-ready-btn',
-            content: `<img src='data:image/svg+xml;base64,${READY_ICON}' style='pointer-events: none;' width='34' height='18' />`,
-            classList: ['item-btn','item-ready-btn'],
-            cursorType: 'crosshair',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.readyGBtn;
-                }
-            }
-        });
-
-        this.processGBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-process-btn',
-            content: `<img src='data:image/svg+xml;base64,${PROCESS_ICON}' style='pointer-events: none;' width='34' height='18' />`,
-            classList: ['item-btn','item-process-btn'],
-            cursorType: 'crosshair',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.processGBtn;
-                }
-            }
-        });
-
-        this.judgmentGBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-judgment-btn',
-            content: `<img src='data:image/svg+xml;base64,${JUDGMENT_ICON}' style='pointer-events: none;' width='34' height='18' />`,
-            classList: ['item-btn','item-judgment-btn'],
-            cursorType: 'crosshair',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.judgmentGBtn;
-                }
-            }
-        });
-
-        this.lineGBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-line-btn',
-            content: `<img src='data:image/svg+xml;base64,${LINE_ICON}' style='pointer-events: none;' width='34' height='10' />`,
-            classList: ['item-btn','item-line-btn'],
-            cursorType: 's-resize',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.lineGBtn;
-                }
-            }
-        });
-
-        this.ployLineGBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-polyline-btn',
-            content: `<img src='data:image/svg+xml;base64,${POLYLINE_ICON}' style='pointer-events: none;' width='34' height='45' />`,
-            classList: ['item-btn','item-polyline-btn'],
-            cursorType: 's-resize',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.ployLineGBtn;
-                }
-            }
-        });
-
-        this.pageConnGBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-pageconn-btn',
-            content: `<img src='data:image/svg+xml;base64,${PAGECONN_ICON}' style='pointer-events: none;' width='40' height='40' />`,
-            classList: ['item-btn','item-pageconn-btn'],
-            cursorType: 'crosshair',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.pageConnGBtn;
-                }
-            }
-        });
-
-        this.docGBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-doc-btn',
-            content: `<img src='data:image/svg+xml;base64,${DOCUMENT_ICON}' style='pointer-events: none;' width='35' height='35' />`,
-            classList: ['item-btn','item-doc-btn'],
-            cursorType: 'crosshair',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.docGBtn;
-                }
-            }
-        });
-
-        this.diskGBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-disk-btn',
-            content: `<img src='data:image/svg+xml;base64,${DISK_ICON}' style='pointer-events: none;' width='35' height='35' />`,
-            classList: ['item-btn','item-disk-btn'],
-            cursorType: 'crosshair',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.diskGBtn;
-                }
-            }
-        });
-
-        this.ioGBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-io-btn',
-            content: `<img src='data:image/svg+xml;base64,${IO_ICON}' style='pointer-events: none;' width='34' height='18' />`,
-            classList: ['item-btn','item-io-btn'],
-            cursorType: 'crosshair',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.ioGBtn;
-                }
-            }
-        });
-
-        this.pInputGBtn = new CustomButton({
-            parentId: this.id,
-            id: 'item-pinput-btn',
-            content: `<img src='data:image/svg+xml;base64,${PINPUT_ICON}' style='pointer-events: none;' width='34' height='34' />`,
-            classList: ['item-btn','item-pinput-btn'],
-            cursorType: 'crosshair',
-            handlers: {
-                clickHandler: (e) => {
-                    this.selectMenu = this.pInputGBtn;
-                }
-            }
-        });
+        buttonInfos.map(createButton).forEach(registerButton);
 
         this.selectMenu = this.mouseBtn;
     }
@@ -269,12 +238,12 @@ export default class ItemMenubar extends CustomElement{
         return this._lineGBtn;
     }
 
-    get ployLineGBtn() {
-        return this._ployLineGBtn;
+    get ploylineGBtn() {
+        return this._ploylineGBtn;
     }
 
-    get pageConnGBtn() {
-        return this._pageConnGBtn;
+    get pageconnGBtn() {
+        return this._pageconnGBtn;
     }
 
     get docGBtn() {
@@ -289,8 +258,8 @@ export default class ItemMenubar extends CustomElement{
         return this._ioGBtn;
     }
 
-    get pInputGBtn() {
-        return this._pInputGBtn;
+    get pinputGBtn() {
+        return this._pinputGBtn;
     }
 
     set handBtn(value) {
@@ -325,12 +294,12 @@ export default class ItemMenubar extends CustomElement{
         this._lineGBtn = value;
     }
 
-    set ployLineGBtn(value) {
-        this._ployLineGBtn = value;
+    set ploylineGBtn(value) {
+        this._ploylineGBtn = value;
     }
 
-    set pageConnGBtn(value) {
-        this._pageConnGBtn = value;
+    set pageconnGBtn(value) {
+        this._pageconnGBtn = value;
     }
 
     set docGBtn(value) {
@@ -345,8 +314,8 @@ export default class ItemMenubar extends CustomElement{
         this._ioGBtn = value;
     }
 
-    set pInputGBtn(value) {
-        this._pInputGBtn = value;
+    set pinputGBtn(value) {
+        this._pinputGBtn = value;
     }
 }
 
