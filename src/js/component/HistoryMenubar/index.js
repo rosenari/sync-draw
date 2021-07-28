@@ -1,7 +1,7 @@
 import CustomElement from '../CustomElement';
 import CustomButton from '../CustomButton';
 import './index.css';
-import { HISTORY_MENU_BAR_ID, HISTORY_REDO_BTN_ID, HISTORY_UNDO_BTN_ID } from '../../service/constant';
+import { MENU_BAR, BUTTON } from '../../service/constant';
 
 export default class HistoryMenubar extends CustomElement{
     _undoBtn = null;
@@ -10,14 +10,14 @@ export default class HistoryMenubar extends CustomElement{
     constructor({parentId}) {
         super({
             parentId,
-            id: HISTORY_MENU_BAR_ID,
+            id: MENU_BAR.HISTORY_MENU_BAR_ID,
             tagName: 'div',
             classList:['history-menu-bar']
         });
 
         this.undoBtn = new CustomButton({
             parentId: this.id,
-            id: HISTORY_UNDO_BTN_ID,
+            id: BUTTON.HISTORY_UNDO_BTN_ID,
             content: '↩️',
             classList:['history-btn'],
             handlers:{
@@ -29,7 +29,7 @@ export default class HistoryMenubar extends CustomElement{
 
         this.redoBtn = new CustomButton({
             parentId: this.id,
-            id: HISTORY_REDO_BTN_ID,
+            id: BUTTON.HISTORY_REDO_BTN_ID,
             content: '↪️️',
             classList:['history-btn'],
             handlers:{

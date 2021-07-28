@@ -1,7 +1,7 @@
 import GraphicElement from '../GraphicElement';
 import ComponentRepository from '../../service/ComponentRepository';
 import SizeBorder from '../Border/SizeBorder';
-import {BOARD_ID, COLOR_BLACK, ITEM_MENU_BAR_ID, TEMP_GROUP_ID} from '../../service/constant';
+import {BOARD_ID, COLOR, MENU_BAR, GROUP} from '../../service/constant';
 
 export default class Shape extends GraphicElement{
     _x = 0;
@@ -12,7 +12,7 @@ export default class Shape extends GraphicElement{
     constructor({ parentId, id, tagName, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, tagName, classList, handlers });
         this.elem.setAttribute('fill','white');
-        this.elem.setAttribute('stroke', COLOR_BLACK);
+        this.elem.setAttribute('stroke', COLOR.BLACK);
         this.elem.setAttribute('stroke-width', '3');
     }
 
@@ -50,14 +50,14 @@ export default class Shape extends GraphicElement{
 
     clickHandler(e) {
         const board = ComponentRepository.getComponentById(BOARD_ID);
-        const itemMenubar = ComponentRepository.getComponentById(ITEM_MENU_BAR_ID);
+        const itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID);
         if(ComponentRepository.getComponentById(itemMenubar.selectMenu).name !== 'mouse'){
             return;
         }
 
         board.destroyBorder();
         board.border = new SizeBorder({
-            parentId: TEMP_GROUP_ID,
+            parentId: GROUP.TEMP_GROUP_ID,
             target: this
         });
     }

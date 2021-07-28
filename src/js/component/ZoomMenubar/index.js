@@ -3,7 +3,7 @@ import CustomButton from '../CustomButton';
 import TransformManager from '../../service/TransformManager';
 import ComponentRepository from '../../service/ComponentRepository';
 import './index.css';
-import {BOARD_ID, RATIO_TEXT_ID, ZOOM_IN_BTN_ID, ZOOM_MENU_BAR_ID, ZOOM_OUT_BTN_ID} from '../../service/constant';
+import {BOARD_ID, RATIO_TEXT_ID, BUTTON, MENU_BAR} from '../../service/constant';
 
 export default class ZoomMenubar extends CustomElement{
     _ratioText = null;
@@ -13,7 +13,7 @@ export default class ZoomMenubar extends CustomElement{
     constructor({parentId}) {
         super({
             parentId,
-            id: ZOOM_MENU_BAR_ID,
+            id: MENU_BAR.ZOOM_MENU_BAR_ID,
             tagName: 'div',
             classList:['zoom-menu-bar']
         });
@@ -29,7 +29,7 @@ export default class ZoomMenubar extends CustomElement{
 
         this.zoomInBtn = new CustomButton({
             parentId: this.id,
-            id: ZOOM_IN_BTN_ID,
+            id: BUTTON.ZOOM_IN_BTN_ID,
             content: '➕',
             classList:['zoom-btn'],
             handlers:{
@@ -44,7 +44,7 @@ export default class ZoomMenubar extends CustomElement{
 
         this.zoomOutBtn = new CustomButton({
             parentId: this.id,
-            id: ZOOM_OUT_BTN_ID,
+            id: BUTTON.ZOOM_OUT_BTN_ID,
             content: '➖',
             classList:['zoom-btn'],
             handlers:{

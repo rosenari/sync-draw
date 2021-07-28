@@ -12,11 +12,11 @@ import GPolyline from '../Line/GPolyline';
 import './index.css';
 import {
     BOARD_ID,
-    BORDER_GROUP_ID,
-    BORDER_ID, COLOR_ORANGE, HISTORY_MENU_BAR_ID,
-    ITEM_MENU_BAR_ID, PAGE_MENU_BAR_ID, PLACE_HOLDER_ID,
-    SHAPE_GROUP_ID, STYLE_MENU_BAR_ID,
-    TEMP_GROUP_ID
+    BORDER,
+    COLOR,
+    MENU_BAR,
+    PLACE_HOLDER_ID,
+    GROUP
 } from '../../service/constant';
 
 export default class Board extends GraphicElement {
@@ -32,15 +32,15 @@ export default class Board extends GraphicElement {
 
         const groupList = [
             {
-                id: BORDER_GROUP_ID,
+                id: GROUP.BORDER_GROUP_ID,
                 propsName: 'borderGroup'
             },
             {
-                id: SHAPE_GROUP_ID,
+                id: GROUP.SHAPE_GROUP_ID,
                 propsName: 'shapeGroup'
             },
             {
-                id: TEMP_GROUP_ID,
+                id: GROUP.TEMP_GROUP_ID,
                 propsName: 'tempGroup'
             }
         ];
@@ -95,7 +95,7 @@ export default class Board extends GraphicElement {
         setDisablePointerEvent(true);
         Board.startPoint.x = e.pageX;
         Board.startPoint.y = e.pageY;
-        const itemMenubar = ComponentRepository.getComponentById(ITEM_MENU_BAR_ID);
+        const itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID);
         let selected = null;
         if(itemMenubar.selectMenu){
             selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
@@ -187,9 +187,6 @@ export default class Board extends GraphicElement {
             Board.startPoint.lineplaceholder.addPoint({ x, y });
             Board.startPoint.line = this.createLine(selected.relatedClass);
 
-            if(selected.relatedClass === GLine){
-                Board.startPoint.clickCount = 1;
-            }
             if(selected.relatedClass === GPolyline) {
                 EventController.dbClickHandler = finish;
             }
@@ -197,7 +194,7 @@ export default class Board extends GraphicElement {
             Board.startPoint.lineplaceholder.addPoint({ x, y });
             Board.startPoint.line.addPoint({ x, y });
 
-            if(++Board.startPoint.clickCount === 2){
+            if(selected.relatedClass === GLine){
                 finish();
             }
         }
@@ -227,7 +224,7 @@ export default class Board extends GraphicElement {
         Board.startPoint.y = e.pageY;
         this.border = new type({
             parentId: this.tempGroup.id,
-            id: BORDER_ID,
+            id: BORDER.BORDER_ID,
             shape
         });
         this.border.x = Board.startPoint.x;
@@ -283,8 +280,8 @@ export default class Board extends GraphicElement {
             startX: Board.startPoint.x,
             startY: Board.startPoint.y
         });
-        placeholder.line.elem.setAttribute('stroke',COLOR_ORANGE);
-        placeholder.arrow?.elem.setAttribute('fill',COLOR_ORANGE);
+        placeholder.line.elem.setAttribute('stroke',COLOR.ORANGE);
+        placeholder.arrow?.elem.setAttribute('fill',COLOR.ORANGE);
         placeholder.line.elem.setAttribute('stroke-dasharray', '6');
         placeholder.line.elem.setAttribute('class', 'place-holder');
         return placeholder;
@@ -312,10 +309,10 @@ export default class Board extends GraphicElement {
 }
 
 function setDisablePointerEvent(disable) {
-    const menuBar = [ PAGE_MENU_BAR_ID,
-        ITEM_MENU_BAR_ID,
-        STYLE_MENU_BAR_ID,
-        HISTORY_MENU_BAR_ID].map(id => ComponentRepository.getComponentById(id));
+    const menuBar = [ MENU_BAR.PAGE_MENU_BAR_ID,
+        MENU_BAR.ITEM_MENU_BAR_ID,
+        MENU_BAR.STYLE_MENU_BAR_ID,
+        MENU_BAR.HISTORY_MENU_BAR_ID].map(id => ComponentRepository.getComponentById(id));
 
     if(disable){
         menuBar.forEach(menu => menu.elem.classList.add('disable-pointer-event'));
