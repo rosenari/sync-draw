@@ -7,6 +7,16 @@ import CreateBorder from '../CreateBorder';
 import {tinyGUID} from '../../service/util';
 import SizeBorder from '../SizeBorder';
 import EventController from '../../service/EventController';
+import GTerminal from '../Shape/Rect/GTerminal';
+import GJudgment from '../Shape/Polygon/GJudgment';
+import GReady from '../Shape/Polygon/GReady';
+import GProcess from '../Shape/Rect/GProcess';
+import GPageconn from '../Shape/Polygon/GPageconn';
+import GDocument from '../Shape/Path/GDocument';
+import GDisk from '../Shape/Path/GDisk';
+import GInputoutput from '../Shape/Polygon/GInputoutput';
+import GPinput from '../Shape/Polygon/GPinput';
+import './index.css';
 
 export default class Board extends GraphicElement{
     static startPoint = {};
@@ -82,27 +92,80 @@ export default class Board extends GraphicElement{
         if(itemMenubar.selectMenu === itemMenubar.textBtn.id){
             this.createBorder(e, CreateBorder);
         }
+        if(itemMenubar.selectMenu === itemMenubar.terminalGBtn.id){
+            this.createBorder(e, CreateBorder, this.createPlaceHolder(GTerminal));
+        }
+        if(itemMenubar.selectMenu === itemMenubar.judgmentGBtn.id){
+            this.createBorder(e, CreateBorder, this.createPlaceHolder(GJudgment));
+        }
+        if(itemMenubar.selectMenu === itemMenubar.readyGBtn.id){
+            this.createBorder(e, CreateBorder, this.createPlaceHolder(GReady));
+        }
+        if(itemMenubar.selectMenu === itemMenubar.processGBtn.id){
+            this.createBorder(e, CreateBorder, this.createPlaceHolder(GProcess));
+        }
+        if(itemMenubar.selectMenu === itemMenubar.pageConnGBtn.id){
+            this.createBorder(e, CreateBorder, this.createPlaceHolder(GPageconn));
+        }
+        if(itemMenubar.selectMenu === itemMenubar.docGBtn.id){
+            this.createBorder(e, CreateBorder, this.createPlaceHolder(GDocument));
+        }
+        if(itemMenubar.selectMenu === itemMenubar.diskGBtn.id){
+            this.createBorder(e, CreateBorder, this.createPlaceHolder(GDisk));
+        }
+        if(itemMenubar.selectMenu === itemMenubar.ioGBtn.id){
+            this.createBorder(e, CreateBorder, this.createPlaceHolder(GInputoutput));
+        }
+        if(itemMenubar.selectMenu === itemMenubar.pInputGBtn.id){
+            this.createBorder(e, CreateBorder, this.createPlaceHolder(GPinput));
+        }
 
         EventController.mouseMoveHandler = (e) => {
-            if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
-                this.renderBorder(e);
-            }
-            if(itemMenubar.selectMenu === itemMenubar.textBtn.id){
-                this.renderBorder(e);
-            }
+            if(!this.border) return;
+
+            this.renderBorder(e);
         }
 
         EventController.mouseUpHandler = (e) => {
+            let target = null;
             if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
                 if(this.border instanceof SizeBorder) return;
-                this.destroyBorder(e);
             }
             if(itemMenubar.selectMenu === itemMenubar.textBtn.id){
-                const target = this.createGText();
-                this.destroyBorder(e);
-                itemMenubar.selectMenu = itemMenubar.mouseBtn;
-                target.clickHandler();
+                target = this.createShape(GText);
             }
+            if(itemMenubar.selectMenu === itemMenubar.terminalGBtn.id){
+                target = this.createShape(GTerminal);
+            }
+            if(itemMenubar.selectMenu === itemMenubar.judgmentGBtn.id){
+                target = this.createShape(GJudgment);
+            }
+            if(itemMenubar.selectMenu === itemMenubar.readyGBtn.id){
+                target = this.createShape(GReady);
+            }
+            if(itemMenubar.selectMenu === itemMenubar.processGBtn.id){
+                target = this.createShape(GProcess);
+            }
+            if(itemMenubar.selectMenu === itemMenubar.pageConnGBtn.id){
+                target = this.createShape(GPageconn);
+            }
+            if(itemMenubar.selectMenu === itemMenubar.docGBtn.id){
+                target = this.createShape(GDocument);
+            }
+            if(itemMenubar.selectMenu === itemMenubar.diskGBtn.id){
+                target = this.createShape(GDisk);
+            }
+            if(itemMenubar.selectMenu === itemMenubar.ioGBtn.id){
+                target = this.createShape(GInputoutput);
+            }
+            if(itemMenubar.selectMenu === itemMenubar.pInputGBtn.id){
+                target = this.createShape(GPinput);
+            }
+
+            this.destroyBorder(e);
+            itemMenubar.selectMenu = itemMenubar.mouseBtn;
+            target?.clickHandler?.();
+
             setPointerEvent(false);
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
@@ -139,8 +202,6 @@ export default class Board extends GraphicElement{
             y += dy;
         }
 
-        console.log(x);
-        console.log(y);
         this.border.x = x;
         this.border.y = y;
         this.border.width = Math.abs(width);
@@ -153,8 +214,17 @@ export default class Board extends GraphicElement{
         this.border = null;
     }
 
-    createGText(){
-        return new GText({
+    createPlaceHolder(type){
+        const placeholder =  new type({
+            parentId: this.tempGroup.id,
+            id: 'placeholder'
+        });
+        placeholder.elem.setAttribute('class','shape-place-holder');
+        return placeholder;
+    }
+
+    createShape(type){
+        return new type({
             parentId: this.shapeGroup.id,
             id: tinyGUID(),
             x: this.border.x,

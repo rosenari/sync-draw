@@ -1,0 +1,9 @@
+.shape-place-holder{
+    animation: stroke-move 10s linear infinite;
+}
+
+@keyframes stroke-move {
+    to {
+        stroke-dashoffset: 1000;
+    }
+}

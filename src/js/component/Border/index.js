@@ -16,14 +16,19 @@ export default class Border extends GraphicElement{
         });
         this.shape = shape;
         this.elem.setAttribute('style','pointer-events: none;');
-        this.elem.setAttribute('stroke', 'skyblue');
+        this.elem.setAttribute('stroke', '#FEE500');
         this.elem.setAttribute('fill', 'none');
-        this.elem.setAttribute('stroke-width', '3');
+        this.elem.setAttribute('stroke-width', '2');
 
-        if(this.shape) this.createShape();
+        if(this.shape){
+            this.shape.elem.setAttribute('stroke','orange');
+            this.shape.elem.setAttribute('stroke-width','3');
+            this.shape.elem.setAttribute('stroke-dasharray','6');
+            this.createShape();
+        }
     }
 
-    render(){
+    render() {
         const startX = this.x;
         const startY = this.y;
         const endX = startX + this.width;
@@ -31,11 +36,11 @@ export default class Border extends GraphicElement{
         this.elem.setAttribute('points',`${startX},${startY} ${endX},${startY} ${endX},${endY} ${startX},${endY} ${startX},${startY}`);
     }
 
-    get x(){
+    get x() {
         return this._x;
     }
 
-    set x(value){
+    set x(value) {
         if(this.shape) {
             this.shape.x = value;
         }
@@ -43,11 +48,11 @@ export default class Border extends GraphicElement{
         this.render();
     }
 
-    get y(){
+    get y() {
         return this._y;
     }
 
-    set y(value){
+    set y(value) {
         if(this.shape) {
             this.shape.y = value;
         }
@@ -55,11 +60,11 @@ export default class Border extends GraphicElement{
         this.render();
     }
 
-    get width(){
+    get width() {
         return this._width;
     }
 
-    set width(value){
+    set width(value) {
         if(this.shape) {
             this.shape.width = value;
         }
@@ -67,11 +72,11 @@ export default class Border extends GraphicElement{
         this.render();
     }
 
-    get height(){
+    get height() {
         return this._height;
     }
 
-    set height(value){
+    set height(value) {
         if(this.shape) {
             this.shape.height = value;
         }
@@ -87,9 +92,9 @@ export default class Border extends GraphicElement{
         this._shape = value;
     }
 
-    createShape(){
+    createShape() {
         const repository = ComponentRepository.getInstance();
         const tempGroup = repository.getComponentById(this.parentId);
-        tempGroup.appendChild(this.shape.elem);
+        tempGroup.elem.appendChild(this.shape.elem);
     }
 }
