@@ -1,3 +1,5 @@
+import {RANDOM_MAX} from '../constant';
+
 export function add(x, y){
     return x + y;
 }
@@ -22,7 +24,7 @@ export function classFor(classList) {
 }
 
 function genRandom8Hex(){
-    return Math.floor((Math.random() + 1) * 0x10000000)
+    return Math.floor((Math.random() + 1) * RANDOM_MAX)
         .toString(16);
 }
 

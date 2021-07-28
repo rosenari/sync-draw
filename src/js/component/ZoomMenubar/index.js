@@ -3,6 +3,7 @@ import CustomButton from '../CustomButton';
 import TransformManager from '../../service/TransformManager';
 import ComponentRepository from '../../service/ComponentRepository';
 import './index.css';
+import {BOARD_ID, RATIO_TEXT_ID, ZOOM_IN_BTN_ID, ZOOM_MENU_BAR_ID, ZOOM_OUT_BTN_ID} from '../../service/constant';
 
 export default class ZoomMenubar extends CustomElement{
     _ratioText = null;
@@ -12,7 +13,7 @@ export default class ZoomMenubar extends CustomElement{
     constructor({parentId}) {
         super({
             parentId,
-            id: 'zoom-menu-bar',
+            id: ZOOM_MENU_BAR_ID,
             tagName: 'div',
             classList:['zoom-menu-bar']
         });
@@ -20,7 +21,7 @@ export default class ZoomMenubar extends CustomElement{
 
         this.ratioText = new CustomElement({
            parentId: this.id,
-           id: 'ratio-text',
+           id: RATIO_TEXT_ID,
            tagName: 'div',
            content: '100%',
            classList: ['ratio-text']
@@ -28,7 +29,7 @@ export default class ZoomMenubar extends CustomElement{
 
         this.zoomInBtn = new CustomButton({
             parentId: this.id,
-            id: 'zoom-in-btn',
+            id: ZOOM_IN_BTN_ID,
             content: '➕',
             classList:['zoom-btn'],
             handlers:{
@@ -43,7 +44,7 @@ export default class ZoomMenubar extends CustomElement{
 
         this.zoomOutBtn = new CustomButton({
             parentId: this.id,
-            id: 'zoom-out-btn',
+            id: ZOOM_OUT_BTN_ID,
             content: '➖',
             classList:['zoom-btn'],
             handlers:{
@@ -58,7 +59,7 @@ export default class ZoomMenubar extends CustomElement{
     }
 
     zoom(scale){
-        const board = ComponentRepository.getComponentById('board');
+        const board = ComponentRepository.getComponentById(BOARD_ID);
         const centerX = (document.body.clientWidth) / 2;
         const centerY = (document.body.clientHeight) / 2;
         const translateX = (1-scale) * centerX + TransformManager.moveX * scale;

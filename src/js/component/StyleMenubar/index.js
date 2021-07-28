@@ -1,6 +1,19 @@
 import CustomElement from '../CustomElement';
 import CustomSelect from '../CustomSelect';
 import CustomInput from '../CustomInput';
+import {
+    FONT_SIZE_1,
+    FONT_SIZE_2,
+    FONT_SIZE_3,
+    FONT_SIZE_4,
+    FONT_SIZE_5,
+    FONT_SIZE_6, STYLE_FILL_INPUT_ID, STYLE_FILL_TEXT_ID,
+    STYLE_FONT_COLOR_TEXT_ID,
+    STYLE_FONT_COLOR_TEXT_INPUT,
+    STYLE_FONT_SIZE_SELECT_ID,
+    STYLE_FONT_SIZE_TEXT_ID,
+    STYLE_MENU_BAR_ID, STYLE_STROKE_INPUT_ID, STYLE_STROKE_TEXT_ID
+} from '../../service/constant';
 import './index.css';
 
 export default class StyleMenubar extends CustomElement{
@@ -16,14 +29,14 @@ export default class StyleMenubar extends CustomElement{
     constructor({parentId}) {
         super({
             parentId,
-            id: 'style-menu-bar',
+            id: STYLE_MENU_BAR_ID,
             tagName: 'div',
             classList:['style-menu-bar']
         });
 
         this.fontSizeText = new CustomElement({
             parentId: this.id,
-            id: 'style-font-size-text',
+            id: STYLE_FONT_SIZE_TEXT_ID,
             tagName: 'div',
             content: '폰트사이즈',
             classList:['style-text']
@@ -31,15 +44,15 @@ export default class StyleMenubar extends CustomElement{
 
         this.fontSizeSelect = new CustomSelect({
             parentId: this.id,
-            id: 'style-font-size-select',
+            id: STYLE_FONT_SIZE_SELECT_ID,
             classList:['style-select'],
             options:{
-                'size 1' : '8px',
-                'size 2' : '10px',
-                'size 3' : '12px',
-                'size 4' : '14px',
-                'size 5' : '16px',
-                'size 6' : '18px',
+                'size 1' : FONT_SIZE_1,
+                'size 2' : FONT_SIZE_2,
+                'size 3' : FONT_SIZE_3,
+                'size 4' : FONT_SIZE_4,
+                'size 5' : FONT_SIZE_5,
+                'size 6' : FONT_SIZE_6,
             },
             handlers:{
                 changeHandler: function(e){
@@ -50,7 +63,7 @@ export default class StyleMenubar extends CustomElement{
 
         this.fontColorText = new CustomElement({
             parentId: this.id,
-            id: 'style-font-color-text',
+            id: STYLE_FONT_COLOR_TEXT_ID,
             tagName: 'div',
             content: '폰트색상',
             classList:['style-text','style-font-color-text']
@@ -58,7 +71,7 @@ export default class StyleMenubar extends CustomElement{
 
         this.fontColorInput = new CustomInput({
             parentId: this.id,
-            id: 'style-font-color-input',
+            id: STYLE_FONT_COLOR_TEXT_INPUT,
             type: 'color',
             classList: ['style-input'],
             handlers: {
@@ -70,7 +83,7 @@ export default class StyleMenubar extends CustomElement{
 
         this.fillText = new CustomElement({
             parentId: this.id,
-            id: 'style-fill-text',
+            id: STYLE_FILL_TEXT_ID,
             tagName: 'div',
             content: '배경색상',
             classList:['style-text']
@@ -78,7 +91,7 @@ export default class StyleMenubar extends CustomElement{
 
         this.fillInput = new CustomInput({
             parentId: this.id,
-            id: 'style-fill-input',
+            id: STYLE_FILL_INPUT_ID,
             type: 'color',
             classList: ['style-input'],
             handlers: {
@@ -90,7 +103,7 @@ export default class StyleMenubar extends CustomElement{
 
         this.strokeText = new CustomElement({
             parentId: this.id,
-            id: 'style-stroke-text',
+            id: STYLE_STROKE_TEXT_ID,
             tagName: 'div',
             content: '테두리색상',
             classList:['style-text']
@@ -98,7 +111,7 @@ export default class StyleMenubar extends CustomElement{
 
         this.strokeInput = new CustomInput({
             parentId: this.id,
-            id: 'style-stroke-input',
+            id: STYLE_STROKE_INPUT_ID,
             type: 'color',
             classList: ['style-input'],
             handlers: {
