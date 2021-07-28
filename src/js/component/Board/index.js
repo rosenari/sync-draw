@@ -150,6 +150,8 @@ export default class Board extends GraphicElement {
 
             if(selected.id === itemMenubar.handBtn.id){
                 this.destroyBorder();
+                Board.startPoint.x = e.pageX;
+                Board.startPoint.y = e.pageY;
                 Board.startPoint.translateX = TransformManager.translateX;
                 Board.startPoint.translateY = TransformManager.translateY;
                 Board.startPoint.moveX = TransformManager.moveX;
