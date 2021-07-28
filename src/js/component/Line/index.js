@@ -30,10 +30,7 @@ class Line extends GraphicElement {
     }
 
     render() {
-        const pointsStr = this.points.reduce((str, point, index) => {
-            if(index === 0) return str + `${point.x} ${point.y}`;
-            else return str + `,${point.x} ${point.y}`;
-        }, '');
+        const pointsStr = this.points.map(({ x, y }) => `${x} ${y}`).join(', ');
 
         this.line.elem.setAttribute('points',pointsStr);
     }
