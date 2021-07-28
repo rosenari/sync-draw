@@ -8,12 +8,12 @@ class GReady extends Polygon {
     }
 
     render(){
-        const topLeftX = this.x + +(this.width * 0.25);
+        const topLeftX = this.x + Math.round(this.width * 0.25);
         const topLeftY = this.y;
-        const topRightX = this.x + +(this.width * 0.75);
+        const topRightX = this.x + Math.round(this.width * 0.75);
         const topRightY = this.y;
         const rightX = this.x + this.width;
-        const rightY = this.y + +(this.height * 0.5);
+        const rightY = this.y + Math.round(this.height * 0.5);
         const bottomRightX = topRightX;
         const bottomRightY = this.y + this.height;
         const bottomLeftX = topLeftX;
