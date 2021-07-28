@@ -1,6 +1,7 @@
 import GraphicElement from '../GraphicElement';
 import ComponentRepository from "../../service/ComponentRepository";
 import SizeBorder from "../SizeBorder";
+import Line from "../Line";
 
 export default class Shape extends GraphicElement{
     _x = 0;
@@ -50,6 +51,11 @@ export default class Shape extends GraphicElement{
     clickHandler(e) {
         const repository = ComponentRepository.getInstance();
         const board = repository.getComponentById('board');
+        const itemMenubar = repository.getComponentById('item-menu-bar');
+        if(repository.getComponentById(itemMenubar.selectMenu).name !== 'mouse'){
+            return;
+        }
+
         board.destroyBorder();
         board.border = new SizeBorder({
             parentId: 'temp-group',
