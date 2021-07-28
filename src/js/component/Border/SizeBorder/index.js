@@ -1,10 +1,10 @@
-import Border from '../Border';
-import GraphicElement from '../GraphicElement';
-import ComponentRepository from '../../service/ComponentRepository';
-import { tinyGUID } from '../../service/util';
-import EventController from '../../service/EventController';
-import TransformManager from '../../service/TransformManager';
-import {COLOR_ORANGE, SIZE_BORDER_ID, TEMP_GROUP_ID} from '../../service/constant';
+import Border from '../index';
+import GraphicElement from '../../GraphicElement';
+import ComponentRepository from '../../../service/ComponentRepository';
+import { tinyGUID } from '../../../service/util';
+import EventController from '../../../service/EventController';
+import TransformManager from '../../../service/TransformManager';
+import {COLOR_ORANGE, SIZE_BORDER_ID, TEMP_GROUP_ID} from '../../../service/constant';
 
 export default class SizeBorder extends Border {
     static startPoint = {};
