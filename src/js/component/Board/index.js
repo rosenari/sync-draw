@@ -101,10 +101,12 @@ export default class Board extends GraphicElement {
                 this.createBorder(e, selected.relatedBorder, this.createShapePlaceHolder(selected.relatedClass));
             }
 
-            if(selected.relatedClass instanceof Line){
+            if(selected?.relatedClass?.prototype instanceof Line){
                 this.mouseDownHandlerForLine({ e, selected, itemMenubar });
             }
         }
+
+        selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
 
         EventController.mouseMoveHandler = (e) => {
             if(selected?.id === itemMenubar.handBtn.id){
@@ -115,16 +117,17 @@ export default class Board extends GraphicElement {
                 this.renderBorder(e);
             }
 
-            if(selected?.relatedClass instanceof Line){
+            if(selected?.relatedClass?.prototype instanceof Line){
                 this.mouseMoveHandlerForLine(e);
             }
         }
 
-        if(selected?.relatedClass instanceof Line){
+        if(selected?.relatedClass?.prototype instanceof Line){
             return;
         }
 
         EventController.mouseUpHandler = (e) => {
+            let shape = null;
             const finish = () => {
                 setDisablePointerEvent(false);
                 Board.startPoint = {};
@@ -137,13 +140,13 @@ export default class Board extends GraphicElement {
             }
 
             if(selected?.relatedClass) {
-                const shape = this.createShape(selected.relatedClass);
-                shape.clickHandler?.();
+                shape = this.createShape(selected.relatedClass);
 
                 itemMenubar.selectMenu = itemMenubar.mouseBtn;
             }
 
             this.destroyBorder(e);
+            shape?.clickHandler?.();
             finish();
         }
     }
@@ -167,8 +170,8 @@ export default class Board extends GraphicElement {
             Board.startPoint = {};
             this.destroyBorder();
             setDisablePointerEvent(false);
-            EventController.mouseMoveHandler = null;
             EventController.dbClickHandler = null;
+            EventController.mouseMoveHandler = null;
         }
 
         if(!Board.startPoint.line) {
@@ -176,10 +179,10 @@ export default class Board extends GraphicElement {
             Board.startPoint.lineplaceholder.addPoint({ x, y });
             Board.startPoint.line = this.createLine(selected.relatedClass);
 
-            if(selected instanceof GLine){
+            if(selected.relatedClass === GLine){
                 Board.startPoint.clickCount = 1;
             }
-            if(selected instanceof GPolyline) {
+            if(selected.relatedClass === GPolyline) {
                 EventController.dbClickHandler = finish;
             }
         }else {
@@ -248,8 +251,6 @@ export default class Board extends GraphicElement {
     }
 
     destroyBorder() {
-        Board.startPoint = {};
-
         const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
         if(placeholder) placeholder.parentNode.removeChild(placeholder);
         this.tempGroup.elem.innerHTML = '';
