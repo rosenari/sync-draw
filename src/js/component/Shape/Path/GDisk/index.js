@@ -9,12 +9,12 @@ class GDisk extends Path{
 
     render(){
         const startX = this.x;
-        const startY = this.y + +(this.height * 0.1).toFixed(2);
+        const startY = this.y + Math.round(this.height * 0.1);
         const curveY_1 = this.y;
-        const curveY_2 = this.y + +(this.height * 0.2).toFixed(2);
+        const curveY_2 = this.y + Math.round(this.height * 0.2);
         const endX = this.x + this.width;
-        const endY = this.y + +(this.height * 0.9).toFixed(2);
-        const curveY_3 = endY + +(this.height * 0.1).toFixed(2);
+        const endY = this.y + Math.round(this.height * 0.9);
+        const curveY_3 = endY + Math.round(this.height * 0.1);
         this.elem.setAttribute('d',`M${startX} ${startY} C${startX} ${curveY_1}, ${endX} ${curveY_1}, ${endX} ${startY} 
         C${endX} ${curveY_2}, ${startX} ${curveY_2}, ${startX} ${startY} 
         V${endY} 

@@ -44,7 +44,7 @@ class TransformManager {
     }
 
     set translateX(value) {
-        this._translateX = +value.toFixed(0);
+        this._translateX = Math.round(value);
         this.adjustTransformToShapeGroup();
     }
 
@@ -53,7 +53,7 @@ class TransformManager {
     }
 
     set translateY(value) {
-        this._translateY = +value.toFixed(0);
+        this._translateY = Math.round(value);
         this.adjustTransformToShapeGroup();
     }
 
@@ -67,35 +67,35 @@ class TransformManager {
     }
 
     changeSvgXToDocX(svgX){
-        return +(svgX * this.scale).toFixed(0) + this.translateX;
+        return Math.round(svgX * this.scale) + this.translateX;
     }
 
     changeDocXToSvgX(docX){
-        return +((docX - this.translateX) / this.scale).toFixed(0);
+        return Math.round((docX - this.translateX) / this.scale);
     }
 
     changeSvgYToDocY(svgY){
-        return +(svgY * this.scale).toFixed(0) + this.translateY;
+        return Math.round(svgY * this.scale) + this.translateY;
     }
 
     changeDocYToSvgY(docY){
-        return +((docY - this.translateY) / this.scale).toFixed(0);
+        return Math.round((docY - this.translateY) / this.scale);
     }
 
     changeSvgWidthToDocWidth(svgWidth){
-        return +(svgWidth * this.scale).toFixed(0);
+        return Math.round(svgWidth * this.scale);
     }
 
     changeDocWidthToSvgWidth(docWidth){
-        return +(docWidth / this.scale).toFixed(0);
+        return Math.round(docWidth / this.scale);
     }
 
     changeSvgHeightToDocHeight(svgHeight){
-        return +(svgHeight * this.scale).toFixed(0);
+        return Math.round(svgHeight * this.scale);
     }
 
     changeDocHeightToSvgHeight(docHeight){
-        return +(docHeight / this.scale).toFixed(0);
+        return Math.round(docHeight / this.scale);
     }
 
     wrapShape(shape){
@@ -110,7 +110,7 @@ class TransformManager {
             }
 
             set x(value) {
-                super.x = +((value - manager.translateX) / manager.scale).toFixed(0);
+                super.x = Math.round((value - manager.translateX) / manager.scale);
             }
 
             get y() {
@@ -118,7 +118,7 @@ class TransformManager {
             }
 
             set y(value) {
-                super.y = +((value - manager.translateY) / manager.scale).toFixed(0);
+                super.y = Math.round((value - manager.translateY) / manager.scale);
             }
 
             get width(){
@@ -126,7 +126,7 @@ class TransformManager {
             }
 
             set width(value) {
-                super.width = +(value / manager.scale).toFixed(0);
+                super.width = Math.round(value / manager.scale);
             }
 
             get height(){
@@ -134,7 +134,7 @@ class TransformManager {
             }
 
             set height(value) {
-                super.height = +(value / manager.scale).toFixed(0);
+                super.height = Math.round(value / manager.scale);
             }
         }
     }

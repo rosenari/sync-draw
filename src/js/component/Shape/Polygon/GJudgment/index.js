@@ -8,10 +8,10 @@ class GJudgment extends Polygon{
     }
 
     render(){
-        const topX = this.x + +(this.width * 0.5).toFixed(0);
+        const topX = this.x + Math.round(this.width * 0.5);
         const topY = this.y;
         const rightX = this.x + this.width;
-        const rightY = this.y + +(this.height * 0.5).toFixed(0);
+        const rightY = this.y + Math.round(this.height * 0.5);
         const bottomX = topX;
         const bottomY = this.y + this.height;
         const leftX = this.x;

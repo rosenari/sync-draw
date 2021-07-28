@@ -8,11 +8,11 @@ class GInputoutput extends Polygon{
     }
 
     render(){
-        const leftTopX = this.x + +(this.width * 0.2).toFixed(2);
+        const leftTopX = this.x + Math.round(this.width * 0.2);
         const leftTopY = this.y;
         const rightTopX = this.x + this.width;
         const rightTopY = this.y;
-        const rightBottomX = this.x + +(this.width * 0.8).toFixed(2);
+        const rightBottomX = this.x + Math.round(this.width * 0.8);
         const rightBottomY = this.y + this.height;
         const leftBottomX = this.x;
         const leftBottomY = rightBottomY;

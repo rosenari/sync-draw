@@ -13,7 +13,7 @@ class GTerminal extends Rect{
 
     set height(value) {
         super.height = value;
-        this.elem.setAttribute('ry', (value * 0.5).toFixed(2));
+        this.elem.setAttribute('ry', Math.round(value * 0.5));
     }
 }
 
