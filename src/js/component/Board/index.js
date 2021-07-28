@@ -7,6 +7,9 @@ import SizeBorder from '../SizeBorder';
 import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
 import './index.css';
+import Line from "../Line";
+import GLine from "../Line/GLine";
+import GPolyline from "../Line/GPolyline";
 
 export default class Board extends GraphicElement {
     static startPoint = {};
@@ -85,7 +88,7 @@ export default class Board extends GraphicElement {
     }
 
     _mouseDownHandler(e) {
-        setPointerEvent(true);
+        setDisablePointerEvent(true);
         Board.startPoint.x = e.pageX;
         Board.startPoint.y = e.pageY;
         const repository = ComponentRepository.getInstance();
@@ -93,137 +96,124 @@ export default class Board extends GraphicElement {
         let selected = null;
         if(itemMenubar.selectMenu){
             selected = repository.getComponentById(itemMenubar.selectMenu);
+
+            if(selected.id === itemMenubar.handBtn.id){
+                this.mouseDownHandlerForHand(e);
+            }
+
+            //드래그하여 테두리 생성하는 경우
             if(selected.relatedBorder){
                 this.createBorder(e, selected.relatedBorder, this.createShapePlaceHolder(selected.relatedClass));
             }
 
-            if(selected.id === itemMenubar.lineGBtn.id){
-                if(!Board.startPoint.line) {
-                    Board.startPoint.clickCount = 1;
-                    Board.startPoint.lineplaceholder = this.createLinePlaceHolder(selected.relatedClass);
-                    Board.startPoint.lineplaceholder.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-                    Board.startPoint.line = this.createLine(selected.relatedClass);
-                }else {
-                    Board.startPoint.line.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-                    Board.startPoint.lineplaceholder.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-
-                    if(++Board.startPoint.clickCount === 2){
-                        Board.startPoint = {};
-                        EventController.mouseMoveHandler = null;
-                        setPointerEvent(false);
-                        this.destroyBorder();
-                        itemMenubar.selectMenu = itemMenubar.mouseBtn;
-                        return;
-                    }
-                }
-            }
-
-            if(selected.id === itemMenubar.ploylineGBtn.id){
-                if(!Board.startPoint.line) {
-                    Board.startPoint.lineplaceholder = this.createLinePlaceHolder(selected.relatedClass);
-                    Board.startPoint.lineplaceholder.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-                    Board.startPoint.line = this.createLine(selected.relatedClass);
-
-                    EventController.dbClickHandler = (e) => {
-                        Board.startPoint = {};
-                        setPointerEvent(false);
-                        this.destroyBorder();
-                        itemMenubar.selectMenu = itemMenubar.mouseBtn;
-                        EventController.mouseMoveHandler = null;
-                        EventController.dbClickHandler = null;
-                        return;
-                    }
-                }else {
-                    Board.startPoint.line.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-                    Board.startPoint.lineplaceholder.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-                }
-            }
-
-            if(selected.id === itemMenubar.handBtn.id){
-                this.destroyBorder();
-                Board.startPoint.x = e.pageX;
-                Board.startPoint.y = e.pageY;
-                Board.startPoint.translateX = TransformManager.translateX;
-                Board.startPoint.translateY = TransformManager.translateY;
-                Board.startPoint.moveX = TransformManager.moveX;
-                Board.startPoint.moveY = TransformManager.moveY;
+            if(selected.relatedClass instanceof Line){
+                this.mouseDownHandlerForLine({ e, selected, itemMenubar });
             }
         }
 
         EventController.mouseMoveHandler = (e) => {
             if(selected?.id === itemMenubar.handBtn.id){
-                const dx = Board.startPoint.x - e.pageX;
-                const dy = Board.startPoint.y - e.pageY;
-
-                TransformManager.moveX = Board.startPoint.moveX + dx;
-                TransformManager.moveY = Board.startPoint.moveY + dy;
-                TransformManager.translateX = Board.startPoint.translateX + dx;
-                TransformManager.translateY = Board.startPoint.translateY + dy;
-            }
-            if(selected?.id === itemMenubar.lineGBtn.id || selected?.id === itemMenubar.ploylineGBtn.id){
-                const lineplaceholder = Board.startPoint.lineplaceholder;
-                lineplaceholder.points[lineplaceholder.points.length - 1] = {
-                    x: e.pageX,
-                    y: e.pageY
-                };
-                lineplaceholder.render();
+                this.mouseMoveHandlerForHand(e);
             }
 
-            if(!this.border) return;
+            if(this.border) {
+                this.renderBorder(e);
+            }
 
-            this.renderBorder(e);
+            if(selected?.relatedClass instanceof Line){
+                this.mouseMoveHandlerForLine(e);
+            }
         }
 
-        if(selected?.id === itemMenubar.lineGBtn.id){
-            return;
-        }
-        if(selected?.id === itemMenubar.ploylineGBtn.id){
+        if(selected?.relatedClass instanceof Line){
             return;
         }
 
         EventController.mouseUpHandler = (e) => {
-            let target = null;
-            if(itemMenubar.selectMenu === itemMenubar.handBtn.id){
-                setPointerEvent(false);
+            const finish = () => {
+                setDisablePointerEvent(false);
                 Board.startPoint = {};
                 EventController.mouseMoveHandler = null;
                 EventController.mouseUpHandler = null;
-                return;
             }
+
             if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
                 if(this.border instanceof SizeBorder) return;
             }
-            const selected = repository.getComponentById(itemMenubar.selectMenu);
+
             if(selected?.relatedClass) {
-                target = this.createShape(selected.relatedClass);
+                const shape = this.createShape(selected.relatedClass);
+                shape.clickHandler?.();
+
+                itemMenubar.selectMenu = itemMenubar.mouseBtn;
             }
 
             this.destroyBorder(e);
-            itemMenubar.selectMenu = itemMenubar.mouseBtn;
-            target?.clickHandler?.();
-
-            setPointerEvent(false);
-            EventController.mouseMoveHandler = null;
-            EventController.mouseUpHandler = null;
+            finish();
         }
+    }
+
+    mouseDownHandlerForHand(e) {
+        this.destroyBorder();
+        Board.startPoint.x = e.pageX;
+        Board.startPoint.y = e.pageY;
+        Board.startPoint.translateX = TransformManager.translateX;
+        Board.startPoint.translateY = TransformManager.translateY;
+        Board.startPoint.moveX = TransformManager.moveX;
+        Board.startPoint.moveY = TransformManager.moveY;
+    }
+
+    mouseDownHandlerForLine({ e, selected, itemMenubar }) {
+        const x = e.pageX;
+        const y = e.pageY;
+        const finish = () => {
+            itemMenubar.selectMenu = itemMenubar.mouseBtn;
+
+            Board.startPoint = {};
+            this.destroyBorder();
+            setDisablePointerEvent(false);
+            EventController.mouseMoveHandler = null;
+            EventController.dbClickHandler = null;
+        }
+
+        if(!Board.startPoint.line) {
+            Board.startPoint.lineplaceholder = this.createLinePlaceHolder(selected.relatedClass);
+            Board.startPoint.lineplaceholder.addPoint({ x, y });
+            Board.startPoint.line = this.createLine(selected.relatedClass);
+
+            if(selected instanceof GLine){
+                Board.startPoint.clickCount = 1;
+            }
+            if(selected instanceof GPolyline) {
+                EventController.dbClickHandler = finish;
+            }
+        }else {
+            Board.startPoint.lineplaceholder.addPoint({ x, y });
+            Board.startPoint.line.addPoint({ x, y });
+
+            if(++Board.startPoint.clickCount === 2){
+                finish();
+            }
+        }
+    }
+
+    mouseMoveHandlerForHand(e){
+        const dx = Board.startPoint.x - e.pageX;
+        const dy = Board.startPoint.y - e.pageY;
+
+        TransformManager.moveX = Board.startPoint.moveX + dx;
+        TransformManager.moveY = Board.startPoint.moveY + dy;
+        TransformManager.translateX = Board.startPoint.translateX + dx;
+        TransformManager.translateY = Board.startPoint.translateY + dy;
+    }
+
+    mouseMoveHandlerForLine(e){
+        const lineplaceholder = Board.startPoint.lineplaceholder;
+        lineplaceholder.points[lineplaceholder.points.length - 1] = {
+            x: e.pageX,
+            y: e.pageY
+        };
+        lineplaceholder.render();
     }
 
     createBorder(e ,type, shape = null) {
@@ -317,7 +307,7 @@ export default class Board extends GraphicElement {
     }
 }
 
-function setPointerEvent(disable) {
+function setDisablePointerEvent(disable) {
     const repository = ComponentRepository.getInstance();
     const menuBar = [ repository.getComponentById('page-menu-bar'),
         repository.getComponentById('item-menu-bar'),
