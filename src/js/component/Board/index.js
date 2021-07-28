@@ -312,12 +312,12 @@ export default class Board extends GraphicElement {
 }
 
 function setDisablePointerEvent(disable) {
-    const menuBar = [ PAGE_MENU_BAR_ID,
+    let menuBar = [ PAGE_MENU_BAR_ID,
         ITEM_MENU_BAR_ID,
         STYLE_MENU_BAR_ID,
         HISTORY_MENU_BAR_ID];
 
-    menuBar.map(id => ComponentRepository.getComponentById(id));
+    menuBar = menuBar.map(id => ComponentRepository.getComponentById(id));
 
     if(disable){
         menuBar.forEach(menu => menu.elem.classList.add('disable-pointer-event'));
