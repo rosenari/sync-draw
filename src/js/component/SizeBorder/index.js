@@ -93,8 +93,7 @@ export default class SizeBorder extends Border {
     }
 
     createEdge(){
-        const repository = ComponentRepository.getInstance();
-        const tempGroup = repository.getComponentById('temp-group');
+        const tempGroup = ComponentRepository.getComponentById('temp-group');
         for(const i in this.ratios){
             for(const j in this.ratios){
                 if(i == 1 && j == 1) continue;
@@ -190,7 +189,7 @@ export default class SizeBorder extends Border {
         let k = 0;
         for(const i in this.ratios){
             for(const j in this.ratios){
-                if(i==1 && j==1) continue;
+                if(i == 1 && j == 1) continue;
                 const cx = x + this.ratios[j] * width;
                 const cy = y + this.ratios[i] * height;
                 this.points[k].setAttribute('cx', cx);

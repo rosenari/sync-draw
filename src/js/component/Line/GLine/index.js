@@ -1,5 +1,5 @@
+import GraphicElement from '../../GraphicElement';
 import Line from '../index';
-import GraphicElement from "../../GraphicElement";
 
 class GLine extends Line {
     _marker = null;

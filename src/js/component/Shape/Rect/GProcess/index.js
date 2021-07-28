@@ -1,5 +1,5 @@
 import Rect from '../index';
-import TransformManager from "../../../../service/TransformManager";
+import TransformManager from '../../../../service/TransformManager';
 
 class GProcess extends Rect {
 

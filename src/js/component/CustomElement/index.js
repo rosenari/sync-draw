@@ -24,7 +24,7 @@ export default class CustomElement {
             this.elem.setAttribute('class', classFor(classList));
         }
 
-        const parent = ComponentRepository.getInstance().getComponentById(this.parentId);
+        const parent = ComponentRepository.getComponentById(this.parentId);
         parent.elem.appendChild(this.elem);
 
         for(const name in handlers){
@@ -32,7 +32,7 @@ export default class CustomElement {
         }
 
         this.elem.setAttribute('id', this.id);
-        ComponentRepository.getInstance().setComponentById(this.id, this);
+        ComponentRepository.setComponentById(this.id, this);
     }
 
     get id(){
