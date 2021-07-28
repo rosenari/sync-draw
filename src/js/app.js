@@ -22,7 +22,7 @@ export default class App {
 
     constructor({ elem }) {
         this.elem = elem;
-        ComponentRepository.getInstance().setComponentById(this.id,this);
+        ComponentRepository.setComponentById(this.id,this);
 
         this.board = new Board({
             parentId: this.id,

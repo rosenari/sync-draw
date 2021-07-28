@@ -6,10 +6,10 @@ import {tinyGUID} from '../../service/util';
 import SizeBorder from '../SizeBorder';
 import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
+import Line from '../Line';
+import GLine from '../Line/GLine';
+import GPolyline from '../Line/GPolyline';
 import './index.css';
-import Line from "../Line";
-import GLine from "../Line/GLine";
-import GPolyline from "../Line/GPolyline";
 
 export default class Board extends GraphicElement {
     static startPoint = {};
@@ -87,11 +87,10 @@ export default class Board extends GraphicElement {
         setDisablePointerEvent(true);
         Board.startPoint.x = e.pageX;
         Board.startPoint.y = e.pageY;
-        const repository = ComponentRepository.getInstance();
-        const itemMenubar = repository.getComponentById('item-menu-bar');
+        const itemMenubar = ComponentRepository.getComponentById('item-menu-bar');
         let selected = null;
         if(itemMenubar.selectMenu){
-            selected = repository.getComponentById(itemMenubar.selectMenu);
+            selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
 
             if(selected.id === itemMenubar.handBtn.id){
                 this.mouseDownHandlerForHand(e);
@@ -304,11 +303,10 @@ export default class Board extends GraphicElement {
 }
 
 function setDisablePointerEvent(disable) {
-    const repository = ComponentRepository.getInstance();
-    const menuBar = [ repository.getComponentById('page-menu-bar'),
-        repository.getComponentById('item-menu-bar'),
-        repository.getComponentById('style-menu-bar'),
-    repository.getComponentById('history-menu-bar')];
+    const menuBar = [ ComponentRepository.getComponentById('page-menu-bar'),
+        ComponentRepository.getComponentById('item-menu-bar'),
+        ComponentRepository.getComponentById('style-menu-bar'),
+        ComponentRepository.getComponentById('history-menu-bar')];
 
     if(disable){
         menuBar.forEach(menu => menu.elem.classList.add('disable-pointer-event'));

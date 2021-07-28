@@ -101,8 +101,7 @@ class GText extends GraphicElement {
     }
 
     clickHandler(e) {
-        const repository = ComponentRepository.getInstance();
-        const board = repository.getComponentById('board');
+        const board = ComponentRepository.getComponentById('board');
         board.destroyBorder();
         board.border = new SizeBorder({
             parentId: 'temp-group',
@@ -112,8 +111,7 @@ class GText extends GraphicElement {
 }
 
 function destroyBorder(){
-    const repository = ComponentRepository.getInstance();
-    const board = repository.getComponentById('board');
+    const board = ComponentRepository.getComponentById('board');
     board.destroyBorder();
 }
 

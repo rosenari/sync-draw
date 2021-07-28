@@ -4,10 +4,13 @@ import ComponentRepository from '../../service/ComponentRepository';
 import {
     DISK_ICON,
     DOCUMENT_ICON,
-    HAND_GRAB, IO_ICON,
+    HAND_GRAB,
+    IO_ICON,
     JUDGMENT_ICON,
     LINE_ICON,
-    MOUSE_CURSOR, PAGECONN_ICON, PINPUT_ICON,
+    MOUSE_CURSOR,
+    PAGECONN_ICON,
+    PINPUT_ICON,
     POLYLINE_ICON,
     PROCESS_ICON,
     READY_ICON,
@@ -166,14 +169,12 @@ export default class ItemMenubar extends CustomElement{
             const button =  new CustomButton({
                 parentId: this.id,
                 id: `item-${name}-btn`,
-                content: content || `<img src='data:image/svg+xml;base64,${icon}' style='pointer-events: none;' width=${iconSize.width} height=${iconSize.height} />`,
+                content: content || `<img src='data:image/svg+xml;base64,${icon}' style='pointer-events: none;' width=${iconSize.width} height=${iconSize.height}  alt="loading" />`,
                 classList: ['item-btn',`item-${name}-btn`],
                 cursorType,
                 handlers: {
                     clickHandler: (e) => {
-                        const repository = ComponentRepository.getInstance();
-                        const selected = repository.getComponentById(e.target.id);
-                        this.selectMenu = selected;
+                        this.selectMenu = ComponentRepository.getComponentById(e.target.id);
                     }
                 }
             });
@@ -327,7 +328,5 @@ export default class ItemMenubar extends CustomElement{
 }
 
 function changeCursor(type){
-    const repository = ComponentRepository.getInstance();
-    const style = repository.getComponentById('board').elem.getAttribute('style');
-    repository.getComponentById('board').elem.setAttribute('style',`width:100%;height:100%;cursor:${type};`)
+    ComponentRepository.getComponentById('board').elem.setAttribute('style',`width:100%;height:100%;cursor:${type};`)
 }

@@ -24,17 +24,17 @@ export default class EventController {
     }
 
     clickHandler(e) {
-        const target = ComponentRepository.getInstance().getComponentById(e.target.id);
+        const target = ComponentRepository.getComponentById(e.target.id);
         if(target?.clickHandler) target.clickHandler(e);
     }
 
     changeHandler(e){
-        const target = ComponentRepository.getInstance().getComponentById(e.target.id);
+        const target = ComponentRepository.getComponentById(e.target.id);
         if(target?.changeHandler) target.changeHandler(e);
     }
 
     dbClickHandler(e) {
-        const target = ComponentRepository.getInstance().getComponentById(e.target.id);
+        const target = ComponentRepository.getComponentById(e.target.id);
         if(target?.dbClickHandler) target.dbClickHandler(e);
         if(EventController.dbClickHandler) EventController.dbClickHandler(e);
     }
@@ -42,12 +42,12 @@ export default class EventController {
     static dbClickHandler = null;
 
     mouseDownHandler(e) {
-        const target = ComponentRepository.getInstance().getComponentById(e.target.id);
+        const target = ComponentRepository.getComponentById(e.target.id);
         if(target?.mouseDownHandler) target.mouseDownHandler(e);
     }
 
     mouseMoveHandler(e){
-        const target = ComponentRepository.getInstance().getComponentById(e.target.id);
+        const target = ComponentRepository.getComponentById(e.target.id);
         if(target?.mouseMoveHandler) target.mouseMoveHandler(e);
         if(EventController.mouseMoveHandler) EventController.mouseMoveHandler(e);
     }
@@ -55,7 +55,7 @@ export default class EventController {
     static mouseMoveHandler = null;
 
     mouseUpHandler(e) {
-        const target = ComponentRepository.getInstance().getComponentById(e.target.id);
+        const target = ComponentRepository.getComponentById(e.target.id);
         if(target?.mouseUpHandler) target.mouseUpHandler(e);
         if(EventController.mouseUpHandler) EventController.mouseUpHandler(e);
     }
@@ -63,12 +63,12 @@ export default class EventController {
     static mouseUpHandler = null;
 
     blurHandler(e) {
-        const target = ComponentRepository.getInstance().getComponentById(e.target.id);
+        const target = ComponentRepository.getComponentById(e.target.id);
         if(target?.blurHandler) target.blurHandler(e);
     }
 
     keyUpHandler(e) {
-        const target = ComponentRepository.getInstance().getComponentById(e.target.id);
+        const target = ComponentRepository.getComponentById(e.target.id);
         if(target?.keyUpHandler) target.keyUpHandler(e);
     }
 }
