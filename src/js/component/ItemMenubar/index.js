@@ -29,8 +29,9 @@ import GPinput from '../Shape/Polygon/GPinput';
 import GText from '../GText';
 import GDisk from '../Shape/Path/GDisk';
 import GLine from '../Line/GLine';
+import GPolyline from '../Line/GPolyline';
+import {BOARD_ID, ITEM_MENU_BAR_ID} from '../../service/constant';
 import './index.css';
-import GPolyline from "../Line/GPolyline";
 
 export default class ItemMenubar extends CustomElement{
     _selectMenu = null;
@@ -52,7 +53,7 @@ export default class ItemMenubar extends CustomElement{
     constructor({parentId}) {
         super({
             parentId,
-            id: 'item-menu-bar',
+            id: ITEM_MENU_BAR_ID,
             tagName: 'div',
             classList:['item-menu-bar']
         });
@@ -328,5 +329,5 @@ export default class ItemMenubar extends CustomElement{
 }
 
 function changeCursor(type){
-    ComponentRepository.getComponentById('board').elem.setAttribute('style',`width:100%;height:100%;cursor:${type};`)
+    ComponentRepository.getComponentById(BOARD_ID).elem.setAttribute('style',`width:100%;height:100%;cursor:${type};`)
 }

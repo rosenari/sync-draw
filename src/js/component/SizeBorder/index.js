@@ -4,6 +4,7 @@ import ComponentRepository from '../../service/ComponentRepository';
 import { tinyGUID } from '../../service/util';
 import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
+import {COLOR_ORANGE, SIZE_BORDER_ID, TEMP_GROUP_ID} from '../../service/constant';
 
 export default class SizeBorder extends Border {
     static startPoint = {};
@@ -15,7 +16,7 @@ export default class SizeBorder extends Border {
                 }) {
         super({
             parentId,
-            id:'size-border'
+            id: SIZE_BORDER_ID
         });
 
         this.target = target;
@@ -93,7 +94,7 @@ export default class SizeBorder extends Border {
     }
 
     createEdge(){
-        const tempGroup = ComponentRepository.getComponentById('temp-group');
+        const tempGroup = ComponentRepository.getComponentById(TEMP_GROUP_ID);
         for(const i in this.ratios){
             for(const j in this.ratios){
                 if(i == 1 && j == 1) continue;
@@ -177,7 +178,7 @@ export default class SizeBorder extends Border {
                 point.elem.setAttribute('r','5');
                 point.elem.setAttribute('cx',this.x + this.ratios[j] * this.width);
                 point.elem.setAttribute('cy',this.y + this.ratios[i] * this.height);
-                point.elem.setAttribute('fill','orange');
+                point.elem.setAttribute('fill',COLOR_ORANGE);
                 point.elem.setAttribute('cursor','grab');
                 point.elem.setAttribute('data-index',this.points.length);
                 this.points.push(point.elem);

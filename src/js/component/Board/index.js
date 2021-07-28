@@ -10,6 +10,14 @@ import Line from '../Line';
 import GLine from '../Line/GLine';
 import GPolyline from '../Line/GPolyline';
 import './index.css';
+import {
+    BOARD_ID,
+    BORDER_GROUP_ID,
+    BORDER_ID, COLOR_ORANGE, HISTORY_MENU_BAR_ID,
+    ITEM_MENU_BAR_ID, PAGE_MENU_BAR_ID, PLACE_HOLDER_ID,
+    SHAPE_GROUP_ID, STYLE_MENU_BAR_ID,
+    TEMP_GROUP_ID
+} from '../../service/constant';
 
 export default class Board extends GraphicElement {
     static startPoint = {};
@@ -19,20 +27,20 @@ export default class Board extends GraphicElement {
     _border = null;
 
     constructor({ parentId, content = '', classList, handlers = {}}) {
-        super({ parentId, id: 'board', tagName: 'svg', content, classList, handlers});
+        super({ parentId, id: BOARD_ID, tagName: 'svg', content, classList, handlers});
         this.elem.setAttribute('style',`width: 100%; height: 100%;`);
 
         const groupList = [
             {
-                id: 'border-group',
+                id: BORDER_GROUP_ID,
                 propsName: 'borderGroup'
             },
             {
-                id: 'shape-group',
+                id: SHAPE_GROUP_ID,
                 propsName: 'shapeGroup'
             },
             {
-                id: 'temp-group',
+                id: TEMP_GROUP_ID,
                 propsName: 'tempGroup'
             }
         ];
@@ -87,7 +95,7 @@ export default class Board extends GraphicElement {
         setDisablePointerEvent(true);
         Board.startPoint.x = e.pageX;
         Board.startPoint.y = e.pageY;
-        const itemMenubar = ComponentRepository.getComponentById('item-menu-bar');
+        const itemMenubar = ComponentRepository.getComponentById(ITEM_MENU_BAR_ID);
         let selected = null;
         if(itemMenubar.selectMenu){
             selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
@@ -219,7 +227,7 @@ export default class Board extends GraphicElement {
         Board.startPoint.y = e.pageY;
         this.border = new type({
             parentId: this.tempGroup.id,
-            id: 'border',
+            id: BORDER_ID,
             shape
         });
         this.border.x = Board.startPoint.x;
@@ -262,7 +270,7 @@ export default class Board extends GraphicElement {
 
         const placeholder =  new type({
             parentId: this.shapeGroup.id,
-            id: 'placeholder'
+            id: PLACE_HOLDER_ID
         });
         placeholder.elem.setAttribute('class','place-holder');
         return placeholder;
@@ -271,12 +279,12 @@ export default class Board extends GraphicElement {
     createLinePlaceHolder(type) {
         const placeholder = new type({
             parentId: this.shapeGroup.id,
-            id: 'placeholder',
+            id: PLACE_HOLDER_ID,
             startX: Board.startPoint.x,
             startY: Board.startPoint.y
         });
-        placeholder.line.elem.setAttribute('stroke','orange');
-        placeholder.arrow?.elem.setAttribute('fill','orange');
+        placeholder.line.elem.setAttribute('stroke',COLOR_ORANGE);
+        placeholder.arrow?.elem.setAttribute('fill',COLOR_ORANGE);
         placeholder.line.elem.setAttribute('stroke-dasharray', '6');
         placeholder.line.elem.setAttribute('class', 'place-holder');
         return placeholder;
@@ -304,10 +312,12 @@ export default class Board extends GraphicElement {
 }
 
 function setDisablePointerEvent(disable) {
-    const menuBar = [ ComponentRepository.getComponentById('page-menu-bar'),
-        ComponentRepository.getComponentById('item-menu-bar'),
-        ComponentRepository.getComponentById('style-menu-bar'),
-        ComponentRepository.getComponentById('history-menu-bar')];
+    const menuBar = [ PAGE_MENU_BAR_ID,
+        ITEM_MENU_BAR_ID,
+        STYLE_MENU_BAR_ID,
+        HISTORY_MENU_BAR_ID];
+
+    menuBar.map(id => ComponentRepository.getComponentById(id));
 
     if(disable){
         menuBar.forEach(menu => menu.elem.classList.add('disable-pointer-event'));

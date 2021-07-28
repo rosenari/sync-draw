@@ -1,4 +1,5 @@
 import ComponentRepository from '../ComponentRepository';
+import { SHAPE_GROUP_ID } from '../constant';
 
 let Instance = null;
 class TransformManager {
@@ -16,7 +17,7 @@ class TransformManager {
     }
 
     get shapeGroup(){
-        return ComponentRepository.getComponentById('shape-group');
+        return ComponentRepository.getComponentById(SHAPE_GROUP_ID);
     }
 
     adjustTransformToShapeGroup() {
