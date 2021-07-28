@@ -83,10 +83,6 @@ export default class Board extends GraphicElement {
         this._border = value;
     }
 
-    clickHandler(e) {
-        //this.destroyBorder();
-    }
-
     _mouseDownHandler(e) {
         setDisablePointerEvent(true);
         Board.startPoint.x = e.pageX;
@@ -208,12 +204,12 @@ export default class Board extends GraphicElement {
     }
 
     mouseMoveHandlerForLine(e){
-        const lineplaceholder = Board.startPoint.lineplaceholder;
-        lineplaceholder.points[lineplaceholder.points.length - 1] = {
+        const linePlaceHolder = Board.startPoint.lineplaceholder;
+        linePlaceHolder.points[linePlaceHolder.points.length - 1] = {
             x: e.pageX,
             y: e.pageY
         };
-        lineplaceholder.render();
+        linePlaceHolder.render();
     }
 
     createBorder(e ,type, shape = null) {
@@ -252,9 +248,9 @@ export default class Board extends GraphicElement {
         this.border.height = Math.abs(height);
     }
 
-    destroyBorder(e) {
+    destroyBorder() {
         Board.startPoint = {};
-        //placeholder 제거
+
         const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
         if(placeholder) placeholder.parentNode.removeChild(placeholder);
         this.tempGroup.elem.innerHTML = '';
