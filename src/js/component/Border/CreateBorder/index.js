@@ -1,12 +1,12 @@
 import Border from '../index';
 import './index.css';
-import { CREATE_BORDER_ID } from '../../../service/constant';
+import { BORDER } from '../../../service/constant';
 
 export default class CreateBorder extends Border {
     constructor({ parentId, shape }) {
         super({
             parentId,
-            id: CREATE_BORDER_ID,
+            id: BORDER.CREATE_BORDER_ID,
             shape
         });
         this.elem.setAttribute('class','create-border');

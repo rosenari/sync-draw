@@ -4,7 +4,7 @@ import { getOverflowHeight, isOverflowHeight } from '../../service/util';
 import ComponentRepository from '../../service/ComponentRepository';
 import SizeBorder from '../Border/SizeBorder';
 import TransformManager from '../../service/TransformManager';
-import { BOARD_ID, TEMP_GROUP_ID } from '../../service/constant';
+import { BOARD_ID, GROUP } from '../../service/constant';
 
 class GText extends GraphicElement {
     _foreignObj = null;
@@ -105,7 +105,7 @@ class GText extends GraphicElement {
         const board = ComponentRepository.getComponentById(BOARD_ID);
         board.destroyBorder();
         board.border = new SizeBorder({
-            parentId: TEMP_GROUP_ID,
+            parentId: GROUP.TEMP_GROUP_ID,
             target: this
         });
     }

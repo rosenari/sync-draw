@@ -1,5 +1,5 @@
 import GraphicElement from '../GraphicElement';
-import {COLOR_KAKAO, COLOR_ORANGE} from '../../service/constant';
+import {COLOR} from '../../service/constant';
 
 export default class Border extends GraphicElement{
     _shape = null;
@@ -16,12 +16,12 @@ export default class Border extends GraphicElement{
         });
         this.shape = shape;
         this.elem.setAttribute('style','pointer-events: none;');
-        this.elem.setAttribute('stroke', COLOR_KAKAO);
+        this.elem.setAttribute('stroke', COLOR.KAKAO);
         this.elem.setAttribute('fill', 'none');
         this.elem.setAttribute('stroke-width', '2');
 
         if(this.shape){
-            this.shape.elem.setAttribute('stroke',COLOR_ORANGE);
+            this.shape.elem.setAttribute('stroke',COLOR.ORANGE);
             this.shape.elem.setAttribute('stroke-width','3');
             this.shape.elem.setAttribute('stroke-dasharray','6');
         }

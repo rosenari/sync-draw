@@ -30,7 +30,7 @@ import GText from '../GText';
 import GDisk from '../Shape/Path/GDisk';
 import GLine from '../Line/GLine';
 import GPolyline from '../Line/GPolyline';
-import {BOARD_ID, ITEM_MENU_BAR_ID} from '../../service/constant';
+import {BOARD_ID, MENU_BAR} from '../../service/constant';
 import './index.css';
 
 export default class ItemMenubar extends CustomElement{
@@ -53,7 +53,7 @@ export default class ItemMenubar extends CustomElement{
     constructor({parentId}) {
         super({
             parentId,
-            id: ITEM_MENU_BAR_ID,
+            id: MENU_BAR.ITEM_MENU_BAR_ID,
             tagName: 'div',
             classList:['item-menu-bar']
         });
