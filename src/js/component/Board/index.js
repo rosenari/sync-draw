@@ -19,20 +19,29 @@ export default class Board extends GraphicElement {
         super({ parentId, id: 'board', tagName: 'svg', content, classList, handlers});
         this.elem.setAttribute('style',`width: 100%; height: 100%;`);
 
-        this.borderGroup = new Group({
-            parentId:this.id,
-            id:'border-group'
-        });
+        const groupList = [
+            {
+                id: 'border-group',
+                propsName: 'borderGroup'
+            },
+            {
+                id: 'shape-group',
+                propsName: 'shapeGroup'
+            },
+            {
+                id: 'temp-group',
+                propsName: 'tempGroup'
+            }
+        ];
 
-        this.shapeGroup = new Group({
-            parentId:this.id,
-            id:'shape-group'
-        });
+        const registerGroup = (group) => {
+            this[`${group.propsName}`] = new Group({
+               parentId: this.id,
+               id: group.id
+            });
+        }
 
-        this.tempGroup = new Group({
-            parentId:this.id,
-            id:'temp-group'
-        });
+        groupList.forEach(registerGroup);
 
         this.elem.addEventListener('mousedown',(e) => {
             this._mouseDownHandler(e);
