@@ -43,6 +43,10 @@ export default class Board extends GraphicElement{
             parentId:this.id,
             id:'temp-group'
         });
+
+        this.elem.addEventListener('mousedown',(e) => {
+            this._mouseDownHandler(e);
+        });
     }
 
     get shapeGroup() {
@@ -81,8 +85,7 @@ export default class Board extends GraphicElement{
         //this.destroyBorder();
     }
 
-    mouseDownHandler(e) {
-        e.stopPropagation();
+    _mouseDownHandler(e) {
         setPointerEvent(true);
         const repository = ComponentRepository.getInstance();
         const itemMenubar = repository.getComponentById('item-menu-bar');
