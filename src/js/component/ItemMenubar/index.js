@@ -175,6 +175,7 @@ export default class ItemMenubar extends CustomElement{
                 cursorType,
                 handlers: {
                     clickHandler: (e) => {
+                        ComponentRepository.getComponentById(BOARD_ID).destroyBorder();
                         this.selectMenu = ComponentRepository.getComponentById(e.target.id);
                     }
                 }
