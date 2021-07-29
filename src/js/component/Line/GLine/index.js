@@ -34,7 +34,6 @@ class GLine extends Line {
         });
 
         this.arrow.elem.setAttribute('points','0 0, 5 1.5, 0 3');
-        this.arrow.elem.setAttribute('fill',COLOR.BLACK);
         this.line.elem.setAttribute('marker-end',`url(#${this.marker.id})`);
     }
 
