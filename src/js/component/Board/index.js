@@ -186,6 +186,7 @@ export default class Board extends GraphicElement {
             Board.startPoint.lineplaceholder = this.createLinePlaceHolder(selected.relatedClass);
             Board.startPoint.lineplaceholder.addPoint({ x, y });
             Board.startPoint.line = this.createLine(selected.relatedClass);
+            Board.startPoint.line.arrow.elem.setAttribute('fill','none');
 
             if(selected.relatedClass === GPolyline) {
                 EventController.dbClickHandler = finish;
@@ -195,6 +196,7 @@ export default class Board extends GraphicElement {
             Board.startPoint.line.addPoint({ x, y });
 
             if(selected.relatedClass === GLine){
+                Board.startPoint.line.arrow.elem.setAttribute('fill',COLOR.BLACK);
                 finish();
             }
         }
