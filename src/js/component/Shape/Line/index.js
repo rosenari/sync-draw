@@ -3,6 +3,7 @@ import GraphicElement from "../../GraphicElement";
 import {BOARD_ID, COLOR, GROUP, MENU_BAR} from "../../../service/constant";
 import ComponentRepository from "../../../service/ComponentRepository";
 import LineBorder from "../../Border/LineBorder";
+import TransformManager from "../../../service/TransformManager";
 
 class Line extends Shape {
     _points = [];
@@ -124,4 +125,4 @@ class Line extends Shape {
     }
 }
 
-export default Line;
+export default TransformManager.wrapLine(Line);

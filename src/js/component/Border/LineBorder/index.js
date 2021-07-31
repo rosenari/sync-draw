@@ -66,8 +66,8 @@ export default class LineBorder extends SizeBorder {
             });
 
             point.elem.setAttribute('r','5');
-            point.elem.setAttribute('cx', points[+i].x);
-            point.elem.setAttribute('cy', points[+i].y);
+            point.elem.setAttribute('cx', TransformManager.changeSvgXToDocX(points[+i].x));
+            point.elem.setAttribute('cy', TransformManager.changeSvgYToDocY(points[+i].y));
             point.elem.setAttribute('fill',COLOR.ORANGE);
             point.elem.setAttribute('cursor','grab');
             point.elem.setAttribute('data-index',this.points.length);
@@ -77,8 +77,8 @@ export default class LineBorder extends SizeBorder {
     }
 
     renderEdge({ x, y, index}) {
-        this.points[index].setAttribute('cx', x);
-        this.points[index].setAttribute('cy', y);
+        this.points[index].setAttribute('cx', TransformManager.changeSvgXToDocX(x));
+        this.points[index].setAttribute('cy', TransformManager.changeSvgYToDocY(y));
     }
 
     mouseDownHandler(e) {
@@ -87,8 +87,8 @@ export default class LineBorder extends SizeBorder {
         LineBorder.startPoint.y = TransformManager.changeDocYToSvgY(e.pageY);
         LineBorder.startPoint.points = [...this.points].map(point => {
             return {
-                x: point.getAttribute('cx'),
-                y: point.getAttribute('cy')
+                x: TransformManager.changeDocXToSvgX(point.getAttribute('cx')),
+                y: TransformManager.changeDocYToSvgY(point.getAttribute('cy'))
             }
         });
 
@@ -116,8 +116,8 @@ export default class LineBorder extends SizeBorder {
     renderTarget(){
         this.target.points = [...this.points].map(point => {
             return {
-                x: point.getAttribute('cx'),
-                y: point.getAttribute('cy')
+                x: TransformManager.changeDocXToSvgX(point.getAttribute('cx')),
+                y: TransformManager.changeDocYToSvgY(point.getAttribute('cy'))
             }
         });
     }
