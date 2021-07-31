@@ -223,8 +223,8 @@ export default class Board extends GraphicElement {
     mouseMoveHandlerForLine(e){
         const linePlaceHolder = Board.startPoint.lineplaceholder;
         linePlaceHolder.points[linePlaceHolder.points.length - 1] = {
-            x: e.pageX,
-            y: e.pageY
+            x: TransformManager.changeDocXToSvgX(e.pageX),
+            y: TransformManager.changeDocYToSvgY(e.pageY)
         };
         linePlaceHolder.render();
     }
@@ -292,6 +292,7 @@ export default class Board extends GraphicElement {
         });
         placeholder.line.elem.setAttribute('stroke',COLOR.ORANGE);
         placeholder.arrow?.elem.setAttribute('stroke','transparent');
+        placeholder.arrow?.elem.setAttribute('fill',COLOR.ORANGE);
         placeholder.line.elem.setAttribute('stroke-dasharray', '6');
         placeholder.line.elem.setAttribute('class', 'place-holder');
         return placeholder;
