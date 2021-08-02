@@ -140,6 +140,7 @@ export default class LineBorder extends SizeBorder {
             if (!(shape instanceof Shape)) continue;
             if (shape instanceof Line) continue;
 
+            const padding = 30;
             const startX = shape.x;
             const startY = shape.y;
             const endX = shape.x + shape.width;
@@ -154,7 +155,7 @@ export default class LineBorder extends SizeBorder {
                 index
             }
 
-            if(startX > x || endX < x || startY > y || endY < y){
+            if(startX - padding > x || endX + padding < x || startY - padding > y || endY + padding < y){
                 command = 'removeLinkedLine';
                 pointInfo = null;
                 shape.elem.classList.remove('shape-collision');
