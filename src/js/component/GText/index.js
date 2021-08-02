@@ -101,6 +101,10 @@ class GText extends GraphicElement {
         this._textBox = value;
     }
 
+    dbClickHandler(e){
+        this.textBox.dbClickHandler(e);
+    }
+
     clickHandler(e) {
         const board = ComponentRepository.getComponentById(BOARD_ID);
         board.destroyBorder();
