@@ -244,4 +244,8 @@ export default class SizeBorder extends Border {
         this.target.width = this.width
         this.target.height = this.height
     }
+
+    dbClickHandler(e){
+        this.target?.dbClickHandler?.(e);
+    }
 }
