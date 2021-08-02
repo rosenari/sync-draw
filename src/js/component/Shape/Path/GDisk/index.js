@@ -16,10 +16,11 @@ class GDisk extends Path{
         const endY = this.y + Math.round(this.height * 0.9);
         const curveY_3 = endY + Math.round(this.height * 0.1);
         this.elem.setAttribute('d',`M${startX} ${startY} C${startX} ${curveY_1}, ${endX} ${curveY_1}, ${endX} ${startY} 
-        C${endX} ${curveY_2}, ${startX} ${curveY_2}, ${startX} ${startY} 
-        V${endY} 
+        M${startX} ${startY} C${startX} ${curveY_2}, ${endX} ${curveY_2}, ${endX} ${startY}
+        M${startX} ${startY} V${endY} 
         C${startX} ${curveY_3}, ${endX} ${curveY_3}, ${endX} ${endY}
-        V${startY}`);
+        V${startY}
+        `);
     }
 }
 
