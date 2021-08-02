@@ -2,7 +2,7 @@ import Shape from '../index';
 import GraphicElement from "../../GraphicElement";
 import {BOARD_ID, COLOR, GROUP, MENU_BAR} from "../../../service/constant";
 import ComponentRepository from "../../../service/ComponentRepository";
-import LineBorder from "../../Border/LineBorder";
+import LineBorder from '../../Border/LineBorder';
 import TransformManager from "../../../service/TransformManager";
 
 class Line extends Shape {
@@ -116,6 +116,8 @@ class Line extends Shape {
         if(ComponentRepository.getComponentById(itemMenubar.selectMenu).name !== 'mouse'){
             return;
         }
+
+        this.elem.parentNode?.appendChild?.(this.elem);
 
         board.destroyBorder();
         board.border = new LineBorder({
