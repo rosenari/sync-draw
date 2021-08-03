@@ -249,16 +249,15 @@ export default class SizeBorder extends Border {
     renderTarget(){
         const innerText = this.target.innerText;
         if(innerText && (isOverflowHeight(innerText.textBox.elem) || isOverflowWidth(innerText.textBox.elem))){
-            const margin = 10;
             const overflowInfo = SizeBorder.startPoint.overflowInfo;
             SizeBorder.startPoint.overflowInfo = !overflowInfo ? {
                 x: this.x,
                 y: this.y,
-                width: this.width + margin,
-                height: this.height + margin
+                width: this.width,
+                height: this.height
             } : overflowInfo;
         }else{
-            delete SizeBorder.startPoint.overflowInfo;
+            SizeBorder.startPoint.overflowInfo = null;
         }
 
 
