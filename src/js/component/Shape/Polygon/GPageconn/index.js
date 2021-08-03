@@ -1,5 +1,6 @@
 import Polygon from '../index';
 import TransformManager from '../../../../service/TransformManager';
+import {RATIO} from '../../../../service/constant';
 
 class GPageconn extends Polygon{
 
@@ -15,8 +16,8 @@ class GPageconn extends Polygon{
         const topRightX = this.x + this.width;
         const topRightY = this.y;
         const midRightX = topRightX;
-        const midRightY = this.y + Math.round(this.height * 0.75);
-        const bottomX = this.x + Math.round(this.width * 0.5);
+        const midRightY = this.y + Math.round(this.height * RATIO.PERCENT_75);
+        const bottomX = this.x + Math.round(this.width * RATIO.PERCENT_50);
         const bottomY = this.y + this.height;
         const midLeftX = this.x;
         const midLeftY = midRightY;

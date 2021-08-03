@@ -1,5 +1,6 @@
 import Rect from '../index';
 import TransformManager from '../../../../service/TransformManager';
+import {RATIO} from '../../../../service/constant';
 
 class GTerminal extends Rect{
 
@@ -15,7 +16,7 @@ class GTerminal extends Rect{
 
     set height(value) {
         super.height = value;
-        this.elem.setAttribute('ry', Math.round(value * 0.5));
+        this.elem.setAttribute('ry', Math.round(value * RATIO.PERCENT_50));
     }
 }
 
