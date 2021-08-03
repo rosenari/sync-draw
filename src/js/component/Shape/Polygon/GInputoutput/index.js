@@ -5,6 +5,8 @@ class GInputoutput extends Polygon{
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });
+
+        if(this.id !== 'placeholder') this.createInnerText('입출력');
     }
 
     render(){

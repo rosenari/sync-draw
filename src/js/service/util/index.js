@@ -33,6 +33,14 @@ export function tinyGUID(){
     return `${genRandom8Hex()}`;
 }
 
+export function isOverflowWidth(elem){
+    return elem.scrollWidth > elem.clientWidth;
+}
+
+export function getOverflowWidth(elem){
+    return elem.scrollWidth - elem.clientWidth;
+}
+
 export function isOverflowHeight(elem){
     return elem.scrollHeight > elem.clientHeight;
 }
