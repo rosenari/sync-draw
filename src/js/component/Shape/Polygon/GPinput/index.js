@@ -1,5 +1,6 @@
 import Polygon from '../index';
 import TransformManager from '../../../../service/TransformManager';
+import {RATIO} from '../../../../service/constant';
 
 class GPinput extends Polygon{
 
@@ -11,7 +12,7 @@ class GPinput extends Polygon{
 
     render(){
         const leftTopX = this.x;
-        const leftTopY = this.y + Math.round(this.height * 0.15);
+        const leftTopY = this.y + Math.round(this.height * RATIO.PERCENT_15);
         const rightTopX = this.x + this.width;
         const rightTopY = this.y;
         const rightBottomX = rightTopX;
