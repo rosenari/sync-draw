@@ -5,11 +5,13 @@ class GPinput extends Polygon{
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });
+
+        if(this.id !== 'placeholder') this.createInnerText('수동입력');
     }
 
     render(){
         const leftTopX = this.x;
-        const leftTopY = this.y + Math.round(this.height * 0.3);
+        const leftTopY = this.y + Math.round(this.height * 0.15);
         const rightTopX = this.x + this.width;
         const rightTopY = this.y;
         const rightBottomX = rightTopX;
