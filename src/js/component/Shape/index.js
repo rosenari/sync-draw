@@ -3,6 +3,7 @@ import ComponentRepository from '../../service/ComponentRepository';
 import SizeBorder from '../Border/SizeBorder';
 import {BOARD_ID, COLOR, MENU_BAR, GROUP} from '../../service/constant';
 import {IterableWeakMap} from '../../service/util';
+import InnerText from "./InnerText";
 
 export default class Shape extends GraphicElement {
     _x = 0;
@@ -10,6 +11,7 @@ export default class Shape extends GraphicElement {
     _width = 0;
     _height = 0;
     _linkedLine = new IterableWeakMap();
+    _innerText = null;
 
     constructor({ parentId, id, tagName, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, tagName, classList, handlers });
@@ -76,12 +78,31 @@ export default class Shape extends GraphicElement {
         this._linkedLine = value;
     }
 
+    get innerText() {
+        return this._innerText;
+    }
+
+    set innerText(value) {
+        this._innerText = value;
+    }
+
     addLinkedLine({ line, pointInfo }){
         this.linkedLine.set(line,pointInfo);
     }
 
     removeLinkedLine({ line }){
         this.linkedLine.delete(line);
+    }
+
+    createInnerText(defaultText = 'shape') {
+        /*this.innerText = new InnerText({
+            parentId,
+            id: this.id + '-innerText',
+            x: this.x - 30,
+            y: this.y - 30,
+            width:this.width - 60,
+            height
+        });*/
     }
 
     clickHandler(e) {
