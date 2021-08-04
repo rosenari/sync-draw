@@ -46,6 +46,10 @@ export default class InnerText extends GraphicElement{
                         alert('텍스트 입력은 50자 이상을 초과할 수 없습니다.');
                         this._textBox.elem.innerText = this._textBox.elem.innerText.slice(0,50);
                     }
+                    if (e.code === 'Enter') {
+                        this._textBox.elem.innerText = this._textBox.elem.innerText.trim();
+                        return this._textBox.elem.blur();
+                    }
 
                     destroyBorder();
                 }
