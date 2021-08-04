@@ -126,12 +126,8 @@ function destroyBorder(){
 
 function focusTextRange(elem){
     const range = document.createRange();
+    range.selectNodeContents(elem);
     const selection = window.getSelection();
-
-    const textLength = elem.innerText.length;
-    range.setStart(elem.childNodes[0], 0);
-    range.setEnd(elem.childNodes[0], textLength);
-
     selection.removeAllRanges();
     selection.addRange(range);
 }
