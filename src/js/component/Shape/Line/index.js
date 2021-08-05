@@ -47,15 +47,13 @@ class Line extends Shape {
     }
 
     get x(){
-        return [...this.points].sort((pointA, pointB) => {
-            return pointA.x - pointB.x;
-        })[0] || 0;
+        return Math.min(...this.points.map(point => point.x)) || 0;
     }
 
     set x(value){
         const minX = this.x;
         const dx = value - minX;
-        this.points.map(point => {
+        this.points = this.points.map(point => {
             return {
                 ...point,
                 x: point.x + dx
@@ -65,20 +63,28 @@ class Line extends Shape {
     }
 
     get y(){
-        return [...this.points].sort((pointA, pointB) => {
-            return pointA.y - pointB.y;
-        })[0] || 0;
+        return Math.min(...this.points.map(point => point.y)) || 0;
     }
 
     set y(value){
         const minY = this.y;
         const dy = value - minY;
-        this.points.map(point => {
+        this.points = this.points.map(point => {
            return {
                ...point,
                y: point.y + dy
            }
         });
+    }
+
+    get width(){
+        const maxX = Math.max(...this.points.map(point => point.x));
+        return maxX - this.x;
+    }
+
+    get height(){
+        const maxY = Math.max(...this.points.map(point => point.y));
+        return maxY - this.y;
     }
 
     get line() {
@@ -127,4 +133,4 @@ class Line extends Shape {
     }
 }
 
-export default TransformManager.wrapLine(Line);
+export default TransformManager.wrapLine(TransformManager.wrapShape(Line));
