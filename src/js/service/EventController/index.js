@@ -36,7 +36,10 @@ export default class EventController {
     dbClickHandler(e) {
         const target = ComponentRepository.getInstance().getComponentById(e.target.id);
         if(target?.dbClickHandler) target.dbClickHandler(e);
+        if(EventController.dbClickHandler) EventController.dbClickHandler(e);
     }
+
+    static dbClickHandler = null;
 
     mouseDownHandler(e) {
         const target = ComponentRepository.getInstance().getComponentById(e.target.id);

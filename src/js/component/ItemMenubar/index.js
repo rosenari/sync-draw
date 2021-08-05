@@ -25,7 +25,9 @@ import GInputoutput from '../Shape/Polygon/GInputoutput';
 import GPinput from '../Shape/Polygon/GPinput';
 import GText from '../GText';
 import GDisk from '../Shape/Path/GDisk';
+import GLine from '../Line/GLine';
 import './index.css';
+import GPolyline from "../Line/GPolyline";
 
 export default class ItemMenubar extends CustomElement{
     _selectMenu = null;
@@ -108,13 +110,15 @@ export default class ItemMenubar extends CustomElement{
                 name: 'line',
                 icon: LINE_ICON,
                 iconSize: { width:'34', height:'10' },
-                cursorType: 's-resize'
+                cursorType: 's-resize',
+                relatedClass: GLine
             },
             {
                 name: 'ployline',
                 icon: POLYLINE_ICON,
                 iconSize: { width:'34', height:'45' },
-                cursorType: 's-resize'
+                cursorType: 's-resize',
+                relatedClass: GPolyline
             },
             {
                 name: 'pageconn',
