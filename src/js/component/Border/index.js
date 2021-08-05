@@ -18,7 +18,7 @@ export default class Border extends GraphicElement{
         this.elem.setAttribute('style','pointer-events: none;');
         this.elem.setAttribute('stroke', COLOR.KAKAO);
         this.elem.setAttribute('fill', 'transparent');
-        this.elem.setAttribute('stroke-width', '2');
+        this.elem.setAttribute('stroke-width', '3');
 
         if(this.shape) {
             this.shape.elem.setAttribute('stroke',COLOR.ORANGE);

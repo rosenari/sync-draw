@@ -28,8 +28,8 @@ import GInputoutput from '../Shape/Polygon/GInputoutput';
 import GPinput from '../Shape/Polygon/GPinput';
 import GText from '../GText';
 import GDisk from '../Shape/Path/GDisk';
-import GLine from '../Line/GLine';
-import GPolyline from '../Line/GPolyline';
+import GLine from '../Shape/Line/GLine';
+import GPolyline from '../Shape/Line/GPolyline';
 import {BOARD_ID, MENU_BAR} from '../../service/constant';
 import './index.css';
 

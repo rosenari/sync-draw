@@ -1,6 +1,5 @@
-import GraphicElement from '../../GraphicElement';
+import GraphicElement from '../../../GraphicElement';
 import Line from '../index';
-import {COLOR} from '../../../service/constant';
 
 class GLine extends Line {
     _marker = null;
@@ -21,8 +20,9 @@ class GLine extends Line {
             id: id + '_marker',
             tagName: 'marker'
         });
-        this.marker.elem.setAttribute('markerWidth','5');
-        this.marker.elem.setAttribute('markerHeight','5');
+
+        this.marker.elem.setAttribute('markerWidth','10');
+        this.marker.elem.setAttribute('markerHeight','10');
         this.marker.elem.setAttribute('refX','0');
         this.marker.elem.setAttribute('refY','1.5');
         this.marker.elem.setAttribute('orient','auto');
