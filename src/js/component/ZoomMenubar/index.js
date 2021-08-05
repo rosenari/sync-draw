@@ -59,10 +59,10 @@ export default class ZoomMenubar extends CustomElement{
 
     zoom(scale){
         const board = ComponentRepository.getComponentById('board');
-        const centerX = document.body.clientWidth / 2;
-        const centerY = document.body.clientHeight / 2;
-        const translateX = (1-scale) * centerX;
-        const translateY = (1-scale) * centerY;
+        const centerX = (document.body.clientWidth) / 2;
+        const centerY = (document.body.clientHeight) / 2;
+        const translateX = (1-scale) * centerX + TransformManager.moveX;
+        const translateY = (1-scale) * centerY + TransformManager.moveY;
         this.ratioText.elem.innerText = `${scale * 100}%`;
         board.destroyBorder();
 

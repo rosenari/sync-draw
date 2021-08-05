@@ -5,6 +5,7 @@ import GText from '../GText';
 import {tinyGUID} from '../../service/util';
 import SizeBorder from '../SizeBorder';
 import EventController from '../../service/EventController';
+import TransformManager from '../../service/TransformManager';
 import './index.css';
 
 export default class Board extends GraphicElement{
@@ -80,14 +81,35 @@ export default class Board extends GraphicElement{
         setPointerEvent(true);
         const repository = ComponentRepository.getInstance();
         const itemMenubar = repository.getComponentById('item-menu-bar');
+        let selected = null;
         if(itemMenubar.selectMenu){
-            const selected = repository.getComponentById(itemMenubar.selectMenu);
+            selected = repository.getComponentById(itemMenubar.selectMenu);
             if(selected.relatedBorder){
                 this.createBorder(e, selected.relatedBorder, this.createPlaceHolder(selected.relatedClass));
+            }
+
+            if(selected.id === itemMenubar.handBtn.id){
+                this.destroyBorder();
+                Board.startPoint.translateX = TransformManager.translateX;
+                Board.startPoint.translateY = TransformManager.translateY;
+                Board.startPoint.moveX = TransformManager.moveX;
+                Board.startPoint.moveY = TransformManager.moveY;
+                Board.startPoint.x = e.pageX;
+                Board.startPoint.y = e.pageY;
             }
         }
 
         EventController.mouseMoveHandler = (e) => {
+            if(selected?.id === itemMenubar.handBtn.id){
+                const dx = Board.startPoint.x - e.pageX;
+                const dy = Board.startPoint.y - e.pageY;
+
+                TransformManager.moveX = Board.startPoint.moveX + dx;
+                TransformManager.moveY = Board.startPoint.moveY + dy;
+                TransformManager.translateX = Board.startPoint.translateX + dx;
+                TransformManager.translateY = Board.startPoint.translateY + dy;
+            }
+
             if(!this.border) return;
 
             this.renderBorder(e);
@@ -95,6 +117,13 @@ export default class Board extends GraphicElement{
 
         EventController.mouseUpHandler = (e) => {
             let target = null;
+            if(itemMenubar.selectMenu === itemMenubar.handBtn.id){
+                setPointerEvent(false);
+                Board.startPoint = {};
+                EventController.mouseMoveHandler = null;
+                EventController.mouseUpHandler = null;
+                return;
+            }
             if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
                 if(this.border instanceof SizeBorder) return;
             }

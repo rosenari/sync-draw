@@ -2,6 +2,8 @@ import ComponentRepository from '../ComponentRepository';
 
 let Instance = null;
 export default class TransformManager {
+    _moveX = 0;
+    _moveY = 0;
     _translateX = 0;
     _translateY = 0;
     _scale = 1;
@@ -19,6 +21,38 @@ export default class TransformManager {
 
     adjustTransformToShapeGroup() {
         this.shapeGroup.elem.setAttribute('transform',`translate(${this.translateX},${this.translateY}) scale(${this.scale})`);
+    }
+
+    static get moveX(){
+        return TransformManager.getInstance().moveX;
+    }
+
+    get moveX(){
+        return this._moveX;
+    }
+
+    static set moveX(value){
+        TransformManager.getInstance().moveX = value;
+    }
+
+    set moveX(value){
+        this._moveX = value;
+    }
+
+    static get moveY(){
+        return TransformManager.getInstance().moveY;
+    }
+
+    get moveY(){
+        return this._moveY;
+    }
+
+    static set moveY(value){
+        TransformManager.getInstance().moveY = value;
+    }
+
+    set moveY(value){
+        this._moveY = value;
     }
 
     static get translateX(){
