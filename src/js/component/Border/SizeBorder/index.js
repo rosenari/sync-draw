@@ -4,7 +4,7 @@ import ComponentRepository from '../../../service/ComponentRepository';
 import { tinyGUID } from '../../../service/util';
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
-import {COLOR, BORDER, GROUP} from '../../../service/constant';
+import { COLOR, BORDER, GROUP } from '../../../service/constant';
 
 export default class SizeBorder extends Border {
     static startPoint = {};
@@ -12,8 +12,7 @@ export default class SizeBorder extends Border {
     _points = [];
     _target = null;
 
-    constructor({ parentId, target
-                }) {
+    constructor({ parentId, target }) {
         super({
             parentId,
             id: BORDER.SIZE_BORDER_ID
@@ -24,6 +23,7 @@ export default class SizeBorder extends Border {
         this.y = this.target.y;
         this.width = this.target.width;
         this.height = this.target.height;
+        this.elem.setAttribute('stroke-width', '6');
         this.elem.setAttribute('style','cursor:move;');
 
         this.createEdge();

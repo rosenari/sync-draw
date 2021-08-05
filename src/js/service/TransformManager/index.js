@@ -139,6 +139,22 @@ class TransformManager {
             }
         }
     }
+
+    wrapLine(line) {
+        const manager = this;
+        return class extends line {
+            constructor(args) {
+                super(args);
+            }
+
+            addPoint({ x, y }) {
+                super.addPoint({
+                    x: Math.round((x - manager.translateX) / manager.scale),
+                    y: Math.round((y - manager.translateY) / manager.scale)
+                })
+            }
+        }
+    }
 }
 
 export default TransformManager.getInstance();

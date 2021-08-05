@@ -6,9 +6,9 @@ import {tinyGUID} from '../../service/util';
 import SizeBorder from '../Border/SizeBorder';
 import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
-import Line from '../Line';
-import GLine from '../Line/GLine';
-import GPolyline from '../Line/GPolyline';
+import Line from '../Shape/Line';
+import GLine from '../Shape/Line/GLine';
+import GPolyline from '../Shape/Line/GPolyline';
 import './index.css';
 import {
     BOARD_ID,
@@ -173,6 +173,11 @@ export default class Board extends GraphicElement {
         const x = e.pageX;
         const y = e.pageY;
         const finish = () => {
+            if(selected.relatedClass === GPolyline) {
+                const lastIndex = Board.startPoint.line.points.length - 1;
+                Board.startPoint.line.removePoint(lastIndex);
+            }
+
             itemMenubar.selectMenu = itemMenubar.mouseBtn;
 
             Board.startPoint = {};
@@ -188,7 +193,7 @@ export default class Board extends GraphicElement {
             Board.startPoint.line = this.createLine(selected.relatedClass);
 
             if(selected.relatedClass === GLine){
-                Board.startPoint.line.arrow.elem.setAttribute('fill','none');
+                Board.startPoint.line.arrow.elem.setAttribute('stroke','transparent');
             }
 
             if(selected.relatedClass === GPolyline) {
@@ -218,8 +223,8 @@ export default class Board extends GraphicElement {
     mouseMoveHandlerForLine(e){
         const linePlaceHolder = Board.startPoint.lineplaceholder;
         linePlaceHolder.points[linePlaceHolder.points.length - 1] = {
-            x: e.pageX,
-            y: e.pageY
+            x: TransformManager.changeDocXToSvgX(e.pageX),
+            y: TransformManager.changeDocYToSvgY(e.pageY)
         };
         linePlaceHolder.render();
     }
@@ -286,6 +291,7 @@ export default class Board extends GraphicElement {
             startY: Board.startPoint.y
         });
         placeholder.line.elem.setAttribute('stroke',COLOR.ORANGE);
+        placeholder.arrow?.elem.setAttribute('stroke','transparent');
         placeholder.arrow?.elem.setAttribute('fill',COLOR.ORANGE);
         placeholder.line.elem.setAttribute('stroke-dasharray', '6');
         placeholder.line.elem.setAttribute('class', 'place-holder');
