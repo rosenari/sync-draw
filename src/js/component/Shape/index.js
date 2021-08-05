@@ -2,12 +2,14 @@ import GraphicElement from '../GraphicElement';
 import ComponentRepository from '../../service/ComponentRepository';
 import SizeBorder from '../Border/SizeBorder';
 import {BOARD_ID, COLOR, MENU_BAR, GROUP} from '../../service/constant';
+import {IterableWeakMap} from '../../service/util';
 
-export default class Shape extends GraphicElement{
+export default class Shape extends GraphicElement {
     _x = 0;
     _y = 0;
     _width = 0;
     _height = 0;
+    _linkedLine = new IterableWeakMap();
 
     constructor({ parentId, id, tagName, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, tagName, classList, handlers });
@@ -16,12 +18,27 @@ export default class Shape extends GraphicElement{
         this.elem.setAttribute('stroke-width', '3');
     }
 
+    renderLinkedLine() {
+        for(const line of this.linkedLine.keys()) {
+            const pointInfo = this.linkedLine.get(line);
+            const points = [...line.points];
+            const x = Math.round(this.x + (this.width * pointInfo.ratios[0]));
+            const y = Math.round(this.y + (this.height * pointInfo.ratios[1]));
+
+            points[pointInfo.index].x = x;
+            points[pointInfo.index].y = y;
+
+            line.points = points;
+        }
+    }
+
     get x() {
         return this._x;
     }
 
     set x(value) {
         this._x = value;
+        this.renderLinkedLine();
     }
 
     get y() {
@@ -30,6 +47,7 @@ export default class Shape extends GraphicElement{
 
     set y(value) {
         this._y = value;
+        this.renderLinkedLine();
     }
 
     get width() {
@@ -38,6 +56,7 @@ export default class Shape extends GraphicElement{
 
     set width(value) {
         this._width = value;
+        this.renderLinkedLine();
     }
 
     get height() {
@@ -46,6 +65,23 @@ export default class Shape extends GraphicElement{
 
     set height(value) {
         this._height = value;
+        this.renderLinkedLine();
+    }
+
+    get linkedLine() {
+        return this._linkedLine;
+    }
+
+    set linkedLine(value){
+        this._linkedLine = value;
+    }
+
+    addLinkedLine({ line, pointInfo }){
+        this.linkedLine.set(line,pointInfo);
+    }
+
+    removeLinkedLine({ line }){
+        this.linkedLine.delete(line);
     }
 
     clickHandler(e) {
@@ -54,6 +90,8 @@ export default class Shape extends GraphicElement{
         if(ComponentRepository.getComponentById(itemMenubar.selectMenu).name !== 'mouse'){
             return;
         }
+
+        this.elem.parentNode?.appendChild?.(this.elem);
 
         board.destroyBorder();
         board.border = new SizeBorder({

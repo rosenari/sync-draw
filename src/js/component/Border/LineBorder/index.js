@@ -5,6 +5,9 @@ import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
 import { COLOR, GROUP } from '../../../service/constant';
 import SizeBorder from '../SizeBorder';
+import Line from '../../Shape/Line';
+import Shape from '../../Shape';
+import './index.css';
 
 export default class LineBorder extends SizeBorder {
     static startPoint = {};
@@ -34,6 +37,7 @@ export default class LineBorder extends SizeBorder {
                         e.stopPropagation();
                         LineBorder.startPoint.x = TransformManager.changeDocXToSvgX(+e.target.getAttribute('cx'));
                         LineBorder.startPoint.y = TransformManager.changeDocYToSvgY(+e.target.getAttribute('cy'));
+                        LineBorder.startPoint.collisionInfo = [];
                         LineBorder.startPoint.target = {
                             points: [...this.target.points].map(point => {
                                 return {
@@ -50,15 +54,18 @@ export default class LineBorder extends SizeBorder {
                             const y = LineBorder.startPoint.y + dy;
                             const index = LineBorder.startPoint.target.index;
 
+                            this.detectCollisionShape({ x, y, index });
                             this.renderEdge({ x, y, index });
                             this.renderTarget();
                             this.render();
                         }
 
                         EventController.mouseUpHandler = () => {
+                            this.adjustCollisionInfo();
                             this.renderTarget();
                             SizeBorder.startPoint = {};
                             EventController.mouseMoveHandler = null;
+                            EventController.mouseOverHandler = null;
                             EventController.mouseUpHandler = null;
                         }
                     }
@@ -100,6 +107,7 @@ export default class LineBorder extends SizeBorder {
             LineBorder.startPoint.points.forEach((point, index) => {
                 this.renderEdge({ x:+point.x + dx, y:+point.y + dy, index: index });
             });
+
             this.renderTarget();
             this.render();
         }
@@ -120,5 +128,59 @@ export default class LineBorder extends SizeBorder {
                 y: TransformManager.changeDocYToSvgY(point.getAttribute('cy'))
             }
         });
+    }
+
+    //모양과 충돌하는지 순회를 통해탐지, 탐지할 경우 충돌정보 갱신
+    detectCollisionShape({ x, y, index}){
+        if(!this.target.arrow) return;
+
+        LineBorder.startPoint.collisionInfo = [];
+        for(const key in ComponentRepository) {
+            const shape = ComponentRepository.getComponentById(key);
+            if (!(shape instanceof Shape)) continue;
+            if (shape instanceof Line) continue;
+
+            const padding = 30;
+            const startX = shape.x;
+            const startY = shape.y;
+            const endX = shape.x + shape.width;
+            const endY = shape.y + shape.height;
+
+            const ratioX = ((x - startX) / shape.width).toFixed(2);
+            const ratioY = ((y - startY) / shape.height).toFixed(2);
+
+            let command = 'addLinkedLine';
+            let pointInfo = {
+                ratios: [ratioX, ratioY],
+                index
+            }
+
+            if(startX - padding > x || endX + padding < x || startY - padding > y || endY + padding < y){
+                command = 'removeLinkedLine';
+                pointInfo = null;
+                shape.elem.classList.remove('shape-collision');
+            }else{
+                shape.elem.classList.add('shape-collision');
+            }
+
+            LineBorder.startPoint.collisionInfo.push({
+                command,
+                shape,
+                pointInfo
+            });
+        }
+    }
+
+    //모양요소 흐름선 정보 갱신
+    adjustCollisionInfo(){
+        const collisionInfos = LineBorder.startPoint.collisionInfo;
+        const line = this.target;
+        for(const info of collisionInfos){
+            info.shape.elem.classList.remove('shape-collision');
+            info.shape[info.command]({
+                line,
+                pointInfo: info.pointInfo
+            });
+        }
     }
 }
