@@ -1,5 +1,6 @@
+import GraphicElement from '../../GraphicElement';
 import Line from '../index';
-import GraphicElement from "../../GraphicElement";
+import {COLOR} from '../../../service/constant';
 
 class GLine extends Line {
     _marker = null;
@@ -33,7 +34,6 @@ class GLine extends Line {
         });
 
         this.arrow.elem.setAttribute('points','0 0, 5 1.5, 0 3');
-        this.arrow.elem.setAttribute('fill','#555');
         this.line.elem.setAttribute('marker-end',`url(#${this.marker.id})`);
     }
 

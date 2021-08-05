@@ -1,8 +1,9 @@
 import CustomElement from '../CustomElement';
 import CustomButton from '../CustomButton';
 import TransformManager from '../../service/TransformManager';
-import './index.css';
 import ComponentRepository from '../../service/ComponentRepository';
+import './index.css';
+import {BOARD_ID, RATIO_TEXT_ID, BUTTON, MENU_BAR} from '../../service/constant';
 
 export default class ZoomMenubar extends CustomElement{
     _ratioText = null;
@@ -12,7 +13,7 @@ export default class ZoomMenubar extends CustomElement{
     constructor({parentId}) {
         super({
             parentId,
-            id: 'zoom-menu-bar',
+            id: MENU_BAR.ZOOM_MENU_BAR_ID,
             tagName: 'div',
             classList:['zoom-menu-bar']
         });
@@ -20,7 +21,7 @@ export default class ZoomMenubar extends CustomElement{
 
         this.ratioText = new CustomElement({
            parentId: this.id,
-           id: 'ratio-text',
+           id: RATIO_TEXT_ID,
            tagName: 'div',
            content: '100%',
            classList: ['ratio-text']
@@ -28,11 +29,11 @@ export default class ZoomMenubar extends CustomElement{
 
         this.zoomInBtn = new CustomButton({
             parentId: this.id,
-            id: 'zoom-in-btn',
+            id: BUTTON.ZOOM_IN_BTN_ID,
             content: '➕',
             classList:['zoom-btn'],
             handlers:{
-                clickHandler: (e) => {
+                clickHandler: () => {
                     const scale = TransformManager.scale + 0.25;
                     if(scale > 2) return;
 
@@ -43,11 +44,11 @@ export default class ZoomMenubar extends CustomElement{
 
         this.zoomOutBtn = new CustomButton({
             parentId: this.id,
-            id: 'zoom-out-btn',
+            id: BUTTON.ZOOM_OUT_BTN_ID,
             content: '➖',
             classList:['zoom-btn'],
             handlers:{
-                clickHandler: (e) => {
+                clickHandler: () => {
                     const scale = TransformManager.scale - 0.25;
                     if(scale < 0.25) return;
 
@@ -58,11 +59,12 @@ export default class ZoomMenubar extends CustomElement{
     }
 
     zoom(scale){
-        const board = ComponentRepository.getComponentById('board');
+        const board = ComponentRepository.getComponentById(BOARD_ID);
         const centerX = (document.body.clientWidth) / 2;
         const centerY = (document.body.clientHeight) / 2;
-        const translateX = (1-scale) * centerX + TransformManager.moveX;
-        const translateY = (1-scale) * centerY + TransformManager.moveY;
+        const translateX = (1-scale) * centerX + TransformManager.moveX * scale;
+        const translateY = (1-scale) * centerY + TransformManager.moveY * scale;
+
         this.ratioText.elem.innerText = `${scale * 100}%`;
         board.destroyBorder();
 

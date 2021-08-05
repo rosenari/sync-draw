@@ -10,10 +10,10 @@ class GDocument extends Path{
     render(){
         const startX = this.x;
         const startY = this.y;
-        const midX = this.x + +(this.width * 0.5).toFixed(2);
-        const midY = this.y + +(this.height * 0.5).toFixed(2);
-        const mmidX = this.x + +(this.width * 0.75).toFixed(2);
-        const mmidY = this.y + +(this.height * 0.75).toFixed(2);
+        const midX = this.x + Math.round(this.width * 0.5);
+        const midY = this.y + Math.round(this.height * 0.5);
+        const mmidX = this.x + Math.round(this.width * 0.75);
+        const mmidY = this.y + Math.round(this.height * 0.75);
         const endX = this.x + this.width;
         const endY = this.y + this.height;
         this.elem.setAttribute('d',`M${startX} ${startY} H${endX} V${mmidY} Q${mmidX} ${midY}, ${midX} ${mmidY} T ${startX} ${mmidY} V${startY}`);

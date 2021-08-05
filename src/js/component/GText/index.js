@@ -2,8 +2,9 @@ import GraphicElement from '../GraphicElement';
 import CustomElement from '../CustomElement';
 import { getOverflowHeight, isOverflowHeight } from '../../service/util';
 import ComponentRepository from '../../service/ComponentRepository';
-import SizeBorder from '../SizeBorder';
+import SizeBorder from '../Border/SizeBorder';
 import TransformManager from '../../service/TransformManager';
+import { BOARD_ID, GROUP } from '../../service/constant';
 
 class GText extends GraphicElement {
     _foreignObj = null;
@@ -101,19 +102,17 @@ class GText extends GraphicElement {
     }
 
     clickHandler(e) {
-        const repository = ComponentRepository.getInstance();
-        const board = repository.getComponentById('board');
+        const board = ComponentRepository.getComponentById(BOARD_ID);
         board.destroyBorder();
         board.border = new SizeBorder({
-            parentId: 'temp-group',
+            parentId: GROUP.TEMP_GROUP_ID,
             target: this
         });
     }
 }
 
 function destroyBorder(){
-    const repository = ComponentRepository.getInstance();
-    const board = repository.getComponentById('board');
+    const board = ComponentRepository.getComponentById(BOARD_ID);
     board.destroyBorder();
 }
 

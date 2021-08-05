@@ -3,10 +3,21 @@ import GraphicElement from '../GraphicElement';
 import Group from '../Group';
 import GText from '../GText';
 import {tinyGUID} from '../../service/util';
-import SizeBorder from '../SizeBorder';
+import SizeBorder from '../Border/SizeBorder';
 import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
+import Line from '../Line';
+import GLine from '../Line/GLine';
+import GPolyline from '../Line/GPolyline';
 import './index.css';
+import {
+    BOARD_ID,
+    BORDER,
+    COLOR,
+    MENU_BAR,
+    PLACE_HOLDER_ID,
+    GROUP
+} from '../../service/constant';
 
 export default class Board extends GraphicElement {
     static startPoint = {};
@@ -16,23 +27,32 @@ export default class Board extends GraphicElement {
     _border = null;
 
     constructor({ parentId, content = '', classList, handlers = {}}) {
-        super({ parentId, id: 'board', tagName: 'svg', content, classList, handlers});
+        super({ parentId, id: BOARD_ID, tagName: 'svg', content, classList, handlers});
         this.elem.setAttribute('style',`width: 100%; height: 100%;`);
 
-        this.borderGroup = new Group({
-            parentId:this.id,
-            id:'border-group'
-        });
+        const groupList = [
+            {
+                id: GROUP.BORDER_GROUP_ID,
+                propsName: 'borderGroup'
+            },
+            {
+                id: GROUP.SHAPE_GROUP_ID,
+                propsName: 'shapeGroup'
+            },
+            {
+                id: GROUP.TEMP_GROUP_ID,
+                propsName: 'tempGroup'
+            }
+        ];
 
-        this.shapeGroup = new Group({
-            parentId:this.id,
-            id:'shape-group'
-        });
+        const registerGroup = (group) => {
+            this[`${group.propsName}`] = new Group({
+               parentId: this.id,
+               id: group.id
+            });
+        }
 
-        this.tempGroup = new Group({
-            parentId:this.id,
-            id:'temp-group'
-        });
+        groupList.forEach(registerGroup);
 
         this.elem.addEventListener('mousedown',(e) => {
             this._mouseDownHandler(e);
@@ -71,148 +91,137 @@ export default class Board extends GraphicElement {
         this._border = value;
     }
 
-    clickHandler(e) {
-        //this.destroyBorder();
-    }
-
     _mouseDownHandler(e) {
-        setPointerEvent(true);
+        setDisablePointerEvent(true);
         Board.startPoint.x = e.pageX;
         Board.startPoint.y = e.pageY;
-        const repository = ComponentRepository.getInstance();
-        const itemMenubar = repository.getComponentById('item-menu-bar');
+        const itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID);
         let selected = null;
         if(itemMenubar.selectMenu){
-            selected = repository.getComponentById(itemMenubar.selectMenu);
+            selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
+
+            if(selected.id === itemMenubar.handBtn.id){
+                this.mouseDownHandlerForHand(e);
+            }
+
+            //드래그하여 테두리 생성하는 경우
             if(selected.relatedBorder){
                 this.createBorder(e, selected.relatedBorder, this.createShapePlaceHolder(selected.relatedClass));
             }
 
-            if(selected.id === itemMenubar.lineGBtn.id){
-                if(!Board.startPoint.line) {
-                    Board.startPoint.clickCount = 1;
-                    Board.startPoint.lineplaceholder = this.createLinePlaceHolder(selected.relatedClass);
-                    Board.startPoint.lineplaceholder.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-                    Board.startPoint.line = this.createLine(selected.relatedClass);
-                }else {
-                    Board.startPoint.line.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-                    Board.startPoint.lineplaceholder.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-
-                    if(++Board.startPoint.clickCount === 2){
-                        Board.startPoint = {};
-                        EventController.mouseMoveHandler = null;
-                        setPointerEvent(false);
-                        this.destroyBorder();
-                        itemMenubar.selectMenu = itemMenubar.mouseBtn;
-                        return;
-                    }
-                }
-            }
-
-            if(selected.id === itemMenubar.ploylineGBtn.id){
-                if(!Board.startPoint.line) {
-                    Board.startPoint.lineplaceholder = this.createLinePlaceHolder(selected.relatedClass);
-                    Board.startPoint.lineplaceholder.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-                    Board.startPoint.line = this.createLine(selected.relatedClass);
-
-                    EventController.dbClickHandler = (e) => {
-                        Board.startPoint = {};
-                        setPointerEvent(false);
-                        this.destroyBorder();
-                        itemMenubar.selectMenu = itemMenubar.mouseBtn;
-                        EventController.mouseMoveHandler = null;
-                        EventController.dbClickHandler = null;
-                        return;
-                    }
-                }else {
-                    Board.startPoint.line.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-                    Board.startPoint.lineplaceholder.addPoint({
-                        x: e.pageX,
-                        y: e.pageY
-                    });
-                }
-            }
-
-            if(selected.id === itemMenubar.handBtn.id){
-                this.destroyBorder();
-                Board.startPoint.translateX = TransformManager.translateX;
-                Board.startPoint.translateY = TransformManager.translateY;
-                Board.startPoint.moveX = TransformManager.moveX;
-                Board.startPoint.moveY = TransformManager.moveY;
+            if(selected?.relatedClass?.prototype instanceof Line){
+                this.mouseDownHandlerForLine({ e, selected, itemMenubar });
             }
         }
+
+        selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
 
         EventController.mouseMoveHandler = (e) => {
             if(selected?.id === itemMenubar.handBtn.id){
-                const dx = Board.startPoint.x - e.pageX;
-                const dy = Board.startPoint.y - e.pageY;
-
-                TransformManager.moveX = Board.startPoint.moveX + dx;
-                TransformManager.moveY = Board.startPoint.moveY + dy;
-                TransformManager.translateX = Board.startPoint.translateX + dx;
-                TransformManager.translateY = Board.startPoint.translateY + dy;
-            }
-            if(selected?.id === itemMenubar.lineGBtn.id || selected?.id === itemMenubar.ploylineGBtn.id){
-                const lineplaceholder = Board.startPoint.lineplaceholder;
-                lineplaceholder.points[lineplaceholder.points.length - 1] = {
-                    x: e.pageX,
-                    y: e.pageY
-                };
-                lineplaceholder.render();
+                this.mouseMoveHandlerForHand(e);
             }
 
-            if(!this.border) return;
+            if(this.border) {
+                this.renderBorder(e);
+            }
 
-            this.renderBorder(e);
+            if(selected?.relatedClass?.prototype instanceof Line){
+                this.mouseMoveHandlerForLine(e);
+            }
         }
 
-        if(selected?.id === itemMenubar.lineGBtn.id){
-            return;
-        }
-        if(selected?.id === itemMenubar.ploylineGBtn.id){
+        if(selected?.relatedClass?.prototype instanceof Line){
             return;
         }
 
         EventController.mouseUpHandler = (e) => {
-            let target = null;
-            if(itemMenubar.selectMenu === itemMenubar.handBtn.id){
-                setPointerEvent(false);
+            let shape = null;
+            const finish = () => {
+                setDisablePointerEvent(false);
                 Board.startPoint = {};
                 EventController.mouseMoveHandler = null;
                 EventController.mouseUpHandler = null;
-                return;
             }
+
             if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
                 if(this.border instanceof SizeBorder) return;
             }
-            const selected = repository.getComponentById(itemMenubar.selectMenu);
+
             if(selected?.relatedClass) {
-                target = this.createShape(selected.relatedClass);
+                shape = this.createShape(selected.relatedClass);
+
+                itemMenubar.selectMenu = itemMenubar.mouseBtn;
             }
 
             this.destroyBorder(e);
-            itemMenubar.selectMenu = itemMenubar.mouseBtn;
-            target?.clickHandler?.();
-
-            setPointerEvent(false);
-            EventController.mouseMoveHandler = null;
-            EventController.mouseUpHandler = null;
+            shape?.clickHandler?.();
+            finish();
         }
+    }
+
+    mouseDownHandlerForHand(e) {
+        this.destroyBorder();
+        Board.startPoint.x = e.pageX;
+        Board.startPoint.y = e.pageY;
+        Board.startPoint.translateX = TransformManager.translateX;
+        Board.startPoint.translateY = TransformManager.translateY;
+        Board.startPoint.moveX = TransformManager.moveX;
+        Board.startPoint.moveY = TransformManager.moveY;
+    }
+
+    mouseDownHandlerForLine({ e, selected, itemMenubar }) {
+        const x = e.pageX;
+        const y = e.pageY;
+        const finish = () => {
+            itemMenubar.selectMenu = itemMenubar.mouseBtn;
+
+            Board.startPoint = {};
+            this.destroyBorder();
+            setDisablePointerEvent(false);
+            EventController.dbClickHandler = null;
+            EventController.mouseMoveHandler = null;
+        }
+
+        if(!Board.startPoint.line) {
+            Board.startPoint.lineplaceholder = this.createLinePlaceHolder(selected.relatedClass);
+            Board.startPoint.lineplaceholder.addPoint({ x, y });
+            Board.startPoint.line = this.createLine(selected.relatedClass);
+
+            if(selected.relatedClass === GLine){
+                Board.startPoint.line.arrow.elem.setAttribute('fill','none');
+            }
+
+            if(selected.relatedClass === GPolyline) {
+                EventController.dbClickHandler = finish;
+            }
+        }else {
+            Board.startPoint.lineplaceholder.addPoint({ x, y });
+            Board.startPoint.line.addPoint({ x, y });
+
+            if(selected.relatedClass === GLine){
+                Board.startPoint.line.arrow.elem.setAttribute('fill',COLOR.BLACK);
+                finish();
+            }
+        }
+    }
+
+    mouseMoveHandlerForHand(e){
+        const dx = Board.startPoint.x - e.pageX;
+        const dy = Board.startPoint.y - e.pageY;
+
+        TransformManager.moveX = Board.startPoint.moveX + dx;
+        TransformManager.moveY = Board.startPoint.moveY + dy;
+        TransformManager.translateX = Board.startPoint.translateX + dx;
+        TransformManager.translateY = Board.startPoint.translateY + dy;
+    }
+
+    mouseMoveHandlerForLine(e){
+        const linePlaceHolder = Board.startPoint.lineplaceholder;
+        linePlaceHolder.points[linePlaceHolder.points.length - 1] = {
+            x: e.pageX,
+            y: e.pageY
+        };
+        linePlaceHolder.render();
     }
 
     createBorder(e ,type, shape = null) {
@@ -220,7 +229,7 @@ export default class Board extends GraphicElement {
         Board.startPoint.y = e.pageY;
         this.border = new type({
             parentId: this.tempGroup.id,
-            id: 'border',
+            id: BORDER.BORDER_ID,
             shape
         });
         this.border.x = Board.startPoint.x;
@@ -251,9 +260,7 @@ export default class Board extends GraphicElement {
         this.border.height = Math.abs(height);
     }
 
-    destroyBorder(e) {
-        Board.startPoint = {};
-        //placeholder 제거
+    destroyBorder() {
         const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
         if(placeholder) placeholder.parentNode.removeChild(placeholder);
         this.tempGroup.elem.innerHTML = '';
@@ -265,7 +272,7 @@ export default class Board extends GraphicElement {
 
         const placeholder =  new type({
             parentId: this.shapeGroup.id,
-            id: 'placeholder'
+            id: PLACE_HOLDER_ID
         });
         placeholder.elem.setAttribute('class','place-holder');
         return placeholder;
@@ -274,12 +281,12 @@ export default class Board extends GraphicElement {
     createLinePlaceHolder(type) {
         const placeholder = new type({
             parentId: this.shapeGroup.id,
-            id: 'placeholder',
+            id: PLACE_HOLDER_ID,
             startX: Board.startPoint.x,
             startY: Board.startPoint.y
         });
-        placeholder.line.elem.setAttribute('stroke','orange');
-        placeholder.arrow?.elem.setAttribute('fill','orange');
+        placeholder.line.elem.setAttribute('stroke',COLOR.ORANGE);
+        placeholder.arrow?.elem.setAttribute('fill',COLOR.ORANGE);
         placeholder.line.elem.setAttribute('stroke-dasharray', '6');
         placeholder.line.elem.setAttribute('class', 'place-holder');
         return placeholder;
@@ -306,12 +313,11 @@ export default class Board extends GraphicElement {
     }
 }
 
-function setPointerEvent(disable) {
-    const repository = ComponentRepository.getInstance();
-    const menuBar = [ repository.getComponentById('page-menu-bar'),
-        repository.getComponentById('item-menu-bar'),
-        repository.getComponentById('style-menu-bar'),
-    repository.getComponentById('history-menu-bar')];
+function setDisablePointerEvent(disable) {
+    const menuBar = [ MENU_BAR.PAGE_MENU_BAR_ID,
+        MENU_BAR.ITEM_MENU_BAR_ID,
+        MENU_BAR.STYLE_MENU_BAR_ID,
+        MENU_BAR.HISTORY_MENU_BAR_ID].map(id => ComponentRepository.getComponentById(id));
 
     if(disable){
         menuBar.forEach(menu => menu.elem.classList.add('disable-pointer-event'));
