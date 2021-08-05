@@ -1,6 +1,7 @@
 import Path from '../index';
+import TransformManager from '../../../../service/TransformManager';
 
-export default class GDisk extends Path{
+class GDisk extends Path{
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });
@@ -13,7 +14,7 @@ export default class GDisk extends Path{
         const curveY_2 = this.y + +(this.height * 0.2).toFixed(2);
         const endX = this.x + this.width;
         const endY = this.y + +(this.height * 0.9).toFixed(2);
-        const curveY_3 = endY + +(this.height * 0.1).toFixed(2);;
+        const curveY_3 = endY + +(this.height * 0.1).toFixed(2);
         this.elem.setAttribute('d',`M${startX} ${startY} C${startX} ${curveY_1}, ${endX} ${curveY_1}, ${endX} ${startY} 
         C${endX} ${curveY_2}, ${startX} ${curveY_2}, ${startX} ${startY} 
         V${endY} 
@@ -21,3 +22,5 @@ export default class GDisk extends Path{
         V${startY}`);
     }
 }
+
+export default TransformManager.wrapShape(GDisk);
