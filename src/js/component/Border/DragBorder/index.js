@@ -47,6 +47,7 @@ export default class DragBorder extends Border{
             return true;
         }else if(grouping.length > 1){
             const board = ComponentRepository.getComponentById(BOARD_ID);
+            board.destroyBorder();
             board.createGroupBorder({
                 x: borderStartX,
                 y: borderStartY,
