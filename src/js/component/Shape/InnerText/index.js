@@ -1,6 +1,6 @@
 import GraphicElement from '../../GraphicElement';
 import CustomElement from '../../CustomElement';
-import {getOverflowHeight, isOverflowHeight} from '../../../service/util';
+import {getOverflowHeight, isOverflowHeight, rgbToHex} from '../../../service/util';
 import ComponentRepository from '../../../service/ComponentRepository';
 import { BOARD_ID } from '../../../service/constant';
 
@@ -116,6 +116,22 @@ export default class InnerText extends GraphicElement{
 
     set textBox(value) {
         this._textBox = value;
+    }
+
+    get fontSize(){
+        return this.textBox.elem.style.fontSize;
+    }
+
+    set fontSize(value){
+        this.textBox.elem.style.fontSize = value;
+    }
+
+    get fontColor(){
+        return rgbToHex(this.textBox.elem.style.color);
+    }
+
+    set fontColor(value){
+        this.textBox.elem.style.color = value;
     }
 }
 
