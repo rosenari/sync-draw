@@ -1,7 +1,6 @@
 import Border from '../index';
 import {BOARD_ID, BORDER} from '../../../service/constant';
 import Shape from '../../Shape';
-import Line from '../../Shape/Line';
 import ComponentRepository from '../../../service/ComponentRepository';
 import GText from '../../GText';
 
