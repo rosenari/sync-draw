@@ -1,4 +1,5 @@
 import CustomElement from '../CustomElement';
+import { XMLNS } from '../../service/constant';
 
 export default class GraphicElement extends CustomElement{
     constructor({parentId, id, tagName, content = '', classList, handlers = {}}){
@@ -9,6 +10,6 @@ export default class GraphicElement extends CustomElement{
             content,
             classList,
             handlers,
-            xmlns : 'http://www.w3.org/2000/svg'});
+            xmlns : XMLNS});
     }
 }

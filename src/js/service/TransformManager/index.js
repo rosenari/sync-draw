@@ -1,7 +1,8 @@
 import ComponentRepository from '../ComponentRepository';
+import { GROUP } from '../constant';
 
 let Instance = null;
-export default class TransformManager {
+class TransformManager {
     _moveX = 0;
     _moveY = 0;
     _translateX = 0;
@@ -16,89 +17,49 @@ export default class TransformManager {
     }
 
     get shapeGroup(){
-        return ComponentRepository.getComponentById('shape-group');
+        return ComponentRepository.getComponentById(GROUP.SHAPE_GROUP_ID);
     }
 
     adjustTransformToShapeGroup() {
         this.shapeGroup.elem.setAttribute('transform',`translate(${this.translateX},${this.translateY}) scale(${this.scale})`);
     }
 
-    static get moveX(){
-        return TransformManager.getInstance().moveX;
-    }
-
     get moveX(){
         return this._moveX;
-    }
-
-    static set moveX(value){
-        TransformManager.getInstance().moveX = value;
     }
 
     set moveX(value){
         this._moveX = value;
     }
 
-    static get moveY(){
-        return TransformManager.getInstance().moveY;
-    }
-
     get moveY(){
         return this._moveY;
-    }
-
-    static set moveY(value){
-        TransformManager.getInstance().moveY = value;
     }
 
     set moveY(value){
         this._moveY = value;
     }
 
-    static get translateX(){
-        return TransformManager.getInstance().translateX;
-    }
-
     get translateX() {
         return this._translateX;
     }
 
-    static set translateX(value){
-        TransformManager.getInstance().translateX = value;
-    }
-
     set translateX(value) {
-        this._translateX = +value.toFixed(0);
+        this._translateX = Math.round(value);
         this.adjustTransformToShapeGroup();
-    }
-
-    static get translateY(){
-        return TransformManager.getInstance().translateY;
     }
 
     get translateY() {
         return this._translateY;
     }
 
-    static set translateY(value){
-        TransformManager.getInstance().translateY = value;
-    }
-
     set translateY(value) {
-        this._translateY = +value.toFixed(0);
+        this._translateY = Math.round(value);
         this.adjustTransformToShapeGroup();
-    }
-
-    static get scale(){
-        return TransformManager.getInstance().scale;
     }
 
     get scale() {
         return this._scale;
-    }
-
-    static set scale(value){
-        TransformManager.getInstance().scale = value;
     }
 
     set scale(value) {
@@ -106,75 +67,40 @@ export default class TransformManager {
         this.adjustTransformToShapeGroup();
     }
 
-    static changeSvgXToDocX(svgX){
-        return TransformManager.getInstance().changeSvgXToDocX(svgX);
-    }
-
     changeSvgXToDocX(svgX){
-        return +(svgX * this.scale).toFixed(0) + this.translateX;
-    }
-
-    static changeDocXToSvgX(docX){
-        return TransformManager.getInstance().changeDocXToSvgX(docX);
+        return Math.round(svgX * this.scale) + this.translateX;
     }
 
     changeDocXToSvgX(docX){
-        return +((docX - this.translateX) / this.scale).toFixed(0);
-    }
-
-    static changeSvgYToDocY(svgY){
-        return TransformManager.getInstance().changeSvgYToDocY(svgY);
+        return Math.round((docX - this.translateX) / this.scale);
     }
 
     changeSvgYToDocY(svgY){
-        return +(svgY * this.scale).toFixed(0) + this.translateY;
-    }
-
-    static changeDocYToSvgY(docY){
-        return TransformManager.getInstance().changeDocYToSvgY(docY);
+        return Math.round(svgY * this.scale) + this.translateY;
     }
 
     changeDocYToSvgY(docY){
-        return +((docY - this.translateY) / this.scale).toFixed(0);
-    }
-
-    static changeSvgWidthToDocWidth(svgWidth){
-        return TransformManager.getInstance().changeSvgWidthToDocWidth(svgWidth);
+        return Math.round((docY - this.translateY) / this.scale);
     }
 
     changeSvgWidthToDocWidth(svgWidth){
-        return +(svgWidth * this.scale).toFixed(0);
-    }
-
-    static changeDocWidthToSvgWidth(docWidth){
-        return TransformManager.getInstance().changeDocWidthToSvgWidth(docWidth);
+        return Math.round(svgWidth * this.scale);
     }
 
     changeDocWidthToSvgWidth(docWidth){
-        return +(docWidth / this.scale).toFixed(0);
-    }
-
-    static changeSvgHeightToDocHeight(svgHeight){
-        return TransformManager.getInstance().changeSvgHeightToDocHeight(svgHeight);
+        return Math.round(docWidth / this.scale);
     }
 
     changeSvgHeightToDocHeight(svgHeight){
-        return +(svgHeight * this.scale).toFixed(0);
-    }
-
-    static changeDocHeightToSvgHeight(docHeight){
-        return TransformManager.getInstance().changeDocYToSvgY(docHeight);
+        return Math.round(svgHeight * this.scale);
     }
 
     changeDocHeightToSvgHeight(docHeight){
-        return +(docHeight / this.scale).toFixed(0);
-    }
-
-    static wrapShape(shape){
-        return TransformManager.getInstance().wrapShape(shape);
+        return Math.round(docHeight / this.scale);
     }
 
     wrapShape(shape){
+        const manager = this;
         return class extends shape {
             constructor(args) {
                 super(args);
@@ -185,7 +111,7 @@ export default class TransformManager {
             }
 
             set x(value) {
-                super.x = +((value - TransformManager.translateX) / TransformManager.scale).toFixed(0);
+                super.x = Math.round((value - manager.translateX) / manager.scale);
             }
 
             get y() {
@@ -193,7 +119,7 @@ export default class TransformManager {
             }
 
             set y(value) {
-                super.y = +((value - TransformManager.translateY) / TransformManager.scale).toFixed(0);
+                super.y = Math.round((value - manager.translateY) / manager.scale);
             }
 
             get width(){
@@ -201,7 +127,7 @@ export default class TransformManager {
             }
 
             set width(value) {
-                super.width = +(value / TransformManager.scale).toFixed(0);
+                super.width = Math.round(value / manager.scale);
             }
 
             get height(){
@@ -209,8 +135,10 @@ export default class TransformManager {
             }
 
             set height(value) {
-                super.height = +(value / TransformManager.scale).toFixed(0);
+                super.height = Math.round(value / manager.scale);
             }
         }
     }
 }
+
+export default TransformManager.getInstance();

@@ -9,7 +9,7 @@ class GPinput extends Polygon{
 
     render(){
         const leftTopX = this.x;
-        const leftTopY = this.y + +(this.height * 0.3).toFixed(2);
+        const leftTopY = this.y + Math.round(this.height * 0.3);
         const rightTopX = this.x + this.width;
         const rightTopY = this.y;
         const rightBottomX = rightTopX;

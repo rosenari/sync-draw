@@ -1,9 +1,10 @@
-import Border from '../Border';
-import GraphicElement from '../GraphicElement';
-import ComponentRepository from '../../service/ComponentRepository';
-import { tinyGUID } from '../../service/util';
-import EventController from '../../service/EventController';
-import TransformManager from '../../service/TransformManager';
+import Border from '../index';
+import GraphicElement from '../../GraphicElement';
+import ComponentRepository from '../../../service/ComponentRepository';
+import { tinyGUID } from '../../../service/util';
+import EventController from '../../../service/EventController';
+import TransformManager from '../../../service/TransformManager';
+import {COLOR, BORDER, GROUP} from '../../../service/constant';
 
 export default class SizeBorder extends Border {
     static startPoint = {};
@@ -15,7 +16,7 @@ export default class SizeBorder extends Border {
                 }) {
         super({
             parentId,
-            id:'size-border'
+            id: BORDER.SIZE_BORDER_ID
         });
 
         this.target = target;
@@ -93,8 +94,7 @@ export default class SizeBorder extends Border {
     }
 
     createEdge(){
-        const repository = ComponentRepository.getInstance();
-        const tempGroup = repository.getComponentById('temp-group');
+        const tempGroup = ComponentRepository.getComponentById(GROUP.TEMP_GROUP_ID);
         for(const i in this.ratios){
             for(const j in this.ratios){
                 if(i == 1 && j == 1) continue;
@@ -178,7 +178,7 @@ export default class SizeBorder extends Border {
                 point.elem.setAttribute('r','5');
                 point.elem.setAttribute('cx',this.x + this.ratios[j] * this.width);
                 point.elem.setAttribute('cy',this.y + this.ratios[i] * this.height);
-                point.elem.setAttribute('fill','orange');
+                point.elem.setAttribute('fill',COLOR.ORANGE);
                 point.elem.setAttribute('cursor','grab');
                 point.elem.setAttribute('data-index',this.points.length);
                 this.points.push(point.elem);
@@ -190,7 +190,7 @@ export default class SizeBorder extends Border {
         let k = 0;
         for(const i in this.ratios){
             for(const j in this.ratios){
-                if(i==1 && j==1) continue;
+                if(i == 1 && j == 1) continue;
                 const cx = x + this.ratios[j] * width;
                 const cy = y + this.ratios[i] * height;
                 this.points[k].setAttribute('cx', cx);

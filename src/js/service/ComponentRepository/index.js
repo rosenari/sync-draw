@@ -1,6 +1,6 @@
 let Instance = null;
 
-export default class ComponentRepository{
+class ComponentRepository{
 
     constructor() { }
 
@@ -9,27 +9,17 @@ export default class ComponentRepository{
         return Instance;
     }
 
-    static getComponentById(id){
-        return ComponentRepository.getInstance().getComponentById(id);
-    }
-
     getComponentById(id){
         return this[id];
-    }
-
-    static setComponentById(id, component){
-        ComponentRepository.getInstance().setComponentById(id, component);
     }
 
     setComponentById(id,component){
         this[id] = component;
     }
 
-    static removeComponentById(id){
-        ComponentRepository.getInstance().removeComponentById(id);
-    }
-
     removeComponentById(id){
         delete this[id];
     }
 }
+
+export default ComponentRepository.getInstance();

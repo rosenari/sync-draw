@@ -4,17 +4,20 @@ import ComponentRepository from '../../service/ComponentRepository';
 import {
     DISK_ICON,
     DOCUMENT_ICON,
-    HAND_GRAB, IO_ICON,
+    HAND_GRAB,
+    IO_ICON,
     JUDGMENT_ICON,
     LINE_ICON,
-    MOUSE_CURSOR, PAGECONN_ICON, PINPUT_ICON,
+    MOUSE_CURSOR,
+    PAGECONN_ICON,
+    PINPUT_ICON,
     POLYLINE_ICON,
     PROCESS_ICON,
     READY_ICON,
     TERMINAL_ICON
 } from '../../images';
 import Border from '../Border';
-import CreateBorder from '../CreateBorder';
+import CreateBorder from '../Border/CreateBorder';
 import GTerminal from '../Shape/Rect/GTerminal';
 import GReady from '../Shape/Polygon/GReady';
 import GProcess from '../Shape/Rect/GProcess';
@@ -26,8 +29,9 @@ import GPinput from '../Shape/Polygon/GPinput';
 import GText from '../GText';
 import GDisk from '../Shape/Path/GDisk';
 import GLine from '../Line/GLine';
+import GPolyline from '../Line/GPolyline';
+import {BOARD_ID, MENU_BAR} from '../../service/constant';
 import './index.css';
-import GPolyline from "../Line/GPolyline";
 
 export default class ItemMenubar extends CustomElement{
     _selectMenu = null;
@@ -49,7 +53,7 @@ export default class ItemMenubar extends CustomElement{
     constructor({parentId}) {
         super({
             parentId,
-            id: 'item-menu-bar',
+            id: MENU_BAR.ITEM_MENU_BAR_ID,
             tagName: 'div',
             classList:['item-menu-bar']
         });
@@ -166,14 +170,13 @@ export default class ItemMenubar extends CustomElement{
             const button =  new CustomButton({
                 parentId: this.id,
                 id: `item-${name}-btn`,
-                content: content || `<img src='data:image/svg+xml;base64,${icon}' style='pointer-events: none;' width=${iconSize.width} height=${iconSize.height} />`,
+                content: content || `<img src='data:image/svg+xml;base64,${icon}' style='pointer-events: none;' width=${iconSize.width} height=${iconSize.height}  alt="loading" />`,
                 classList: ['item-btn',`item-${name}-btn`],
                 cursorType,
                 handlers: {
                     clickHandler: (e) => {
-                        const repository = ComponentRepository.getInstance();
-                        const selected = repository.getComponentById(e.target.id);
-                        this.selectMenu = selected;
+                        ComponentRepository.getComponentById(BOARD_ID).destroyBorder();
+                        this.selectMenu = ComponentRepository.getComponentById(e.target.id);
                     }
                 }
             });
@@ -327,7 +330,5 @@ export default class ItemMenubar extends CustomElement{
 }
 
 function changeCursor(type){
-    const repository = ComponentRepository.getInstance();
-    const style = repository.getComponentById('board').elem.getAttribute('style');
-    repository.getComponentById('board').elem.setAttribute('style',`width:100%;height:100%;cursor:${type};`)
+    ComponentRepository.getComponentById(BOARD_ID).elem.setAttribute('style',`width:100%;height:100%;cursor:${type};`)
 }
