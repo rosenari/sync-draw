@@ -16,7 +16,6 @@ import {
     READY_ICON,
     TERMINAL_ICON
 } from '../../images';
-import Border from '../Border';
 import CreateBorder from '../Border/CreateBorder';
 import GTerminal from '../Shape/Rect/GTerminal';
 import GReady from '../Shape/Polygon/GReady';
@@ -32,6 +31,7 @@ import GLine from '../Shape/Line/GLine';
 import GPolyline from '../Shape/Line/GPolyline';
 import {BOARD_ID, MENU_BAR} from '../../service/constant';
 import './index.css';
+import DragBorder from '../Border/DragBorder';
 
 export default class ItemMenubar extends CustomElement{
     _selectMenu = null;
@@ -69,7 +69,7 @@ export default class ItemMenubar extends CustomElement{
                 name: 'mouse',
                 icon: MOUSE_CURSOR,
                 iconSize: { width: '35', height: '35' },
-                relatedBorder: Border
+                relatedBorder: DragBorder
             },
             {
                 name: 'text',
