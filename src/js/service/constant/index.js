@@ -61,9 +61,10 @@ export const BUTTON = {
 export const RANDOM_MAX = 0x10000000;
 
 export const COLOR = {
-    ORANGE : 'orange',
+    ORANGE : '#FFA500',
     KAKAO : '#FEE500',
-    BLACK : '#555'
+    BLACK : '#555555',
+    WHITE : '#FFFFFF'
 }
 
 export const RATIO = {

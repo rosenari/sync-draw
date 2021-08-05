@@ -1,7 +1,7 @@
 import GraphicElement from '../GraphicElement';
 import ComponentRepository from '../../service/ComponentRepository';
 import SizeBorder from '../Border/SizeBorder';
-import {BOARD_ID, COLOR, MENU_BAR, GROUP} from '../../service/constant';
+import {BOARD_ID, COLOR, MENU_BAR, GROUP, FONT} from '../../service/constant';
 import {
     getOverflowHeight,
     getOverflowWidth,
@@ -21,8 +21,8 @@ export default class Shape extends GraphicElement {
 
     constructor({ parentId, id, tagName, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, tagName, classList, handlers });
-        this.elem.setAttribute('fill','white');
-        this.elem.setAttribute('stroke', COLOR.BLACK);
+        this.fill = COLOR.WHITE;
+        this.strokeColor = COLOR.BLACK;
         this.elem.setAttribute('stroke-width', '3');
     }
 
@@ -100,6 +100,38 @@ export default class Shape extends GraphicElement {
         this._innerText = value;
     }
 
+    get fontSize(){
+        return this.innerText.fontSize;
+    }
+
+    set fontSize(value){
+        this.innerText.fontSize = value;
+    }
+
+    get fontColor(){
+        return this.innerText.fontColor;
+    }
+
+    set fontColor(value){
+        this.innerText.fontColor = value;
+    }
+
+    get fill(){
+        return this.elem.getAttribute('fill');
+    }
+
+    set fill(value){
+        this.elem.setAttribute('fill', value);
+    }
+
+    get strokeColor(){
+        return this.elem.getAttribute('stroke');
+    }
+
+    set strokeColor(value){
+        this.elem.setAttribute('stroke', value);
+    }
+
     addLinkedLine({ line, pointInfo }){
         this.linkedLine.set(line,pointInfo);
     }
@@ -119,6 +151,8 @@ export default class Shape extends GraphicElement {
             content: defaultText,
             relatedShapeId: this.id
         });
+        this.innerText.fontSize = FONT.SIZE_3;
+        this.innerText.fontColor = COLOR.BLACK;
 
         if(isOverflowWidth(this.innerText.textBox.elem)){
             this.width += getOverflowWidth(this.innerText.textBox.elem) + InnerText.padding * 2;
@@ -129,13 +163,14 @@ export default class Shape extends GraphicElement {
         }
     }
 
-    dbClickHandler(e){
+    dbClickHandler(e) {
         if(this.innerText) this.innerText.textBox.dbClickHandler(e);
     }
 
     clickHandler(e) {
         const board = ComponentRepository.getComponentById(BOARD_ID);
         const itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID);
+        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
         if(ComponentRepository.getComponentById(itemMenubar.selectMenu).name !== 'mouse'){
             return;
         }
@@ -148,5 +183,10 @@ export default class Shape extends GraphicElement {
             parentId: GROUP.TEMP_GROUP_ID,
             target: this
         });
+
+        styleMenubar.fontSizeSelect.elem.value = this.innerText.fontSize;
+        styleMenubar.fontColorInput.elem.value = this.innerText.fontColor;
+        styleMenubar.fillInput.elem.value = this.fill;
+        styleMenubar.strokeInput.elem.value = this.strokeColor;
     }
 }
