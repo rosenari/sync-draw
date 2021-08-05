@@ -1,6 +1,7 @@
 import Polygon from '../index';
+import TransformManager from '../../../../service/TransformManager';
 
-export default class GReady extends Polygon {
+class GReady extends Polygon {
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });
@@ -23,3 +24,5 @@ export default class GReady extends Polygon {
         ${rightX},${rightY} ${bottomRightX},${bottomRightY} ${bottomLeftX},${bottomLeftY} ${leftX},${leftY}`);
     }
 }
+
+export default TransformManager.wrapShape(GReady);

@@ -1,6 +1,6 @@
 import Shape from '../index';
 
-export default class Rect extends Shape {
+class Rect extends Shape {
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, tagName: 'rect', classList, handlers });
@@ -42,3 +42,5 @@ export default class Rect extends Shape {
         this.elem.setAttribute('height', value);
     }
 }
+
+export default Rect;

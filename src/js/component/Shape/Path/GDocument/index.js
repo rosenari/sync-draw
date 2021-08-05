@@ -1,6 +1,7 @@
 import Path from '../index';
+import TransformManager from '../../../../service/TransformManager';
 
-export default class GDocument extends Path{
+class GDocument extends Path{
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });
@@ -18,3 +19,5 @@ export default class GDocument extends Path{
         this.elem.setAttribute('d',`M${startX} ${startY} H${endX} V${mmidY} Q${mmidX} ${midY}, ${midX} ${mmidY} T ${startX} ${mmidY} V${startY}`);
     }
 }
+
+export default TransformManager.wrapShape(GDocument);
