@@ -15,6 +15,7 @@ class Rect extends Shape {
     }
 
     set x(value) {
+        super.x = value;
         this.elem.setAttribute('x', value);
     }
 
@@ -23,6 +24,7 @@ class Rect extends Shape {
     }
 
     set y(value) {
+        super.y = value;
         this.elem.setAttribute('y', value);
     }
 
@@ -31,6 +33,7 @@ class Rect extends Shape {
     }
 
     set width(value) {
+        super.width = value;
         this.elem.setAttribute('width', value);
     }
 
@@ -39,6 +42,7 @@ class Rect extends Shape {
     }
 
     set height(value) {
+        super.height = value;
         this.elem.setAttribute('height', value);
     }
 }
