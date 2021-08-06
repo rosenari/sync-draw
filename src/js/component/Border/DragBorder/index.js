@@ -1,5 +1,5 @@
 import Border from '../index';
-import {BOARD_ID, BORDER} from '../../../service/constant';
+import {BOARD_ID, BORDER, MENU_BAR} from '../../../service/constant';
 import Shape from '../../Shape';
 import ComponentRepository from '../../../service/ComponentRepository';
 import TransformManager from '../../../service/TransformManager';
@@ -47,6 +47,7 @@ export default class DragBorder extends Border{
             return true;
         }else if(grouping.length > 1){
             const board = ComponentRepository.getComponentById(BOARD_ID);
+            const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
             board.destroyBorder();
             board.createGroupBorder({
                 x: borderStartX,
@@ -55,6 +56,7 @@ export default class DragBorder extends Border{
                 height: borderEndY - borderStartY,
                 shapes: grouping
             });
+            styleMenubar.show();
             return true;
         }
 

@@ -45,6 +45,8 @@ export default class App {
             parentId: this.id
         });
 
+        this.styleMenubar.hide();
+
         this.historyMenubar = new HistoryMenubar({
             parentId: this.id
         });

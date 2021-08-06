@@ -7,9 +7,10 @@
     width:138px;
     height:220px;
     background: #FEE500;
-    border:1px solid #ddd;
+    border:1px solid white;
     border-radius: 5px;
     z-index: 99;
+    transition: height 0.5s;
 }
 
 .style-text{

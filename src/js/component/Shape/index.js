@@ -101,18 +101,26 @@ export default class Shape extends GraphicElement {
     }
 
     get fontSize(){
+        if(!this.innerText) return null;
+
         return this.innerText.fontSize;
     }
 
     set fontSize(value){
+        if(!this.innerText) return null;
+
         this.innerText.fontSize = value;
     }
 
     get fontColor(){
+        if(!this.innerText) return null;
+
         return this.innerText.fontColor;
     }
 
     set fontColor(value){
+        if(!this.innerText) return null;
+
         this.innerText.fontColor = value;
     }
 
@@ -184,6 +192,7 @@ export default class Shape extends GraphicElement {
             target: this
         });
 
+        styleMenubar.show();
         styleMenubar.fontSizeSelect.elem.value = this.innerText.fontSize;
         styleMenubar.fontColorInput.elem.value = this.innerText.fontColor;
         styleMenubar.fillInput.elem.value = this.fill;

@@ -18,7 +18,6 @@ import {
     PLACE_HOLDER_ID,
     GROUP
 } from '../../service/constant';
-import Border from "../Border";
 import DragBorder from "../Border/DragBorder";
 import GroupBorder from "../Border/GroupBorder";
 
@@ -284,12 +283,14 @@ export default class Board extends GraphicElement {
 
     destroyBorder() {
         const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
+        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
         if(placeholder){
             placeholder.parentNode.removeChild(placeholder);
             ComponentRepository.removeComponentById(placeholder.id);
         }
         this.tempGroup.elem.innerHTML = '';
         this.border = null;
+        styleMenubar.hide();
     }
 
     destroySpecificBorder(borderIds){

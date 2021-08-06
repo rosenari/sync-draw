@@ -110,6 +110,7 @@ class Line extends Shape {
 
     set strokeColor(value){
         this.line?.elem?.setAttribute('stroke', value);
+        this.arrow?.elem?.setAttribute('fill', value);
     }
 
     addPoint({ x, y }){
@@ -141,6 +142,7 @@ class Line extends Shape {
         });
 
         styleMenubar.strokeInput.elem.value = this.strokeColor;
+        styleMenubar.show();
     }
 }
 

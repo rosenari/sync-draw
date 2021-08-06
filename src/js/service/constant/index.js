@@ -1,5 +1,7 @@
 export const XMLNS = 'http://www.w3.org/2000/svg';
 
+export const APP_ID = 'app';
+
 export const BOARD_ID = 'board';
 
 export const PLACE_HOLDER_ID = 'placeholder';

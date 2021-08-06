@@ -13,6 +13,7 @@ export default class EventController {
         this.rootElem.addEventListener('mouseup',this.mouseUpHandler);
         this.rootElem.addEventListener('blur',this.blurHandler, true);
         this.rootElem.addEventListener('keyup',this.keyUpHandler);
+        this.rootElem.addEventListener('input',this.inputHandler);
     }
 
     get rootElem() {
@@ -70,5 +71,10 @@ export default class EventController {
     keyUpHandler(e) {
         const target = ComponentRepository.getComponentById(e.target.id);
         target?.keyUpHandler?.(e);
+    }
+
+    inputHandler(e) {
+        const target = ComponentRepository.getComponentById(e.target.id);
+        target.inputHandler?.(e);
     }
 }

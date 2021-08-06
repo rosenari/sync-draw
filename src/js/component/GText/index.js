@@ -133,6 +133,7 @@ class GText extends GraphicElement {
         });
         styleMenubar.fontSizeSelect.elem.value = this.fontSize;
         styleMenubar.fontColorInput.elem.value = this.fontColor;
+        styleMenubar.show();
     }
 }
 
