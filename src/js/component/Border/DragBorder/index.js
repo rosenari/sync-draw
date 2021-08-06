@@ -2,6 +2,7 @@ import Border from '../index';
 import {BOARD_ID, BORDER} from '../../../service/constant';
 import Shape from '../../Shape';
 import ComponentRepository from '../../../service/ComponentRepository';
+import TransformManager from '../../../service/TransformManager';
 import GText from '../../GText';
 
 export default class DragBorder extends Border{
@@ -15,10 +16,10 @@ export default class DragBorder extends Border{
     groupingShape(){
         const grouping = [];
         //테두리 내 모든 도형을 수집한다.
-        const lineStartX = this.x;
-        const lineStartY = this.y;
-        const lineEndX = this.x + this.width;
-        const lineEndY = this.y + this.height;
+        const lineStartX = TransformManager.changeDocXToSvgX(this.x);
+        const lineStartY = TransformManager.changeDocYToSvgY(this.y);
+        const lineEndX = lineStartX + TransformManager.changeDocWidthToSvgWidth(this.width);
+        const lineEndY = lineStartY + TransformManager.changeDocHeightToSvgHeight(this.height);
         let borderStartX = Infinity;
         let borderStartY = Infinity;
         let borderEndX = -Infinity;
