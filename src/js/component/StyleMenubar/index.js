@@ -2,8 +2,10 @@ import CustomElement from '../CustomElement';
 import CustomSelect from '../CustomSelect';
 import CustomInput from '../CustomInput';
 import {
+    BOARD_ID,
     FONT, MENU_BAR, STYLE_ELEM
 } from '../../service/constant';
+import ComponentRepository from "../../service/ComponentRepository";
 import './index.css';
 
 export default class StyleMenubar extends CustomElement{
@@ -46,7 +48,8 @@ export default class StyleMenubar extends CustomElement{
             },
             handlers:{
                 changeHandler: function(e){
-                    console.log('change !!');
+                    const board = ComponentRepository.getComponentById(BOARD_ID);
+                    if(board.border?.fontSize) board.border.fontSize = e.target.value;
                 }
             }
         });
@@ -65,8 +68,9 @@ export default class StyleMenubar extends CustomElement{
             type: 'color',
             classList: ['style-input'],
             handlers: {
-                changeHandler: function(e){
-                    console.log(e.target.value);
+                inputHandler: function(e){
+                    const board = ComponentRepository.getComponentById(BOARD_ID);
+                    if(board.border?.fontColor) board.border.fontColor = e.target.value;
                 }
             }
         });
@@ -85,8 +89,9 @@ export default class StyleMenubar extends CustomElement{
             type: 'color',
             classList: ['style-input'],
             handlers: {
-                changeHandler: function(e){
-                    console.log(e.target.value);
+                inputHandler: function(e){
+                    const board = ComponentRepository.getComponentById(BOARD_ID);
+                    if(board.border?.fill) board.border.fill = e.target.value;
                 }
             }
         });
@@ -105,8 +110,9 @@ export default class StyleMenubar extends CustomElement{
             type: 'color',
             classList: ['style-input'],
             handlers: {
-                changeHandler: function(e){
-                    console.log(e.target.value);
+                inputHandler: function(e){
+                    const board = ComponentRepository.getComponentById(BOARD_ID);
+                    if(board.border?.strokeColor) board.border.strokeColor = e.target.value;
                 }
             }
         });
@@ -175,5 +181,15 @@ export default class StyleMenubar extends CustomElement{
 
     set strokeInput(value) {
         this._strokeInput = value;
+    }
+
+    show(){
+        this.elem.style.border = '1px solid #ddd';
+        this.elem.style.height ='220px';
+    }
+
+    hide(){
+        this.elem.style.height ='0px';
+        this.elem.style.border = '1px solid #fff';
     }
 }
