@@ -23,7 +23,7 @@ class GLine extends Line {
 
         this.marker.elem.setAttribute('markerWidth','10');
         this.marker.elem.setAttribute('markerHeight','10');
-        this.marker.elem.setAttribute('refX','0');
+        this.marker.elem.setAttribute('refX','3');
         this.marker.elem.setAttribute('refY','1.5');
         this.marker.elem.setAttribute('orient','auto');
 

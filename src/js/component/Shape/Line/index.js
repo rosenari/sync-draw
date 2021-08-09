@@ -29,7 +29,7 @@ class Line extends Shape {
             }
         });
 
-        this.addPoint({
+        if(startX && startY) this.addPoint({
             x: startX,
             y: startY
         });
