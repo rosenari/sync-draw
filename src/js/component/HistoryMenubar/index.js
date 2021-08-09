@@ -1,5 +1,6 @@
 import CustomElement from '../CustomElement';
 import CustomButton from '../CustomButton';
+import HistoryManager from '../../service/HistoryManager';
 import './index.css';
 import { MENU_BAR, BUTTON } from '../../service/constant';
 
@@ -22,7 +23,7 @@ export default class HistoryMenubar extends CustomElement{
             classList:['history-btn'],
             handlers:{
                 clickHandler: function(e){
-                    console.log('undo button !');
+                    HistoryManager.undo();
                 }
             }
         });
@@ -34,7 +35,7 @@ export default class HistoryMenubar extends CustomElement{
             classList:['history-btn'],
             handlers:{
                 clickHandler: function(e){
-                    console.log('redo button !');
+                    HistoryManager.redo();
                 }
             }
         });
