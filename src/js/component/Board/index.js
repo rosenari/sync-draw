@@ -107,7 +107,7 @@ export default class Board extends GraphicElement {
             }
 
             //드래그하여 테두리 생성하는 경우
-            if(selected.relatedBorder){
+            if(selected.relatedBorder && !(this.border instanceof GroupBorder)){
                 this.createBorder(e, selected.relatedBorder, this.createShapePlaceHolder(selected.relatedClass));
             }
 
