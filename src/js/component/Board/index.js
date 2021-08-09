@@ -294,12 +294,9 @@ export default class Board extends GraphicElement {
     }
 
     destroySpecificBorder(borderIds){
-        const childNodes = this.tempGroup.elem.childNodes;
-        for(const childNode of childNodes){
-            if(borderIds.includes(childNode.id)){
-                this.tempGroup.elem.removeChild(childNode);
-            }
-        }
+        borderIds.forEach((borderId) => {
+            document.getElementById(borderId)?.remove();
+        });
     }
 
     createShapePlaceHolder(type) {
