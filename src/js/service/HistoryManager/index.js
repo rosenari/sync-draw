@@ -63,11 +63,11 @@ class HistoryManager {
         if(this.running) return;
         this.running = true;
         if(Index < -1){
-            alert('이전 작업이 없습니다.');
+            alert('이전 작업이 없습니다.'); //커스텀 모달로 교체예정
             this.running = false;
             return;
         }else if(Index > this.history.length - 1){
-            alert('다음 작업이 없습니다.');
+            alert('다음 작업이 없습니다.'); //커스텀 모달로 교체예정
             this.running = false;
             return;
         }
@@ -151,13 +151,13 @@ class HistoryManager {
         this.running = true;
         const prevStoreData = localStorage.getItem('storeData');
         if(!prevStoreData){
-            alert('저장내역이 존재하지 않습니다.');
+            alert('저장내역이 존재하지 않습니다.'); //커스텀 모달로 교체예정
             this.running = false;
             return;
         }
         const storeData = JSON.parse(prevStoreData).find(data => data.name === name);
         if(!storeData){
-            alert('해당이름의 저장내역이 존재하지 않습니다.');
+            alert('해당이름의 저장내역이 존재하지 않습니다.'); //커스텀 모달로 교체예정
             this.running = false;
             return;
         }
