@@ -20,19 +20,19 @@ class HistoryManager {
         this._history = value;
     }
 
-    get historyIndex(){
+    get historyIndex() {
         return this._historyIndex;
     }
 
-    set historyIndex(value){
+    set historyIndex(value) {
         this._historyIndex = value;
     }
 
-    get running(){
+    get running() {
         return this._running;
     }
 
-    set running(value){
+    set running(value) {
         this._running = value;
     }
 
@@ -52,7 +52,7 @@ class HistoryManager {
         this.running = false;
     }
 
-    async commonDo(Index){
+    async commonDo(Index) {
         if(Index < -1){
             alert('이전 작업이 없습니다.');
             this.running = false;
@@ -86,7 +86,7 @@ class HistoryManager {
     }
 }
 
-function lineFirstSort(elements){
+function lineFirstSort(elements) {
     elements.sort((A, B) => {
         const svgA = JSON.parse(A);
         const svgB = JSON.parse(B);
