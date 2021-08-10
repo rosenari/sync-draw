@@ -25,7 +25,7 @@ export default class PageMenubar extends CustomElement{
             classList:['page-btn','page-new-btn'],
             handlers:{
                 clickHandler: function(e){
-                    const answer = confirm('정말 초기화 하시겠습니까 ?');
+                    const answer = confirm('정말 초기화 하시겠습니까 ?'); //커스텀 모달로 교체예정
                     if(answer) HistoryManager.clear();
                 }
             }});
@@ -38,11 +38,11 @@ export default class PageMenubar extends CustomElement{
             classList:['page-btn','page-save-btn'],
             handlers:{
                 clickHandler: function(e){
-                    const name = prompt('어떤이름으로 저장하시겠습니까 ?');
+                    const name = prompt('어떤이름으로 저장하시겠습니까 ?'); //커스텀 모달로 교체예정
                     if(!name) return;
 
                     if(HistoryManager.isStoreName(name)){
-                        const answer = confirm('이미 존재하는 이름입니다. 덮어쓰시겠습니까 ?');
+                        const answer = confirm('이미 존재하는 이름입니다. 덮어쓰시겠습니까 ?'); //커스텀 모달로 교체예정
                         if(!answer) return;
                     }
 
@@ -58,7 +58,7 @@ export default class PageMenubar extends CustomElement{
             classList:['page-btn','page-load-btn'],
             handlers:{
                 clickHandler: function(e){
-                    const name = prompt('복구할 저장내역 이름을 입력하세요.');
+                    const name = prompt('복구할 저장내역 이름을 입력하세요.'); //커스텀 모달로 교체예정
                     if(!name) return;
 
                     HistoryManager.restorePage(name);
