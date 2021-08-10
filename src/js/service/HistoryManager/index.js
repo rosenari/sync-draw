@@ -40,19 +40,7 @@ class HistoryManager {
         if(this.running) return;
         this.running = true;
         const prevIndex = this.historyIndex - 1;
-        if(prevIndex < -1){
-            alert('이전 작업이 없습니다.');
-            this.running = false;
-            return;
-        }
-        this.historyIndex = prevIndex;
-        ComponentRepository.removeSvgElements();
-        if(this.history[prevIndex]?.svgElements) {
-            lineFirstSort(this.history[prevIndex]?.svgElements);
-            for (const json of this.history[prevIndex]?.svgElements) {
-                await deserialize(json);
-            }
-        }
+        await this.commonDo(prevIndex);
         this.running = false;
     }
 
@@ -60,20 +48,29 @@ class HistoryManager {
         if(this.running) return;
         this.running = true;
         const nextIndex = this.historyIndex + 1;
-        if(nextIndex > this.history.length - 1){
+        await this.commonDo(nextIndex);
+        this.running = false;
+    }
+
+    async commonDo(Index){
+        if(Index < -1){
+            alert('이전 작업이 없습니다.');
+            this.running = false;
+            return;
+        }else if(Index > this.history.length - 1){
             alert('다음 작업이 없습니다.');
             this.running = false;
             return;
         }
-        this.historyIndex = nextIndex;
+
+        this.historyIndex = Index;
         ComponentRepository.removeSvgElements();
-        if(this.history[nextIndex]?.svgElements) {
-            lineFirstSort(this.history[nextIndex]?.svgElements);
-            for (const json of this.history[nextIndex]?.svgElements) {
+        if(this.history[Index]?.svgElements) {
+            lineFirstSort(this.history[Index]?.svgElements);
+            for (const json of this.history[Index]?.svgElements) {
                 await deserialize(json);
             }
         }
-        this.running = false;
     }
 
     updateHistoryToLatest({ behavior, type }) {
