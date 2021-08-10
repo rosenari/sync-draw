@@ -125,7 +125,7 @@ export function serialize(shape){
         y: shape.y,
         width: shape.width,
         height: shape.height,
-        linkedLineIds: Array.from(shape.linkedLine?.keys?.())?.map?.(line => {
+        linkedLineIds: Array.from(shape.linkedLine?.keys?.() || [])?.map?.(line => {
             return {
                 id:line.id,
                 pointInfo: shape.linkedLine.get(line)
