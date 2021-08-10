@@ -24,6 +24,9 @@ class ComponentRepository{
         document.getElementById(id)?.remove();
         document.getElementById(`${id}-innerText`)?.remove();
         delete this[id];
+        delete this[`${id}-innerText`];
+        delete this[`${id}-foreignobj`];
+        delete this[`${id}-textbox`]
     }
 
     getSvgElements(){
