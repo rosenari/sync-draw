@@ -144,7 +144,7 @@ class Line extends Shape {
         });
     }
 
-    setData({ points, strokeColor }){
+    setProperty({ points, strokeColor }){
         this.points = points;
         this.strokeColor = strokeColor;
     }

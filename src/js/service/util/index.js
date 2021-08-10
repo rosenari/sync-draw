@@ -103,7 +103,7 @@ export async function deserialize(json){
         height: obj.height,
     });
 
-    shape.setData(obj);
+    shape.setProperty(obj);
 
     return shape;
 }

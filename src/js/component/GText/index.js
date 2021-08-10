@@ -140,7 +140,7 @@ class GText extends GraphicElement {
         });
     }
 
-    setData({ text, fontSize, fontColor }){
+    setProperty({ text, fontSize, fontColor }){
         this.textBox.elem.innerText = text;
         this.fontSize = fontSize;
         this.fontColor = fontColor;
