@@ -25,6 +25,7 @@ export default class SizeBorder extends Border {
         this.width = this.target.width;
         this.height = this.target.height;
         this.elem.setAttribute('stroke-width', '6');
+        this.elem.setAttribute('stroke',COLOR.GRAY);
         this.elem.setAttribute('style','cursor:move;');
 
         this.createEdge();

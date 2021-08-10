@@ -21,5 +21,6 @@
 }
 
 .history-btn:hover{
-    background: #F7E600;
+    background: gray;
+    color:white;
 }
