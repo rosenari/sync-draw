@@ -19,7 +19,7 @@ export default class HistoryMenubar extends CustomElement{
         this.undoBtn = new CustomButton({
             parentId: this.id,
             id: BUTTON.HISTORY_UNDO_BTN_ID,
-            content: '↩️',
+            content: '⟲️',
             classList:['history-btn'],
             handlers:{
                 clickHandler: function(e){
@@ -31,7 +31,7 @@ export default class HistoryMenubar extends CustomElement{
         this.redoBtn = new CustomButton({
             parentId: this.id,
             id: BUTTON.HISTORY_REDO_BTN_ID,
-            content: '↪️️',
+            content: '⟳️️',
             classList:['history-btn'],
             handlers:{
                 clickHandler: function(e){

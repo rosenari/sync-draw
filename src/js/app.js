@@ -6,7 +6,6 @@ import ItemMenubar from './component/ItemMenubar';
 import ZoomMenubar from './component/ZoomMenubar';
 import StyleMenubar from './component/StyleMenubar';
 import HistoryMenubar from './component/HistoryMenubar';
-import CustomElement from './component/CustomElement';
 
 export default class App {
     _id = 'app';
@@ -17,7 +16,6 @@ export default class App {
     _zoomMenubar = null;
     _styleMenubar = null;
     _historyMenubar = null;
-    _logo = null;
     _controller = null;
 
     constructor({ elem }) {
@@ -49,13 +47,6 @@ export default class App {
 
         this.historyMenubar = new HistoryMenubar({
             parentId: this.id
-        });
-
-        this.logo = new CustomElement({
-            parentId: this.id,
-            tagName: 'div',
-            content: 'SyncDraw',
-            classList:['logo']
         });
 
         this.controller = new EventController(this.elem);
@@ -124,14 +115,6 @@ export default class App {
 
     set historyMenubar(value) {
         this._historyMenubar = value;
-    }
-
-    get logo() {
-        return this._logo;
-    }
-
-    set logo(value) {
-        this._logo = value;
     }
 
     get controller() {
