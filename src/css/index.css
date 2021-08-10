@@ -9,19 +9,6 @@ html, body{
     height: 100%;
 }
 
-.logo{
-    position: absolute;
-    top:15px;
-    right:20px;
-    width:130px;
-    height:40px;
-    line-height: 40px;
-    text-align: center;
-    font-size:1.7em;
-    font-weight: 600;
-    cursor:default;
-}
-
 .disable-pointer-event{
     pointer-events: none;
 }
