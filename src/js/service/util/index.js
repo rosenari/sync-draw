@@ -152,9 +152,7 @@ export async function deserialize(json){
         height: obj.height,
     });
 
-    if(obj.linkedLineIds){
-        obj.linkedLineIds?.forEach(({id, pointInfo}) => shape?.addLinkedLine?.({ line: ComponentRepository.getComponentById(id), pointInfo }));
-    }
+    obj.linkedLineIds?.forEach(({id, pointInfo}) => shape?.addLinkedLine?.({ line: ComponentRepository.getComponentById(id), pointInfo }));
     if(obj.points) shape.points = obj.points;
     if(obj.text && shape.innerText) shape.innerText.textBox.elem.innerText = obj.text;
     if(obj.text && shape.textBox) shape.textBox.elem.innerText = obj.text;
