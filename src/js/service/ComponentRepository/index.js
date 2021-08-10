@@ -1,5 +1,5 @@
 import {BOARD_ID, PLACE_HOLDER_ID} from "../constant";
-import {isSvgElement, serialize} from "../util";
+import {isGraphicElement, isSvgElement} from "../util";
 
 let Instance = null;
 
@@ -33,8 +33,8 @@ class ComponentRepository{
         const elements = [];
         for(const key in this) {
             const component = this.getComponentById(key);
-            if(isSvgElement(component)) {
-                elements.push(serialize(component));
+            if(component?.serialize && component.id !== PLACE_HOLDER_ID) {
+                elements.push(component?.serialize?.());
             }
         }
 
@@ -44,7 +44,7 @@ class ComponentRepository{
     removeSvgElements(){
         for(const key in this) {
             const component = this.getComponentById(key);
-            if(isSvgElement(component)) {
+            if(component?.serialize && component.id !== PLACE_HOLDER_ID) {
                 this.removeComponentById(component.id);
             }
         }

@@ -119,6 +119,33 @@ class GText extends GraphicElement {
         this.textBox.elem.style.color = value;
     }
 
+    serialize(){
+        const type = [this.__proto__.__proto__.constructor.name];
+        const text = this.textBox.elem.innerText;
+        const property = {
+            id: this.id,
+            parentId: this.parentId,
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            fontSize: this.fontSize,
+            fontColor: this.fontColor
+        };
+
+        return JSON.stringify({
+            type,
+            text,
+            ...property,
+        });
+    }
+
+    setData({ text, fontSize, fontColor }){
+        this.textBox.elem.innerText = text;
+        this.fontSize = fontSize;
+        this.fontColor = fontColor;
+    }
+
     dbClickHandler(e){
         this.textBox.dbClickHandler(e);
     }
