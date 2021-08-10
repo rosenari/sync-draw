@@ -125,6 +125,30 @@ class Line extends Shape {
         this.render();
     }
 
+    serialize(){
+        const type = ['Shape','Line', this.__proto__.constructor.name];
+        const property = {
+            id: this.id,
+            parentId: this.parentId,
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            points: this.points,
+            strokeColor: this.strokeColor
+        };
+
+        return JSON.stringify({
+            type,
+            ...property,
+        });
+    }
+
+    setData({ points, strokeColor }){
+        this.points = points;
+        this.strokeColor = strokeColor;
+    }
+
     clickHandler(e) {
         const board = ComponentRepository.getComponentById(BOARD_ID);
         const itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID);

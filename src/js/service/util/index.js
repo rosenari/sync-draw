@@ -1,8 +1,5 @@
 import ComponentRepository from '../ComponentRepository';
-import {PLACE_HOLDER_ID, RANDOM_MAX} from '../constant';
-import GText from "../../component/GText";
-import Line from "../../component/Shape/Line";
-import Shape from "../../component/Shape";
+import {RANDOM_MAX} from '../constant';
 
 export function add(x, y){
     return x + y;
@@ -94,52 +91,6 @@ export function rgbToHex(rgb){
     }).join('');
 }
 
-export function isSvgElement(element){
-    return (element instanceof Line || element instanceof Shape || element instanceof GText) && element.id !== PLACE_HOLDER_ID;
-}
-
-export function serialize(shape){
-    let type = null;
-    let text = null;
-
-    //흠.. ㅋㅋㅋ
-    if(shape instanceof Line){
-        type = ['Shape','Line', shape.__proto__.constructor.name];
-    }else if(shape instanceof Shape){
-        type = ['Shape',
-            shape.__proto__.__proto__.__proto__.constructor.name,
-            shape.__proto__.__proto__.constructor.name];
-        text = shape.innerText.textBox.elem.innerText;
-    }else if(shape instanceof GText){
-        type = [shape.__proto__.__proto__.constructor.name];
-        text = shape.textBox.elem.innerText;
-    }else{
-        return null;
-    }
-
-    return JSON.stringify({
-        type,
-        id: shape.id,
-        parentId: shape.parentId,
-        x: shape.x,
-        y: shape.y,
-        width: shape.width,
-        height: shape.height,
-        linkedLineIds: Array.from(shape.linkedLine?.keys?.() || [])?.map?.(line => {
-            return {
-                id:line.id,
-                pointInfo: shape.linkedLine.get(line)
-            }
-        }),
-        points: shape.points,
-        text,
-        fontSize: shape.fontSize,
-        fontColor: shape.fontColor,
-        fill: shape.fill,
-        strokeColor: shape.strokeColor
-    });
-}
-
 export async function deserialize(json){
     const obj = JSON.parse(json);
     const classType = await changeTypeStringToClass(obj.type);
@@ -152,14 +103,7 @@ export async function deserialize(json){
         height: obj.height,
     });
 
-    obj.linkedLineIds?.forEach(({id, pointInfo}) => shape?.addLinkedLine?.({ line: ComponentRepository.getComponentById(id), pointInfo }));
-    if(obj.points) shape.points = obj.points;
-    if(obj.text && shape.innerText) shape.innerText.textBox.elem.innerText = obj.text;
-    if(obj.text && shape.textBox) shape.textBox.elem.innerText = obj.text;
-    if(obj.fontSize) shape.fontSize = obj.fontSize;
-    if(obj.fontColor) shape.fontColor = obj.fontColor;
-    if(obj.fill) shape.fill = obj.fill;
-    if(obj.strokeColor) shape.strokeColor = obj.strokeColor;
+    shape.setData(obj);
 
     return shape;
 }
