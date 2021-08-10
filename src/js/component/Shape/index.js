@@ -204,7 +204,7 @@ export default class Shape extends GraphicElement {
         });
     }
 
-    setData({ linkedLineIds, text, fontSize, fontColor, fill, strokeColor }){
+    setProperty({ linkedLineIds, text, fontSize, fontColor, fill, strokeColor }){
         linkedLineIds.forEach(({id, pointInfo}) => this.addLinkedLine({ line: ComponentRepository.getComponentById(id), pointInfo }));
         this.innerText.textBox.elem.innerText = text;
         this.fontSize = fontSize;
