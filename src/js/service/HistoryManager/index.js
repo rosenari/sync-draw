@@ -1,5 +1,6 @@
 import ComponentRepository from '../ComponentRepository';
-import { deserialize } from "../util";
+import { deserialize } from '../util';
+import {COMPONENT_TYPE, PHRASES} from '../constant';
 
 let instance = null;
 class HistoryManager {
@@ -60,10 +61,10 @@ class HistoryManager {
 
     commonDo(Index) {
         if(Index < -1){
-            alert('이전 작업이 없습니다.'); //커스텀 모달로 교체예정
+            alert(PHRASES.NOT_EXIST_PREV_TASK); //커스텀 모달로 교체예정
             return;
         }else if(Index > this.history.length - 1){
-            alert('다음 작업이 없습니다.'); //커스텀 모달로 교체예정
+            alert(PHRASES.NOT_EXIST_NEXT_TASK); //커스텀 모달로 교체예정
             return;
         }
 
@@ -142,7 +143,7 @@ class HistoryManager {
         const autoStoreData = localStorage.getItem('auto');
         if(autoStoreData) {
             const modal = ComponentRepository.getComponentById('confirm-modal');
-            modal.content = '자동저장 내역을 복구 하시겠습니까 ?';
+            modal.content = PHRASES.AUTO_RESTORE;
             modal.confirmHandler = () => {
                 const svgElements = JSON.parse(autoStoreData);
                 this.adjustSvgElements(svgElements);
@@ -163,13 +164,13 @@ class HistoryManager {
         this.running = true;
         const prevStoreData = localStorage.getItem('storeData');
         if(!prevStoreData){
-            alert('저장내역이 존재하지 않습니다.'); //커스텀 모달로 교체예정
+            alert(PHRASES.NOT_EXIST_STORE); //커스텀 모달로 교체예정
             this.running = false;
             return;
         }
         const storeData = JSON.parse(prevStoreData).find(data => data.name === name);
         if(!storeData){
-            alert('해당이름의 저장내역이 존재하지 않습니다.'); //커스텀 모달로 교체예정
+            alert(PHRASES.NOT_EXIST_NAME_STORE); //커스텀 모달로 교체예정
             this.running = false;
             return;
         }
@@ -227,9 +228,9 @@ function lineFirstSort(elements) {
     elements.sort((A, B) => {
         const svgA = JSON.parse(A);
         const svgB = JSON.parse(B);
-        if(svgA.type !== 'GLine' && !svgB.type === 'GLine') {
+        if(svgA.type !== COMPONENT_TYPE.GLine && !svgB.type === COMPONENT_TYPE.GLine) {
             return 1;
-        }else if(svgA.type === 'GLine' && !svgB.type !== 'GLine'){
+        } else if(svgA.type === COMPONENT_TYPE.GLine && !svgB.type !== COMPONENT_TYPE.GLine){
             return -1;
         }
         return 0;

@@ -90,3 +90,39 @@ export const RATIO = {
     PERCENT_90: 0.9,
     PERCENT_95: 0.95,
 }
+
+export const COMPONENT_TYPE = {
+    GText : 'GText',
+    InnerText : 'InnerText',
+    GLine : 'GLine',
+    GPolyline : 'GPolyline',
+    GDisk : 'GDisk',
+    GDocument: 'GDocument',
+    GInputoutput : 'GInputoutput',
+    GJudgment : 'GJudgment',
+    GPageconn : 'GPageconn',
+    GPinput : 'GPinput',
+    GReady : 'GReady',
+    GProcess : 'GProcess',
+    GTerminal : 'GTerminal'
+}
+
+export const CURSOR_TYPE = {
+    MOUSE : 'mouse',
+    GRAB : 'grab',
+    CROSSHAIR : 'crosshair',
+    SRESIZE : 's-resize'
+}
+
+export const PHRASES = {
+    INIT : '정말 초기화 하시겠습니까 ?',
+    STORE_NAME_INPUT : '저장할 이름을 입력해주세요.',
+    ALREADY_NAME : '이미 존재하는 이름입니다. 덮어쓰시겠습니까 ?',
+    RESTORE_NAME_SELECT : '복구할 이름을 선택해주세요.',
+    TEXT_INPUT_OVER : '텍스트 입력은 50자 이상을 초과할 수 없습니다.',
+    NOT_EXIST_PREV_TASK : '이전 작업이 없습니다.',
+    NOT_EXIST_NEXT_TASK : '다음 작업이 없습니다.',
+    NOT_EXIST_STORE : '저장내역이 존재하지 않습니다.',
+    NOT_EXIST_NAME_STORE : '해당이름의 저장내역이 존재하지 않습니다.',
+    AUTO_RESTORE : '자동저장 내역을 복구 하시겠습니까 ?'
+}

@@ -14,9 +14,9 @@ import {
     PLACE_HOLDER_ID,
     GROUP
 } from '../../service/constant';
-import DragBorder from "../Border/DragBorder";
-import GroupBorder from "../Border/GroupBorder";
-import LineBorder from "../Border/LineBorder";
+import DragBorder from '../Border/DragBorder';
+import GroupBorder from '../Border/GroupBorder';
+import LineBorder from '../Border/LineBorder';
 
 export default class Board extends GraphicElement {
     static startPoint = {};
