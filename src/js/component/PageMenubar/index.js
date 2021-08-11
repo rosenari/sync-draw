@@ -93,7 +93,6 @@ export default class PageMenubar extends CustomElement{
                         modal.hide();
                     }
                     modal.show();
-                    //HistoryManager.restorePage(name);
                 }
             }});
     }
