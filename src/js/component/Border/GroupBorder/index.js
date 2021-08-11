@@ -66,6 +66,8 @@ export default class GroupBorder extends Border {
 
     set fontSize(value){
         this.shapes.forEach(shape => shape.fontSize = value);
+        if(this.shapes.length > 1) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+            type:'Group' });
     }
 
     get fontColor(){
@@ -74,6 +76,8 @@ export default class GroupBorder extends Border {
 
     set fontColor(value){
         this.shapes.forEach(shape => shape.fontColor = value);
+        if(this.shapes.length > 1) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+            type:'Group' });
     }
 
     get fill(){
@@ -82,6 +86,8 @@ export default class GroupBorder extends Border {
 
     set fill(value){
         this.shapes.forEach(shape => shape.fill = value);
+        if(this.shapes.length > 1) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+            type:'Group' });
     }
 
     get strokeColor(){
@@ -90,6 +96,8 @@ export default class GroupBorder extends Border {
 
     set strokeColor(value){
         this.shapes.forEach(shape => shape.strokeColor = value);
+        if(this.shapes.length > 1) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+            type:'Group' });
     }
 
     mouseDownHandler(e){
