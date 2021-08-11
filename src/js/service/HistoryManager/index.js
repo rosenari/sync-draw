@@ -118,10 +118,11 @@ class HistoryManager {
 
     storeCurrentPage(name){
         const storeData = this.currentPage;
-        const prevStoreData = localStorage.getItem('storeData');
+        let prevStoreData = localStorage.getItem('storeData');
         if(prevStoreData){
+            prevStoreData = JSON.parse(prevStoreData).filter(data => data.name !== name);
             localStorage.setItem('storeData', JSON.stringify([
-                ...JSON.parse(prevStoreData),
+                ...prevStoreData,
                 {
                     name,
                     data:storeData
@@ -173,12 +174,25 @@ class HistoryManager {
     }
 
 
-    isStoreName(name){
+    isStoreName(name) {
         const prevStoreData = localStorage.getItem('storeData');
         if(!prevStoreData) return false;
 
         const storeData = JSON.parse(prevStoreData);
         return storeData.find(data => data.name === name);
+    }
+
+    getStoreNames() {
+        const result = {};
+        const prevStoreData = localStorage.getItem('storeData');
+        if(!prevStoreData) return result;
+
+        const storeData = JSON.parse(prevStoreData);
+        for(const data of storeData){
+            result[data.name] = data.name;
+        }
+
+        return result;
     }
 
     clearHistory(){

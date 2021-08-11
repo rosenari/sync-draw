@@ -1,5 +1,4 @@
 import {BOARD_ID, PLACE_HOLDER_ID} from "../constant";
-import {isGraphicElement, isSvgElement} from "../util";
 
 let Instance = null;
 
@@ -34,7 +33,7 @@ class ComponentRepository{
         for(const key in this) {
             const component = this.getComponentById(key);
             if(component?.serialize && component.id !== PLACE_HOLDER_ID) {
-                elements.push(component?.serialize?.());
+                elements.push(component.serialize());
             }
         }
 
