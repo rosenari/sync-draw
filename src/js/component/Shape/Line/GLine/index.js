@@ -1,9 +1,9 @@
 import GraphicElement from '../../../GraphicElement';
 import Line from '../index';
-import {PHRASES} from '../../../../service/constant';
+import {COMPONENT_TYPE} from '../../../../service/constant';
 
 class GLine extends Line {
-    static type = PHRASES.GLine;
+    static type = COMPONENT_TYPE.GLine;
     type = GLine.type;
     _marker = null;
     _arrow = null;
