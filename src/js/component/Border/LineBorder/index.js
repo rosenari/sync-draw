@@ -106,8 +106,10 @@ export default class LineBorder extends SizeBorder {
             const dx = TransformManager.changeDocXToSvgX(e.pageX) - LineBorder.startPoint.x;
             const dy = TransformManager.changeDocYToSvgY(e.pageY) - LineBorder.startPoint.y;
 
+            LineBorder.startPoint.collisionInfo = [];
             LineBorder.startPoint.points.forEach((point, index) => {
-                this.renderEdge({ x:+point.x + dx, y:+point.y + dy, index: index });
+                this.renderEdge({ x:+point.x + dx, y:+point.y + dy, index });
+                this.detectCollisionShape({ x:+point.x + dx, y:+point.y + dy, index, init: false });
             });
 
             this.renderTarget();
@@ -116,6 +118,7 @@ export default class LineBorder extends SizeBorder {
 
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
+            this.adjustCollisionInfo();
             this.renderTarget();
             HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MOVE, type:`${this.target.type}` });
             SizeBorder.startPoint = {};
@@ -134,10 +137,10 @@ export default class LineBorder extends SizeBorder {
     }
 
     //모양과 충돌하는지 순회를 통해탐지, 탐지할 경우 충돌정보 갱신
-    detectCollisionShape({ x, y, index}){
+    detectCollisionShape({ x, y, index, init = true}){
         if(!this.target.arrow) return;
 
-        LineBorder.startPoint.collisionInfo = [];
+        if(init) LineBorder.startPoint.collisionInfo = [];
         for(const key in ComponentRepository) {
             const shape = ComponentRepository.getComponentById(key);
             if (!(shape instanceof Shape)) continue;
@@ -160,7 +163,6 @@ export default class LineBorder extends SizeBorder {
 
             if(startX - padding > x || endX + padding < x || startY - padding > y || endY + padding < y){
                 command = 'removeLinkedLine';
-                pointInfo = null;
                 shape.elem.classList.remove('shape-collision');
             }else{
                 shape.elem.classList.add('shape-collision');
