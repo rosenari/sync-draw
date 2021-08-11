@@ -7,14 +7,16 @@ import CustomSelect from "../CustomSelect";
 export default class CustomModal extends CustomElement{
     _type = null;
     _modal = null;
+    _header = null;
     _body = null;
     _btnBody = null;
     _input = null;
     _select = null;
     _confirmBtn = null;
+    _deleteBtn = null;
     _cancelBtn = null;
 
-    constructor({ parentId, id, type = 'confirm', content }) {
+    constructor({ parentId, id, type = 'confirm', title = '타이틀', content }) {
         super({
             parentId,
             id,
@@ -29,6 +31,14 @@ export default class CustomModal extends CustomElement{
             tagName:'div',
             classList:['modal']
         });
+        this.header = new CustomElement({
+            parentId: this.modal.id,
+            id: `${this.id}-title`,
+            tagName: 'div',
+            classList: ['modal-title']
+        });
+        this.header.elem.innerText = title;
+
         this.createBody(content);
 
         this.btnBody = new CustomElement({
@@ -43,6 +53,13 @@ export default class CustomModal extends CustomElement{
             id: `${this.id}-confirm-btn`,
             classList: ['modal-btn', 'modal-confirm-btn'],
             content: '확인'
+        });
+
+        if(this.type === 'select') this.deleteBtn = new CustomButton({
+            parentId: this.btnBody.id,
+            id: `${this.id}-delete-btn`,
+            classList: ['modal-btn', 'modal-delete-btn'],
+            content: '삭제'
         });
 
         this.cancelBtn = new CustomButton({
@@ -69,6 +86,22 @@ export default class CustomModal extends CustomElement{
 
     set modal(value) {
         this._modal = value;
+    }
+
+    get header(){
+        return this._header;
+    }
+
+    set header(value){
+        this._header = value;
+    }
+
+    get title(){
+        return this.header.elem.innerText;
+    }
+
+    set title(value){
+        this.header.elem.innerText = value;
     }
 
     get body() {
@@ -109,6 +142,14 @@ export default class CustomModal extends CustomElement{
 
     set confirmBtn(value) {
         this._confirmBtn = value;
+    }
+
+    get deleteBtn() {
+        return this._deleteBtn;
+    }
+
+    set deleteBtn(value) {
+        this._deleteBtn = value;
     }
 
     get cancelBtn() {
@@ -173,6 +214,10 @@ export default class CustomModal extends CustomElement{
 
     set confirmHandler(value){
         this.confirmBtn.clickHandler = value;
+    }
+
+    set deleteHandler(value){
+        this.deleteBtn.clickHandler = value;
     }
 
     set cancelHandler(value){

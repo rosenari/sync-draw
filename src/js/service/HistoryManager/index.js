@@ -139,10 +139,10 @@ class HistoryManager {
     }
 
     restoreAutoStorePage(){
-        this.running = true;
         const autoStoreData = localStorage.getItem('auto');
         if(autoStoreData) {
             const modal = ComponentRepository.getComponentById('confirm-modal');
+            modal.title = '⏰ 자동저장내역 복구';
             modal.content = PHRASES.AUTO_RESTORE;
             modal.confirmHandler = () => {
                 const svgElements = JSON.parse(autoStoreData);
@@ -156,22 +156,17 @@ class HistoryManager {
             }
             modal.show();
         }
-        this.running = false;
     }
 
     restorePage(name){
-        if(this.running) return;
-        this.running = true;
         const prevStoreData = localStorage.getItem('storeData');
         if(!prevStoreData){
             alert(PHRASES.NOT_EXIST_STORE); //커스텀 모달로 교체예정
-            this.running = false;
             return;
         }
         const storeData = JSON.parse(prevStoreData).find(data => data.name === name);
         if(!storeData){
             alert(PHRASES.NOT_EXIST_NAME_STORE); //커스텀 모달로 교체예정
-            this.running = false;
             return;
         }
 
@@ -182,7 +177,14 @@ class HistoryManager {
 
         this.currentPage = svgElements;
         this.autoStoreCurrentPage();
-        this.running = false;
+    }
+
+    deletePage(name){
+        let prevStoreData = localStorage.getItem('storeData');
+        if(prevStoreData){
+            prevStoreData = JSON.parse(prevStoreData).filter(data => data.name !== name);
+            localStorage.setItem('storeData', JSON.stringify(prevStoreData));
+        }
     }
 
 
