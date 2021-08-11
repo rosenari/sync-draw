@@ -6,6 +6,7 @@ import ItemMenubar from './component/ItemMenubar';
 import ZoomMenubar from './component/ZoomMenubar';
 import StyleMenubar from './component/StyleMenubar';
 import HistoryMenubar from './component/HistoryMenubar';
+import CustomModal from "./component/CustomModal";
 
 export default class App {
     _id = 'app';
@@ -16,6 +17,9 @@ export default class App {
     _zoomMenubar = null;
     _styleMenubar = null;
     _historyMenubar = null;
+    _promptModal = null;
+    _confirmModal = null;
+    _selectModal = null;
     _controller = null;
 
     constructor({ elem }) {
@@ -47,6 +51,27 @@ export default class App {
 
         this.historyMenubar = new HistoryMenubar({
             parentId: this.id
+        });
+
+        this.promptModal = new CustomModal({
+            parentId: this.id,
+            id: 'prompt-modal',
+            type: 'prompt',
+            content: '입력 모달'
+        });
+
+        this.confirmModal = new CustomModal({
+            parentId: this.id,
+            id: 'confirm-modal',
+            type: 'confirm',
+            content: '확인 모달'
+        });
+
+        this.selectModal = new CustomModal({
+            parentId: this.id,
+            id: 'select-modal',
+            type: 'select',
+            content: '선택 모달'
         });
 
         this.controller = new EventController(this.elem);
@@ -115,6 +140,30 @@ export default class App {
 
     set historyMenubar(value) {
         this._historyMenubar = value;
+    }
+
+    get promptModal() {
+        return this._promptModal;
+    }
+
+    set promptModal(value) {
+        this._promptModal = value;
+    }
+
+    get confirmModal() {
+        return this._confirmModal;
+    }
+
+    set confirmModal(value) {
+        this._confirmModal = value;
+    }
+
+    get selectModal() {
+        return this._selectModal;
+    }
+
+    set selectModal(value) {
+        this._selectModal = value;
     }
 
     get controller() {
