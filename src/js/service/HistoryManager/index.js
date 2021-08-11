@@ -60,11 +60,14 @@ class HistoryManager {
     }
 
     commonDo(Index) {
+        const toast = ComponentRepository.getComponentById('toast');
         if(Index < -1){
-            alert(PHRASES.NOT_EXIST_PREV_TASK); //커스텀 모달로 교체예정
+            toast.content = PHRASES.NOT_EXIST_PREV_TASK;
+            toast.show();
             return;
         }else if(Index > this.history.length - 1){
-            alert(PHRASES.NOT_EXIST_NEXT_TASK); //커스텀 모달로 교체예정
+            toast.content = PHRASES.NOT_EXIST_NEXT_TASK;
+            toast.show();
             return;
         }
 
@@ -160,13 +163,16 @@ class HistoryManager {
 
     restorePage(name){
         const prevStoreData = localStorage.getItem('storeData');
+        const toast = ComponentRepository.getComponentById('toast');
         if(!prevStoreData){
-            alert(PHRASES.NOT_EXIST_STORE); //커스텀 모달로 교체예정
+            toast.content = PHRASES.NOT_EXIST_STORE;
+            toast.show();
             return;
         }
         const storeData = JSON.parse(prevStoreData).find(data => data.name === name);
         if(!storeData){
-            alert(PHRASES.NOT_EXIST_NAME_STORE); //커스텀 모달로 교체예정
+            toast.content = PHRASES.NOT_EXIST_NAME_STORE;
+            toast.show();
             return;
         }
 
