@@ -145,8 +145,12 @@ export default class Shape extends GraphicElement {
         this.linkedLine.set(line,pointInfo);
     }
 
-    removeLinkedLine({ line }){
-        this.linkedLine.delete(line);
+    removeLinkedLine({ line, pointInfo }){
+        for(const storeLine of this.linkedLine.keys()) {
+            if( pointInfo.index === Number(this.linkedLine.get(storeLine).index)){
+                this.linkedLine.delete(line);
+            }
+        }
     }
 
     createInnerText(defaultText = 'shape') {
