@@ -2,7 +2,14 @@ import GraphicElement from '../GraphicElement';
 import ComponentRepository from '../../service/ComponentRepository';
 import SizeBorder from '../Border/SizeBorder';
 import {BOARD_ID, COLOR, MENU_BAR, GROUP} from '../../service/constant';
-import {IterableWeakMap} from '../../service/util';
+import {
+    getOverflowHeight,
+    getOverflowWidth,
+    isOverflowHeight,
+    isOverflowWidth,
+    IterableWeakMap
+} from '../../service/util';
+import InnerText from "./InnerText";
 
 export default class Shape extends GraphicElement {
     _x = 0;
@@ -10,6 +17,7 @@ export default class Shape extends GraphicElement {
     _width = 0;
     _height = 0;
     _linkedLine = new IterableWeakMap();
+    _innerText = null;
 
     constructor({ parentId, id, tagName, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, tagName, classList, handlers });
@@ -39,6 +47,7 @@ export default class Shape extends GraphicElement {
     set x(value) {
         this._x = value;
         this.renderLinkedLine();
+        if(this.innerText) this.innerText.x = value;
     }
 
     get y() {
@@ -48,6 +57,7 @@ export default class Shape extends GraphicElement {
     set y(value) {
         this._y = value;
         this.renderLinkedLine();
+        if(this.innerText) this.innerText.y = value;
     }
 
     get width() {
@@ -57,6 +67,7 @@ export default class Shape extends GraphicElement {
     set width(value) {
         this._width = value;
         this.renderLinkedLine();
+        if(this.innerText) this.innerText.width = value;
     }
 
     get height() {
@@ -66,6 +77,7 @@ export default class Shape extends GraphicElement {
     set height(value) {
         this._height = value;
         this.renderLinkedLine();
+        if(this.innerText) this.innerText.height = value;
     }
 
     get linkedLine() {
@@ -76,12 +88,45 @@ export default class Shape extends GraphicElement {
         this._linkedLine = value;
     }
 
+    get innerText() {
+        return this._innerText;
+    }
+
+    set innerText(value) {
+        this._innerText = value;
+    }
+
     addLinkedLine({ line, pointInfo }){
         this.linkedLine.set(line,pointInfo);
     }
 
     removeLinkedLine({ line }){
         this.linkedLine.delete(line);
+    }
+
+    createInnerText(defaultText = 'shape') {
+        this.innerText = new InnerText({
+            parentId: this.parentId,
+            id: this.id + '-innerText',
+            x: this.x,
+            y: this.y,
+            width:this.width,
+            height:this.height,
+            content: defaultText,
+            relatedShapeId: this.id
+        });
+
+        if(isOverflowWidth(this.innerText.textBox.elem)){
+            this.width += getOverflowWidth(this.innerText.textBox.elem) + InnerText.padding * 2;
+        }
+
+        if(isOverflowHeight(this.innerText.textBox.elem)){
+            this.height += getOverflowHeight(this.innerText.textBox.elem) + InnerText.padding * 2;
+        }
+    }
+
+    dbClickHandler(e){
+        if(this.innerText) this.innerText.textBox.dbClickHandler(e);
     }
 
     clickHandler(e) {
@@ -92,6 +137,7 @@ export default class Shape extends GraphicElement {
         }
 
         this.elem.parentNode?.appendChild?.(this.elem);
+        this.innerText.elem.parentNode?.appendChild?.(this.innerText.elem);
 
         board.destroyBorder();
         board.border = new SizeBorder({

@@ -1,7 +1,7 @@
 import Border from '../index';
 import GraphicElement from '../../GraphicElement';
 import ComponentRepository from '../../../service/ComponentRepository';
-import { tinyGUID } from '../../../service/util';
+import {getOverflowHeight, getOverflowWidth, isOverflowHeight, isOverflowWidth, tinyGUID} from '../../../service/util';
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
 import { COLOR, BORDER, GROUP } from '../../../service/constant';
@@ -166,7 +166,12 @@ export default class SizeBorder extends Border {
 
                             EventController.mouseUpHandler = (e) => {
                                 e.stopPropagation();
+                                if(SizeBorder.startPoint.overflowInfo){
+                                    this.adjustOverflowInfo();
+                                }
+
                                 SizeBorder.startPoint = {};
+                                this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
                                 this.renderTarget();
                                 EventController.mouseMoveHandler = null;
                                 EventController.mouseUpHandler = null;
@@ -239,9 +244,35 @@ export default class SizeBorder extends Border {
     }
 
     renderTarget(){
+        const innerText = this.target.innerText;
+        if(innerText && (isOverflowHeight(innerText.textBox.elem) || isOverflowWidth(innerText.textBox.elem))){
+            const overflowInfo = SizeBorder.startPoint.overflowInfo;
+            SizeBorder.startPoint.overflowInfo = overflowInfo || {
+                x: this.x,
+                y: this.y,
+                width: this.width + getOverflowWidth(innerText.textBox.elem),
+                height: +this.height + getOverflowHeight(innerText.textBox.elem)
+            };
+        }else{
+            SizeBorder.startPoint.overflowInfo = null;
+        }
+
+
         this.target.x = this.x
         this.target.y = this.y
         this.target.width = this.width
         this.target.height = this.height
+    }
+
+    adjustOverflowInfo(){
+        const overflowInfo = SizeBorder.startPoint.overflowInfo;
+        this.x = overflowInfo.x;
+        this.y = overflowInfo.y;
+        this.width = overflowInfo.width;
+        this.height = overflowInfo.height;
+    }
+
+    dbClickHandler(e){
+        this.target?.dbClickHandler?.(e);
     }
 }
