@@ -3,9 +3,12 @@ import CustomElement from '../../CustomElement';
 import {getOverflowHeight, isOverflowHeight, rgbToHex} from '../../../service/util';
 import ComponentRepository from '../../../service/ComponentRepository';
 import { BOARD_ID } from '../../../service/constant';
+import HistoryManager from "../../../service/HistoryManager";
 
 export default class InnerText extends GraphicElement{
+    static type = 'InnerText';
     static padding = 20;
+    type = InnerText.type;
     _foreignObj = null;
     _textBox = null;
 
@@ -47,6 +50,7 @@ export default class InnerText extends GraphicElement{
                         this._textBox.elem.innerText = this._textBox.elem.innerText.slice(0,50);
                     }
                     if (e.code === 'Enter') {
+                        HistoryManager.updateHistoryToLatest({behavior: 'modify', type: `${this.type}`});
                         this._textBox.elem.innerText = this._textBox.elem.innerText.trim();
                         return this._textBox.elem.blur();
                     }

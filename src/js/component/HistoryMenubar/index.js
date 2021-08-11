@@ -1,8 +1,8 @@
 import CustomElement from '../CustomElement';
 import CustomButton from '../CustomButton';
 import HistoryManager from '../../service/HistoryManager';
-import './index.css';
 import { MENU_BAR, BUTTON } from '../../service/constant';
+import './index.css';
 
 export default class HistoryMenubar extends CustomElement{
     _undoBtn = null;
