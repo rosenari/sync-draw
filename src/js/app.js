@@ -6,7 +6,8 @@ import ItemMenubar from './component/ItemMenubar';
 import ZoomMenubar from './component/ZoomMenubar';
 import StyleMenubar from './component/StyleMenubar';
 import HistoryMenubar from './component/HistoryMenubar';
-import CustomModal from "./component/CustomModal";
+import CustomModal from './component/CustomModal';
+import Toast from './component/Toast';
 
 export default class App {
     _id = 'app';
@@ -20,6 +21,7 @@ export default class App {
     _promptModal = null;
     _confirmModal = null;
     _selectModal = null;
+    _toast = null;
     _controller = null;
 
     constructor({ elem }) {
@@ -72,6 +74,11 @@ export default class App {
             id: 'select-modal',
             type: 'select',
             content: '선택 모달'
+        });
+
+        this.toast = new Toast({
+            parentId: this.id,
+            id: 'toast'
         });
 
         this.controller = new EventController(this.elem);
@@ -156,6 +163,14 @@ export default class App {
 
     set confirmModal(value) {
         this._confirmModal = value;
+    }
+
+    get toast(){
+        return this._toast;
+    }
+
+    set toast(value){
+        this._toast = value;
     }
 
     get selectModal() {
