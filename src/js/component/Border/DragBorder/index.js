@@ -1,5 +1,5 @@
 import Border from '../index';
-import {BOARD_ID, BORDER, COLOR, MENU_BAR} from '../../../service/constant';
+import {BOARD_ID, BORDER, COLOR, MENU_BAR, RATIO} from '../../../service/constant';
 import ComponentRepository from '../../../service/ComponentRepository';
 import TransformManager from '../../../service/TransformManager';
 import { Shape, GText} from '../../../component';
@@ -12,7 +12,7 @@ export default class DragBorder extends Border{
         });
         this.elem.setAttribute('stroke-dasharray','5');
         this.elem.setAttribute('fill',COLOR.GRAY);
-        this.elem.setAttribute('fill-opacity','0.2');
+        this.elem.setAttribute('fill-opacity', RATIO.PERCENT_20);
     }
 
     groupingShape(){

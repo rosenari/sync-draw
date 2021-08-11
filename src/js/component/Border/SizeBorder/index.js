@@ -5,7 +5,7 @@ import {getOverflowHeight, getOverflowWidth, isOverflowHeight, isOverflowWidth, 
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
 import {COLOR, BORDER, GROUP} from '../../../service/constant';
-import HistoryManager from "../../../service/HistoryManager";
+import HistoryManager from '../../../service/HistoryManager';
 
 export default class SizeBorder extends Border {
     static startPoint = {};
