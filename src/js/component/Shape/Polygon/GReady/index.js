@@ -1,19 +1,22 @@
 import Polygon from '../index';
 import TransformManager from '../../../../service/TransformManager';
+import {RATIO} from '../../../../service/constant';
 
 class GReady extends Polygon {
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });
+
+        if(this.id !== 'placeholder') this.createInnerText('준비');
     }
 
     render(){
-        const topLeftX = this.x + Math.round(this.width * 0.25);
+        const topLeftX = this.x + Math.round(this.width * RATIO.PERCENT_25);
         const topLeftY = this.y;
-        const topRightX = this.x + Math.round(this.width * 0.75);
+        const topRightX = this.x + Math.round(this.width * RATIO.PERCENT_75);
         const topRightY = this.y;
         const rightX = this.x + this.width;
-        const rightY = this.y + Math.round(this.height * 0.5);
+        const rightY = this.y + Math.round(this.height * RATIO.PERCENT_50);
         const bottomRightX = topRightX;
         const bottomRightY = this.y + this.height;
         const bottomLeftX = topLeftX;

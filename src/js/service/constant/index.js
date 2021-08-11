@@ -63,3 +63,24 @@ export const COLOR = {
     KAKAO : '#FEE500',
     BLACK : '#555'
 }
+
+export const RATIO = {
+    PERCENT_10: 0.1,
+    PERCENT_15: 0.15,
+    PERCENT_20: 0.2,
+    PERCENT_25: 0.25,
+    PERCENT_30: 0.3,
+    PERCENT_35: 0.35,
+    PERCENT_40: 0.4,
+    PERCENT_45: 0.45,
+    PERCENT_50: 0.5,
+    PERCENT_55: 0.55,
+    PERCENT_60: 0.6,
+    PERCENT_65: 0.65,
+    PERCENT_70: 0.7,
+    PERCENT_75: 0.75,
+    PERCENT_80: 0.8,
+    PERCENT_85: 0.85,
+    PERCENT_90: 0.9,
+    PERCENT_95: 0.95,
+}

@@ -1,20 +1,23 @@
 import Path from '../index';
 import TransformManager from '../../../../service/TransformManager';
+import {RATIO} from '../../../../service/constant';
 
 class GDisk extends Path{
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });
+
+        if(this.id !== 'placeholder') this.createInnerText('디스크');
     }
 
     render(){
         const startX = this.x;
-        const startY = this.y + Math.round(this.height * 0.1);
+        const startY = this.y + Math.round(this.height * RATIO.PERCENT_10);
         const curveY_1 = this.y;
-        const curveY_2 = this.y + Math.round(this.height * 0.2);
+        const curveY_2 = this.y + Math.round(this.height * RATIO.PERCENT_20);
         const endX = this.x + this.width;
-        const endY = this.y + Math.round(this.height * 0.9);
-        const curveY_3 = endY + Math.round(this.height * 0.1);
+        const endY = this.y + Math.round(this.height * RATIO.PERCENT_90);
+        const curveY_3 = endY + Math.round(this.height * RATIO.PERCENT_10);
         this.elem.setAttribute('d',`M${startX} ${startY} C${startX} ${curveY_1}, ${endX} ${curveY_1}, ${endX} ${startY} 
         M${startX} ${startY} C${startX} ${curveY_2}, ${endX} ${curveY_2}, ${endX} ${startY}
         M${startX} ${startY} V${endY} 

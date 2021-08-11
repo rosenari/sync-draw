@@ -1,17 +1,20 @@
 import Polygon from '../index';
 import TransformManager from '../../../../service/TransformManager';
+import {RATIO} from '../../../../service/constant';
 
 class GJudgment extends Polygon{
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });
+
+        if(this.id !== 'placeholder') this.createInnerText('판단');
     }
 
     render(){
-        const topX = this.x + Math.round(this.width * 0.5);
+        const topX = this.x + Math.round(this.width * RATIO.PERCENT_50);
         const topY = this.y;
         const rightX = this.x + this.width;
-        const rightY = this.y + Math.round(this.height * 0.5);
+        const rightY = this.y + Math.round(this.height * RATIO.PERCENT_50);
         const bottomX = topX;
         const bottomY = this.y + this.height;
         const leftX = this.x;
