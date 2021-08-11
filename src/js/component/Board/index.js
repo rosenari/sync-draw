@@ -1,15 +1,10 @@
 import ComponentRepository from '../../service/ComponentRepository';
-import GraphicElement from '../GraphicElement';
-import Group from '../Group';
-import GText from '../GText';
 import {tinyGUID} from '../../service/util';
 import SizeBorder from '../Border/SizeBorder';
 import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
 import HistoryManager from '../../service/HistoryManager';
-import Line from '../Shape/Line';
-import GLine from '../Shape/Line/GLine';
-import GPolyline from '../Shape/Line/GPolyline';
+import { GraphicElement, Group, GText, Line, GLine, GPolyline } from '../../component';
 import './index.css';
 import {
     BOARD_ID,
@@ -21,6 +16,7 @@ import {
 } from '../../service/constant';
 import DragBorder from "../Border/DragBorder";
 import GroupBorder from "../Border/GroupBorder";
+import LineBorder from "../Border/LineBorder";
 
 export default class Board extends GraphicElement {
     static startPoint = {};
@@ -185,10 +181,8 @@ export default class Board extends GraphicElement {
             if(selected.relatedClass === GPolyline) {
                 const lastIndex = Board.startPoint.line.points.length - 1;
                 Board.startPoint.line.removePoint(lastIndex);
-                HistoryManager.updateHistoryToLatest({ behavior: 'create', type:'GPolyline' });
-            }else{
-                HistoryManager.updateHistoryToLatest({ behavior: 'create', type:'GLine' });
             }
+            HistoryManager.updateHistoryToLatest({ behavior: 'create', type:`${Board.startPoint.line.type}` });
 
             itemMenubar.selectMenu = itemMenubar.mouseBtn;
 
@@ -339,7 +333,7 @@ export default class Board extends GraphicElement {
             height: this.border.height
         });
 
-        HistoryManager.updateHistoryToLatest({ behavior: 'create', type:`${type.__proto__.name}` });
+        HistoryManager.updateHistoryToLatest({ behavior: 'create', type:`${shape.type}` });
 
         return shape;
     }
@@ -350,6 +344,20 @@ export default class Board extends GraphicElement {
            id: tinyGUID(),
            startX: Board.startPoint.x,
            startY: Board.startPoint.y,
+        });
+    }
+
+    createSizeBorder(target){
+        this.border = new SizeBorder({
+            parentId: GROUP.TEMP_GROUP_ID,
+            target
+        });
+    }
+
+    createLineBorder(target){
+        this.border = new LineBorder({
+            parentId: GROUP.TEMP_GROUP_ID,
+            target
         });
     }
 }

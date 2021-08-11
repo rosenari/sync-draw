@@ -1,5 +1,6 @@
 import ComponentRepository from '../ComponentRepository';
-import {RANDOM_MAX} from '../constant';
+import { RANDOM_MAX } from '../constant';
+import { Components } from '../../component';
 
 export function add(x, y){
     return x + y;
@@ -91,9 +92,9 @@ export function rgbToHex(rgb){
     }).join('');
 }
 
-export async function deserialize(json){
+export function deserialize(json){
     const obj = JSON.parse(json);
-    const classType = await changeTypeStringToClass(obj.type);
+    const classType = changeTypeStringToClass(obj.type);
     const shape = new classType({
         id: obj.id,
         parentId: obj.parentId,
@@ -108,8 +109,6 @@ export async function deserialize(json){
     return shape;
 }
 
-async function changeTypeStringToClass(type){
-    const classPath = type.join('/');
-    const classObj = await import('../../component/'+ classPath + '/index.js');
-    return classObj.default;
+function changeTypeStringToClass(type){
+    return Components[type];
 }

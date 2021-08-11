@@ -167,6 +167,7 @@ export default class CustomModal extends CustomElement{
     }
 
     clickHandler() {
+        this.cancelBtn?.clickHandler?.();
         this.hide();
     }
 

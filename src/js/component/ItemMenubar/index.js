@@ -2,36 +2,15 @@ import CustomElement from '../CustomElement';
 import CustomButton from '../CustomButton';
 import ComponentRepository from '../../service/ComponentRepository';
 import {
-    DISK_ICON,
-    DOCUMENT_ICON,
-    HAND_GRAB,
-    IO_ICON,
-    JUDGMENT_ICON,
-    LINE_ICON,
-    MOUSE_CURSOR,
-    PAGECONN_ICON,
-    PINPUT_ICON,
-    POLYLINE_ICON,
-    PROCESS_ICON,
-    READY_ICON,
-    TERMINAL_ICON
+    DISK_ICON, DOCUMENT_ICON, HAND_GRAB, IO_ICON, JUDGMENT_ICON, LINE_ICON, MOUSE_CURSOR,
+    PAGECONN_ICON, PINPUT_ICON, POLYLINE_ICON, PROCESS_ICON, READY_ICON, TERMINAL_ICON
 } from '../../images';
 import CreateBorder from '../Border/CreateBorder';
-import GTerminal from '../Shape/Rect/GTerminal';
-import GReady from '../Shape/Polygon/GReady';
-import GProcess from '../Shape/Rect/GProcess';
-import GJudgment from '../Shape/Polygon/GJudgment';
-import GPageconn from '../Shape/Polygon/GPageconn';
-import GDocument from '../Shape/Path/GDocument';
-import GInputoutput from '../Shape/Polygon/GInputoutput';
-import GPinput from '../Shape/Polygon/GPinput';
-import GText from '../GText';
-import GDisk from '../Shape/Path/GDisk';
-import GLine from '../Shape/Line/GLine';
-import GPolyline from '../Shape/Line/GPolyline';
+import DragBorder from '../Border/DragBorder';
+import { GTerminal, GReady, GProcess, GJudgment, GPageconn, GDocument,
+    GInputoutput, GPinput, GText, GDisk, GLine, GPolyline} from '../../component';
 import {BOARD_ID, MENU_BAR} from '../../service/constant';
 import './index.css';
-import DragBorder from '../Border/DragBorder';
 
 export default class ItemMenubar extends CustomElement{
     _selectMenu = null;

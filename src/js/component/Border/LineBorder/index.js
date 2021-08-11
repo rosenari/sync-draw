@@ -1,14 +1,13 @@
 import GraphicElement from '../../GraphicElement';
 import ComponentRepository from '../../../service/ComponentRepository';
+import HistoryManager from '../../../service/HistoryManager';
 import { tinyGUID } from '../../../service/util';
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
 import { COLOR, GROUP } from '../../../service/constant';
 import SizeBorder from '../SizeBorder';
-import Line from '../../Shape/Line';
-import Shape from '../../Shape';
+import { Line, Shape } from '../../../component';
 import './index.css';
-import HistoryManager from "../../../service/HistoryManager";
 
 export default class LineBorder extends SizeBorder {
     static startPoint = {};
@@ -65,7 +64,7 @@ export default class LineBorder extends SizeBorder {
                         EventController.mouseUpHandler = () => {
                             this.adjustCollisionInfo();
                             this.renderTarget();
-                            HistoryManager.updateHistoryToLatest({ behavior: 'changePoint', type:`${this.target.__proto__.constructor.name}` });
+                            HistoryManager.updateHistoryToLatest({ behavior: 'changePoint', type:`${this.target.type}` });
                             SizeBorder.startPoint = {};
                             EventController.mouseMoveHandler = null;
                             EventController.mouseOverHandler = null;
@@ -118,7 +117,7 @@ export default class LineBorder extends SizeBorder {
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.renderTarget();
-            HistoryManager.updateHistoryToLatest({ behavior: 'move', type:`${this.target.__proto__.constructor.name}` });
+            HistoryManager.updateHistoryToLatest({ behavior: 'move', type:`${this.target.type}` });
             SizeBorder.startPoint = {};
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
