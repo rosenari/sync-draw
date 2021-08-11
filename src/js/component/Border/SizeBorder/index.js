@@ -198,9 +198,6 @@ export default class SizeBorder extends Border {
                                     height = SizeBorder.startPoint.target.height;
                                 }
 
-                                //최소 크기 설정
-                                //if(width < 50 || height < 50) return;
-
                                 this.x = x;
                                 this.y = y;
                                 this.width = Math.abs(width);
@@ -212,9 +209,7 @@ export default class SizeBorder extends Border {
 
                             EventController.mouseUpHandler = (e) => {
                                 e.stopPropagation();
-                                if(SizeBorder.startPoint.overflowInfo){
-                                    this.adjustOverflowInfo();
-                                }
+                                this.detectOverflow();
 
                                 SizeBorder.startPoint = {};
                                 this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
@@ -295,35 +290,29 @@ export default class SizeBorder extends Border {
     }
 
     renderTarget(){
-        const innerText = this.target.innerText;
-        if(innerText && (isOverflowHeight(innerText.textBox.elem) || isOverflowWidth(innerText.textBox.elem))){
-            const overflowInfo = SizeBorder.startPoint.overflowInfo;
-            SizeBorder.startPoint.overflowInfo = overflowInfo || {
-                x: this.x,
-                y: this.y,
-                width: this.width + getOverflowWidth(innerText.textBox.elem),
-                height: +this.height + getOverflowHeight(innerText.textBox.elem)
-            };
-        }else{
-            SizeBorder.startPoint.overflowInfo = null;
-        }
-
-
         this.target.x = this.x;
         this.target.y = this.y;
         this.target.width = this.width;
         this.target.height = this.height;
     }
 
-    adjustOverflowInfo(){
-        const overflowInfo = SizeBorder.startPoint.overflowInfo;
-        this.x = overflowInfo.x;
-        this.y = overflowInfo.y;
-        this.width = overflowInfo.width;
-        this.height = overflowInfo.height;
+    detectOverflow(){
+        const innerText = this.target.innerText;
+        if(innerText && (isOverflowWidth(innerText.textBox.elem) || isOverflowHeight(innerText.textBox.elem))){
+            this.x = SizeBorder.startPoint.target.x;
+            this.y = SizeBorder.startPoint.target.y;
+            this.width = SizeBorder.startPoint.target.width;
+            this.height = SizeBorder.startPoint.target.height;
+        }
     }
 
     dbClickHandler(e){
         this.target?.dbClickHandler?.(e);
+    }
+
+    clickHandler(e){
+        const innerText = this.target.innerText;
+        console.log(isOverflowHeight(innerText.textBox.elem))
+        console.log(isOverflowWidth(innerText.textBox.elem))
     }
 }
