@@ -126,3 +126,10 @@ export const PHRASES = {
     NOT_EXIST_NAME_STORE : '해당이름의 저장내역이 존재하지 않습니다.',
     AUTO_RESTORE : '자동저장 내역을 복구 하시겠습니까 ?'
 }
+
+export const BEHAVIOR = {
+    CREATE : '생성',
+    MODIFY : '수정',
+    MOVE : '이동',
+    DELETE : '삭제'
+}
