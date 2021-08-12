@@ -1,5 +1,7 @@
 export const XMLNS = 'http://www.w3.org/2000/svg';
 
+export const APP_ID = 'app';
+
 export const BOARD_ID = 'board';
 
 export const PLACE_HOLDER_ID = 'placeholder';
@@ -61,9 +63,10 @@ export const BUTTON = {
 export const RANDOM_MAX = 0x10000000;
 
 export const COLOR = {
-    ORANGE : 'orange',
+    ORANGE : '#FFA500',
     KAKAO : '#FEE500',
-    BLACK : '#555'
+    BLACK : '#555555',
+    WHITE : '#FFFFFF'
 }
 
 export const RATIO = {

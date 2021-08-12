@@ -18,7 +18,6 @@ import {
     PLACE_HOLDER_ID,
     GROUP
 } from '../../service/constant';
-import Border from "../Border";
 import DragBorder from "../Border/DragBorder";
 import GroupBorder from "../Border/GroupBorder";
 
@@ -108,7 +107,7 @@ export default class Board extends GraphicElement {
             }
 
             //드래그하여 테두리 생성하는 경우
-            if(selected.relatedBorder){
+            if(selected.relatedBorder && !(this.border instanceof GroupBorder)){
                 this.createBorder(e, selected.relatedBorder, this.createShapePlaceHolder(selected.relatedClass));
             }
 
@@ -284,21 +283,20 @@ export default class Board extends GraphicElement {
 
     destroyBorder() {
         const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
+        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
         if(placeholder){
             placeholder.parentNode.removeChild(placeholder);
             ComponentRepository.removeComponentById(placeholder.id);
         }
         this.tempGroup.elem.innerHTML = '';
         this.border = null;
+        styleMenubar.hide();
     }
 
     destroySpecificBorder(borderIds){
-        const childNodes = this.tempGroup.elem.childNodes;
-        for(const childNode of childNodes){
-            if(borderIds.includes(childNode.id)){
-                this.tempGroup.elem.removeChild(childNode);
-            }
-        }
+        borderIds.forEach((borderId) => {
+            document.getElementById(borderId)?.remove();
+        });
     }
 
     createShapePlaceHolder(type) {
