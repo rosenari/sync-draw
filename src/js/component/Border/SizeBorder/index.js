@@ -1,7 +1,7 @@
 import Border from '../index';
 import GraphicElement from '../../GraphicElement';
 import ComponentRepository from '../../../service/ComponentRepository';
-import {isOverflowHeight, isOverflowWidth, tinyGUID} from '../../../service/util';
+import {getOverflowHeight, getOverflowWidth, isOverflowHeight, isOverflowWidth, tinyGUID} from '../../../service/util';
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
 import {COLOR, BORDER, GROUP, BEHAVIOR, KEYCODE, BOARD_ID, MENU_BAR} from '../../../service/constant';
@@ -93,6 +93,19 @@ export default class SizeBorder extends Border {
 
     set fontSize(value){
         this.target.fontSize = value;
+        const target = this.target.innerText.textBox;
+
+        while(isOverflowWidth(target.elem)){
+            this.width += getOverflowWidth(target.elem);
+            this.renderEdge({ x: this.x, y: this.y, width: this.width, height: this.height });
+            this.renderTarget();
+        }
+        while(isOverflowHeight(target.elem)){
+            this.height += getOverflowHeight(target.elem);
+            this.renderEdge({ x: this.x, y: this.y, width: this.width, height: this.height });
+            this.renderTarget();
+        }
+
         if(this.target.fontSize){
             HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
                 type:`${this.target.type}` });
