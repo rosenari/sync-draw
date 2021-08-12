@@ -18,6 +18,9 @@ import {
     PLACE_HOLDER_ID,
     GROUP
 } from '../../service/constant';
+import Border from "../Border";
+import DragBorder from "../Border/DragBorder";
+import GroupBorder from "../Border/GroupBorder";
 
 export default class Board extends GraphicElement {
     static startPoint = {};
@@ -114,6 +117,7 @@ export default class Board extends GraphicElement {
             }
         }
 
+        //line생성이 종료된 경우 mouseBtn메뉴가 선택되기 떄문에 selected를 갱신할 필요가 있음.
         selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
 
         EventController.mouseMoveHandler = (e) => {
@@ -143,8 +147,13 @@ export default class Board extends GraphicElement {
                 EventController.mouseUpHandler = null;
             }
 
-            if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id){
+            if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id) {
                 if(this.border instanceof SizeBorder) return;
+                if(this.border instanceof DragBorder && this.border.groupingShape()) {
+                    this.destroySpecificBorder([BORDER.DRAG_BORDER_ID]);
+                    finish();
+                    return;
+                }
             }
 
             if(selected?.relatedClass) {
@@ -241,6 +250,14 @@ export default class Board extends GraphicElement {
         this.border.y = Board.startPoint.y;
     }
 
+    createGroupBorder({ x, y, width, height, shapes}){
+        this.border = new GroupBorder({
+            parentId: this.tempGroup.id,
+            id: BORDER.GROUP_BORDER_ID,
+            x, y, width, height, shapes
+        });
+    }
+
     renderBorder(e) {
         if(!Board.startPoint.x || !Board.startPoint.y) return;
         //이동한 변위
@@ -267,9 +284,21 @@ export default class Board extends GraphicElement {
 
     destroyBorder() {
         const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
-        if(placeholder) placeholder.parentNode.removeChild(placeholder);
+        if(placeholder){
+            placeholder.parentNode.removeChild(placeholder);
+            ComponentRepository.removeComponentById(placeholder.id);
+        }
         this.tempGroup.elem.innerHTML = '';
         this.border = null;
+    }
+
+    destroySpecificBorder(borderIds){
+        const childNodes = this.tempGroup.elem.childNodes;
+        for(const childNode of childNodes){
+            if(borderIds.includes(childNode.id)){
+                this.tempGroup.elem.removeChild(childNode);
+            }
+        }
     }
 
     createShapePlaceHolder(type) {

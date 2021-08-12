@@ -27,7 +27,11 @@ export default class Shape extends GraphicElement {
     }
 
     renderLinkedLine() {
+        const board = ComponentRepository.getComponentById(BOARD_ID);
+
         for(const line of this.linkedLine.keys()) {
+            if(board.border?.shapes?.include?.(line)) continue;
+
             const pointInfo = this.linkedLine.get(line);
             const points = [...line.points];
             const x = Math.round(this.x + (this.width * pointInfo.ratios[0]));
