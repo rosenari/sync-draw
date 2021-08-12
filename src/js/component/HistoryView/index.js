@@ -1,5 +1,5 @@
 import CustomElement from '../CustomElement';
-import { ComponentKor } from '../index';
+import { ComponentKor } from '../../service/constant';
 import './index.css';
 
 export default class HistoryView extends CustomElement{
