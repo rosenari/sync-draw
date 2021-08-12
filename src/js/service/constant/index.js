@@ -21,7 +21,9 @@ export const MENU_BAR = {
 export const BORDER = {
     BORDER_ID : 'border',
     CREATE_BORDER_ID : 'create-border',
-    SIZE_BORDER_ID : 'size-border'
+    SIZE_BORDER_ID : 'size-border',
+    DRAG_BORDER_ID : 'drag-border',
+    GROUP_BORDER_ID : 'group-border'
 }
 
 export const STYLE_ELEM = {
