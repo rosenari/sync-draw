@@ -7,6 +7,7 @@ import {
 } from '../../service/constant';
 import ComponentRepository from "../../service/ComponentRepository";
 import './index.css';
+import {debounce} from "../../service/util";
 
 export default class StyleMenubar extends CustomElement{
     _fontSizeText = null;
@@ -68,10 +69,10 @@ export default class StyleMenubar extends CustomElement{
             type: 'color',
             classList: ['style-input'],
             handlers: {
-                inputHandler: function(e){
+                inputHandler: debounce(function(e){
                     const board = ComponentRepository.getComponentById(BOARD_ID);
                     if(board.border?.fontColor) board.border.fontColor = e.target.value;
-                }
+                },300)
             }
         });
 
@@ -89,10 +90,10 @@ export default class StyleMenubar extends CustomElement{
             type: 'color',
             classList: ['style-input'],
             handlers: {
-                inputHandler: function(e){
+                inputHandler: debounce(function(e){
                     const board = ComponentRepository.getComponentById(BOARD_ID);
                     if(board.border?.fill) board.border.fill = e.target.value;
-                }
+                },300)
             }
         });
 
@@ -110,10 +111,10 @@ export default class StyleMenubar extends CustomElement{
             type: 'color',
             classList: ['style-input'],
             handlers: {
-                inputHandler: function(e){
+                inputHandler: debounce(function(e){
                     const board = ComponentRepository.getComponentById(BOARD_ID);
                     if(board.border?.strokeColor) board.border.strokeColor = e.target.value;
-                }
+                },300)
             }
         });
 

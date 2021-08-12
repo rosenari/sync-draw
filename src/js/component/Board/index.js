@@ -6,6 +6,7 @@ import {tinyGUID} from '../../service/util';
 import SizeBorder from '../Border/SizeBorder';
 import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
+import HistoryManager from '../../service/HistoryManager';
 import Line from '../Shape/Line';
 import GLine from '../Shape/Line/GLine';
 import GPolyline from '../Shape/Line/GPolyline';
@@ -184,6 +185,9 @@ export default class Board extends GraphicElement {
             if(selected.relatedClass === GPolyline) {
                 const lastIndex = Board.startPoint.line.points.length - 1;
                 Board.startPoint.line.removePoint(lastIndex);
+                HistoryManager.updateHistoryToLatest({ behavior: 'create', type:'GPolyline' });
+            }else{
+                HistoryManager.updateHistoryToLatest({ behavior: 'create', type:'GLine' });
             }
 
             itemMenubar.selectMenu = itemMenubar.mouseBtn;
@@ -326,7 +330,7 @@ export default class Board extends GraphicElement {
     }
 
     createShape(type) {
-        return new type({
+        const shape = new type({
             parentId: this.shapeGroup.id,
             id: tinyGUID(),
             x: this.border.x,
@@ -334,6 +338,10 @@ export default class Board extends GraphicElement {
             width: this.border.width,
             height: this.border.height
         });
+
+        HistoryManager.updateHistoryToLatest({ behavior: 'create', type:`${type.__proto__.name}` });
+
+        return shape;
     }
 
     createLine(type) {

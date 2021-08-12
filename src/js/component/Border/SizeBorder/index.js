@@ -5,6 +5,7 @@ import {getOverflowHeight, getOverflowWidth, isOverflowHeight, isOverflowWidth, 
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
 import {COLOR, BORDER, GROUP} from '../../../service/constant';
+import HistoryManager from "../../../service/HistoryManager";
 
 export default class SizeBorder extends Border {
     static startPoint = {};
@@ -91,6 +92,10 @@ export default class SizeBorder extends Border {
 
     set fontSize(value){
         this.target.fontSize = value;
+        if(this.target.fontSize){
+            HistoryManager.updateHistoryToLatest({ behavior: 'changeStyle',
+                type:`${this.target.__proto__.__proto__.constructor.name}` });
+        }
     }
 
     get fontColor(){
@@ -99,6 +104,10 @@ export default class SizeBorder extends Border {
 
     set fontColor(value){
         this.target.fontColor = value;
+        if(this.target.fontColor){
+            HistoryManager.updateHistoryToLatest({ behavior: 'changeStyle',
+                type:`${this.target.__proto__.__proto__.constructor.name}` });
+        }
     }
 
     get fill(){
@@ -107,6 +116,8 @@ export default class SizeBorder extends Border {
 
     set fill(value){
         this.target.fill = value;
+        if(this.target.fill) HistoryManager.updateHistoryToLatest({ behavior: 'changeStyle',
+            type:`${this.target.__proto__.__proto__.constructor.name}` });
     }
 
     get strokeColor(){
@@ -115,6 +126,8 @@ export default class SizeBorder extends Border {
 
     set strokeColor(value){
         this.target.strokeColor = value;
+        if(this.target.strokeColor) HistoryManager.updateHistoryToLatest({ behavior: 'changeStyle',
+            type:`${this.target.__proto__.__proto__.constructor.name}` });
     }
 
     getOppositionIndex({ maxIndex, index }){
@@ -205,6 +218,7 @@ export default class SizeBorder extends Border {
                                 SizeBorder.startPoint = {};
                                 this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
                                 this.renderTarget();
+                                HistoryManager.updateHistoryToLatest({ behavior: 'changeSize', type:`${this.target.__proto__.__proto__.constructor.name}` });
                                 EventController.mouseMoveHandler = null;
                                 EventController.mouseUpHandler = null;
                             }
@@ -270,6 +284,7 @@ export default class SizeBorder extends Border {
             e.stopPropagation();
             SizeBorder.startPoint = {};
             this.renderTarget();
+            HistoryManager.updateHistoryToLatest({ behavior: 'move', type:`${this.target.__proto__.__proto__.constructor.name}` });
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
         }

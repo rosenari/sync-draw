@@ -173,6 +173,46 @@ export default class Shape extends GraphicElement {
         }
     }
 
+    serialize(){
+        const type = ['Shape',
+            this.__proto__.__proto__.__proto__.constructor.name,
+            this.__proto__.__proto__.constructor.name];
+        const text = this.innerText.textBox.elem.innerText;
+        const property = {
+            id: this.id,
+            parentId: this.parentId,
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            linkedLineIds: Array.from(this.linkedLine?.keys?.() || [])?.map?.(line => {
+                return {
+                    id:line.id,
+                    pointInfo: this.linkedLine.get(line)
+                }
+            }),
+            fontSize: this.fontSize,
+            fontColor: this.fontColor,
+            fill: this.fill,
+            strokeColor: this.strokeColor
+        };
+
+        return JSON.stringify({
+            text,
+            type,
+            ...property,
+        });
+    }
+
+    setProperty({ linkedLineIds, text, fontSize, fontColor, fill, strokeColor }){
+        linkedLineIds.forEach(({id, pointInfo}) => this.addLinkedLine({ line: ComponentRepository.getComponentById(id), pointInfo }));
+        this.innerText.textBox.elem.innerText = text;
+        this.fontSize = fontSize;
+        this.fontColor = fontColor;
+        this.fill = fill;
+        this.strokeColor = strokeColor;
+    }
+
     dbClickHandler(e) {
         if(this.innerText) this.innerText.textBox.dbClickHandler(e);
     }
