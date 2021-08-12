@@ -2,6 +2,7 @@ import Border from '../index';
 import TransformManager from '../../../service/TransformManager';
 import EventController from '../../../service/EventController';
 import {COLOR, FONT} from "../../../service/constant";
+import HistoryManager from "../../../service/HistoryManager";
 
 export default class GroupBorder extends Border {
     static startPoint = {};
@@ -116,6 +117,7 @@ export default class GroupBorder extends Border {
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             GroupBorder.startPoint = {};
+            HistoryManager.updateHistoryToLatest({ behavior: 'move', type:`GroupBorder` });
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
         }

@@ -29,7 +29,7 @@ class Line extends Shape {
             }
         });
 
-        this.addPoint({
+        if(startX && startY) this.addPoint({
             x: startX,
             y: startY
         });
@@ -123,6 +123,30 @@ class Line extends Shape {
     removePoint(index) {
         this.points.splice(index,1);
         this.render();
+    }
+
+    serialize(){
+        const type = ['Shape','Line', this.__proto__.constructor.name];
+        const property = {
+            id: this.id,
+            parentId: this.parentId,
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            points: this.points,
+            strokeColor: this.strokeColor
+        };
+
+        return JSON.stringify({
+            type,
+            ...property,
+        });
+    }
+
+    setProperty({ points, strokeColor }){
+        this.points = points;
+        this.strokeColor = strokeColor;
     }
 
     clickHandler(e) {

@@ -30,7 +30,7 @@ function genRandom8Hex(){
 }
 
 export function tinyGUID(){
-    return `${genRandom8Hex()}`;
+    return `SD-${genRandom8Hex()}`;
 }
 
 export function isOverflowWidth(elem){
@@ -89,4 +89,28 @@ export function rgbToHex(rgb){
         const hex = Number(code).toString(16);
         return (hex.length === 1 ? '0' + hex : hex).toUpperCase();
     }).join('');
+}
+
+export async function deserialize(json){
+    const obj = JSON.parse(json);
+    const classType = await changeTypeStringToClass(obj.type);
+    const shape = new classType({
+        id: obj.id,
+        parentId: obj.parentId,
+        x: obj.x,
+        y: obj.y,
+        width: obj.width,
+        height: obj.height,
+    });
+
+    shape.setProperty(obj);
+
+    return shape;
+}
+
+
+async function changeTypeStringToClass(type){
+    const classPath = type.join('/');
+    const classObj = await import('../../component/'+ classPath + '/index.js');
+    return classObj.default;
 }

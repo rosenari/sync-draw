@@ -8,6 +8,7 @@ import SizeBorder from '../SizeBorder';
 import Line from '../../Shape/Line';
 import Shape from '../../Shape';
 import './index.css';
+import HistoryManager from "../../../service/HistoryManager";
 
 export default class LineBorder extends SizeBorder {
     static startPoint = {};
@@ -63,6 +64,7 @@ export default class LineBorder extends SizeBorder {
                         EventController.mouseUpHandler = () => {
                             this.adjustCollisionInfo();
                             this.renderTarget();
+                            HistoryManager.updateHistoryToLatest({ behavior: 'changePoint', type:`${this.target.__proto__.constructor.name}` });
                             SizeBorder.startPoint = {};
                             EventController.mouseMoveHandler = null;
                             EventController.mouseOverHandler = null;
@@ -115,6 +117,7 @@ export default class LineBorder extends SizeBorder {
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.renderTarget();
+            HistoryManager.updateHistoryToLatest({ behavior: 'move', type:`${this.target.__proto__.constructor.name}` });
             SizeBorder.startPoint = {};
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
