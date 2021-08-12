@@ -9,7 +9,6 @@ export const PLACE_HOLDER_ID = 'placeholder';
 export const HISTORY_VIEW_ID = 'history-view';
 
 export const GROUP = {
-    BORDER_GROUP_ID : 'border-group',
     SHAPE_GROUP_ID  : 'shape-group',
     TEMP_GROUP_ID : 'temp-group'
 }
