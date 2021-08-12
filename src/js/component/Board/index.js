@@ -1,5 +1,5 @@
 import ComponentRepository from '../../service/ComponentRepository';
-import {tinyGUID} from '../../service/util';
+import {tinyGUID, setDisablePointerEvent} from '../../service/util';
 import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
 import HistoryManager from '../../service/HistoryManager';
@@ -348,18 +348,5 @@ export default class Board extends GraphicElement {
            startX: Board.startPoint.x,
            startY: Board.startPoint.y,
         });
-    }
-}
-
-function setDisablePointerEvent(disable) {
-    const menuBar = [ MENU_BAR.PAGE_MENU_BAR_ID,
-        MENU_BAR.ITEM_MENU_BAR_ID,
-        MENU_BAR.STYLE_MENU_BAR_ID,
-        MENU_BAR.HISTORY_MENU_BAR_ID].map(id => ComponentRepository.getComponentById(id));
-
-    if(disable){
-        menuBar.forEach(menu => menu.elem.classList.add('disable-pointer-event'));
-    } else {
-        menuBar.forEach(menu => menu.elem.classList.remove('disable-pointer-event'));
     }
 }
