@@ -76,6 +76,9 @@ class HistoryManager {
         if(this.history[Index]?.svgElements) {
             this.adjustSvgElements(this.history[Index].svgElements);
         }
+
+        this.currentPage = ComponentRepository.getSvgElements();
+        this.autoStoreCurrentPage();
     }
 
     adjustSvgElements(svgElements){
