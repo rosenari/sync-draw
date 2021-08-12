@@ -35,7 +35,7 @@ class Line extends Shape {
         });
 
         this.elem.setAttribute('fill','transparent');
-        this.line.elem.setAttribute('stroke', COLOR.BLACK);
+        this.strokeColor =  COLOR.BLACK;
         this.line.elem.setAttribute('stroke-width', '3');
         this.line.elem.setAttribute('style','cursor:move;')
     }
@@ -104,6 +104,15 @@ class Line extends Shape {
         this.render();
     }
 
+    get strokeColor(){
+        return this.line?.elem?.getAttribute('stroke');
+    }
+
+    set strokeColor(value){
+        this.line?.elem?.setAttribute('stroke', value);
+        this.arrow?.elem?.setAttribute('fill', value);
+    }
+
     addPoint({ x, y }){
         this.points.push({
             x, y
@@ -119,6 +128,7 @@ class Line extends Shape {
     clickHandler(e) {
         const board = ComponentRepository.getComponentById(BOARD_ID);
         const itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID);
+        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
         if(ComponentRepository.getComponentById(itemMenubar.selectMenu).name !== 'mouse'){
             return;
         }
@@ -130,6 +140,9 @@ class Line extends Shape {
             parentId: GROUP.TEMP_GROUP_ID,
             target: this
         });
+
+        styleMenubar.strokeInput.elem.value = this.strokeColor;
+        styleMenubar.show();
     }
 }
 

@@ -1,6 +1,7 @@
 import Border from '../index';
 import TransformManager from '../../../service/TransformManager';
 import EventController from '../../../service/EventController';
+import {COLOR, FONT} from "../../../service/constant";
 
 export default class GroupBorder extends Border {
     static startPoint = {};
@@ -55,6 +56,38 @@ export default class GroupBorder extends Border {
 
     set shapes(value) {
         this._shapes = value;
+    }
+
+    get fontSize(){
+        return FONT.SIZE_3;
+    }
+
+    set fontSize(value){
+        this.shapes.forEach(shape => shape.fontSize = value);
+    }
+
+    get fontColor(){
+        return COLOR.BLACK;
+    }
+
+    set fontColor(value){
+        this.shapes.forEach(shape => shape.fontColor = value);
+    }
+
+    get fill(){
+        return COLOR.BLACK;
+    }
+
+    set fill(value){
+        this.shapes.forEach(shape => shape.fill = value);
+    }
+
+    get strokeColor(){
+        return COLOR.BLACK;
+    }
+
+    set strokeColor(value){
+        this.shapes.forEach(shape => shape.strokeColor = value);
     }
 
     mouseDownHandler(e){

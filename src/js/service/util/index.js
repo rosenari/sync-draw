@@ -82,3 +82,11 @@ export function IterableWeakMap(){
 
     return this;
 }
+
+export function rgbToHex(rgb){
+    const result = rgb.replace(/[^,\d]/g,'').split(',');
+    return '#' + result.map(code => {
+        const hex = Number(code).toString(16);
+        return (hex.length === 1 ? '0' + hex : hex).toUpperCase();
+    }).join('');
+}

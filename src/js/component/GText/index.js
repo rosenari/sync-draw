@@ -1,10 +1,10 @@
 import GraphicElement from '../GraphicElement';
 import CustomElement from '../CustomElement';
-import { getOverflowHeight, isOverflowHeight } from '../../service/util';
+import {getOverflowHeight, isOverflowHeight, rgbToHex} from '../../service/util';
 import ComponentRepository from '../../service/ComponentRepository';
 import SizeBorder from '../Border/SizeBorder';
 import TransformManager from '../../service/TransformManager';
-import { BOARD_ID, GROUP } from '../../service/constant';
+import {BOARD_ID, COLOR, GROUP, MENU_BAR, FONT} from '../../service/constant';
 
 class GText extends GraphicElement {
     _foreignObj = null;
@@ -46,6 +46,8 @@ class GText extends GraphicElement {
             }
         });
         this.textBox.elem.setAttribute('style','display:inline-block;width:100%;height:100%;word-break:break-word;user-select:none;');
+        this.fontColor = COLOR.BLACK;
+        this.fontSize = FONT.SIZE_3;
 
         this.x = x;
         this.y = y;
@@ -101,17 +103,37 @@ class GText extends GraphicElement {
         this._textBox = value;
     }
 
+    get fontSize(){
+        return this.textBox.elem.style.fontSize;
+    }
+
+    set fontSize(value){
+        this.textBox.elem.style.fontSize = value;
+    }
+
+    get fontColor(){
+        return rgbToHex(this.textBox.elem.style.color);
+    }
+
+    set fontColor(value){
+        this.textBox.elem.style.color = value;
+    }
+
     dbClickHandler(e){
         this.textBox.dbClickHandler(e);
     }
 
     clickHandler(e) {
         const board = ComponentRepository.getComponentById(BOARD_ID);
+        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
         board.destroyBorder();
         board.border = new SizeBorder({
             parentId: GROUP.TEMP_GROUP_ID,
             target: this
         });
+        styleMenubar.fontSizeSelect.elem.value = this.fontSize;
+        styleMenubar.fontColorInput.elem.value = this.fontColor;
+        styleMenubar.show();
     }
 }
 

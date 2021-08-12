@@ -4,7 +4,7 @@ import ComponentRepository from '../../../service/ComponentRepository';
 import {getOverflowHeight, getOverflowWidth, isOverflowHeight, isOverflowWidth, tinyGUID} from '../../../service/util';
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
-import { COLOR, BORDER, GROUP } from '../../../service/constant';
+import {COLOR, BORDER, GROUP} from '../../../service/constant';
 
 export default class SizeBorder extends Border {
     static startPoint = {};
@@ -83,6 +83,38 @@ export default class SizeBorder extends Border {
 
     set target(value) {
         this._target = value;
+    }
+
+    get fontSize(){
+        return this.target.fontSize;
+    }
+
+    set fontSize(value){
+        this.target.fontSize = value;
+    }
+
+    get fontColor(){
+        return this.target.fontColor;
+    }
+
+    set fontColor(value){
+        this.target.fontColor = value;
+    }
+
+    get fill(){
+        return this.target.fill;
+    }
+
+    set fill(value){
+        this.target.fill = value;
+    }
+
+    get strokeColor(){
+        return this.target.strokeColor;
+    }
+
+    set strokeColor(value){
+        this.target.strokeColor = value;
     }
 
     getOppositionIndex({ maxIndex, index }){
