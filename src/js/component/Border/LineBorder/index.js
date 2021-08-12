@@ -11,6 +11,7 @@ import './index.css';
 
 export default class LineBorder extends SizeBorder {
     static startPoint = {};
+    static padding = 30;
 
     constructor({ parentId, target }) {
         super({
@@ -97,7 +98,8 @@ export default class LineBorder extends SizeBorder {
         LineBorder.startPoint.points = [...this.points].map(point => {
             return {
                 x: TransformManager.changeDocXToSvgX(point.getAttribute('cx')),
-                y: TransformManager.changeDocYToSvgY(point.getAttribute('cy'))
+                y: TransformManager.changeDocYToSvgY(point.getAttribute('cy')),
+                index: point.dataset.index
             }
         });
 
@@ -109,8 +111,8 @@ export default class LineBorder extends SizeBorder {
             LineBorder.startPoint.collisionInfo = [];
             LineBorder.startPoint.points.forEach((point, index) => {
                 this.renderEdge({ x:+point.x + dx, y:+point.y + dy, index });
-                this.detectCollisionShape({ x:+point.x + dx, y:+point.y + dy, index, init: false });
             });
+            this.detectCollisionShapeForMove({ dx, dy });
 
             this.renderTarget();
             this.render();
@@ -137,10 +139,10 @@ export default class LineBorder extends SizeBorder {
     }
 
     //모양과 충돌하는지 순회를 통해탐지, 탐지할 경우 충돌정보 갱신
-    detectCollisionShape({ x, y, index, init = true}){
+    detectCollisionShape({ x, y, index}){
         if(!this.target.arrow) return;
 
-        if(init) LineBorder.startPoint.collisionInfo = [];
+        LineBorder.startPoint.collisionInfo = [];
         for(const key in ComponentRepository) {
             const shape = ComponentRepository.getComponentById(key);
             if (!(shape instanceof Shape)) continue;
@@ -174,6 +176,86 @@ export default class LineBorder extends SizeBorder {
                 pointInfo
             });
         }
+    }
+
+    detectCollisionShapeForMove({ dx, dy }){
+        const pointA = LineBorder.startPoint.points[0];
+        const pointB = LineBorder.startPoint.points[1];
+        const pointAoffsetX = pointA.x + dx;
+        const pointAoffsetY = pointA.y + dy;
+        const pointBoffsetX = pointB.x + dx;
+        const pointBoffsetY = pointB.y + dy;
+
+        LineBorder.startPoint.collisionInfo = [];
+        for(const key in ComponentRepository) {
+            const shape = this.getShape(key);
+            if(!shape) continue;
+
+            const { startX, startY, endX, endY } = this.getStartEndXY(shape);
+
+            const pointARatioX = ((pointAoffsetX - startX) / shape.width).toFixed(2);
+            const pointARatioY = ((pointAoffsetY - startY) / shape.height).toFixed(2);
+            const pointBRatioX = ((pointBoffsetX - startX) / shape.width).toFixed(2);
+            const pointBRatioY = ((pointBoffsetY - startY) / shape.height).toFixed(2);
+
+            const addCommand = 'addLinkedLine';
+            const removeCommand = 'removeLinkedLine';
+            const pointAInfo = {
+                ratios: [pointARatioX, pointARatioY],
+                index: pointA.index
+            }
+            const pointBInfo = {
+                ratios: [pointBRatioX, pointBRatioY],
+                index: pointB.index
+            }
+
+            const isPointANotInclude = startX - LineBorder.padding > pointAoffsetX || endX + LineBorder.padding < pointAoffsetX
+                || startY - LineBorder.padding > pointAoffsetY || endY + LineBorder.padding < pointAoffsetY;
+            const isPointBNotInclude = startX - LineBorder.padding > pointBoffsetX || endX + LineBorder.padding < pointBoffsetX
+                || startY - LineBorder.padding > pointBoffsetY || endY + LineBorder.padding < pointBoffsetY;
+
+            if(isPointANotInclude && isPointBNotInclude){
+                shape.elem.classList.remove('shape-collision');
+                this.pushCommandToCollisionInfo({ command: removeCommand, shape, pointInfo: pointAInfo});
+                this.pushCommandToCollisionInfo({ command: removeCommand, shape, pointInfo: pointBInfo});
+                continue;
+            }
+
+            if(!isPointANotInclude){
+                shape.elem.classList.add('shape-collision');
+                this.pushCommandToCollisionInfo({ command: addCommand, shape, pointInfo: pointAInfo});
+                isPointBNotInclude && this.pushCommandToCollisionInfo({ command: removeCommand, shape, pointInfo: pointBInfo});
+            }
+            if(!isPointBNotInclude){
+                shape.elem.classList.add('shape-collision');
+                this.pushCommandToCollisionInfo({ command: addCommand, shape, pointInfo: pointBInfo});
+                isPointANotInclude && this.pushCommandToCollisionInfo({ command: removeCommand, shape, pointInfo: pointAInfo});
+            }
+        }
+    }
+
+    getShape(id){
+        const shape = ComponentRepository.getComponentById(id);
+        if (!(shape instanceof Shape)) return null;
+        if (shape instanceof Line) return null;
+        return shape;
+    }
+
+    getStartEndXY(shape){
+        return {
+            startX : shape.x,
+            startY : shape.y,
+            endX : shape.x + shape.width,
+            endY : shape.y + shape.height
+        }
+    }
+
+    pushCommandToCollisionInfo({ command, shape, pointInfo}){
+        LineBorder.startPoint.collisionInfo.push({
+            command,
+            shape,
+            pointInfo
+        });
     }
 
     //모양요소 흐름선 정보 갱신

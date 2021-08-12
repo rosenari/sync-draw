@@ -323,10 +323,4 @@ export default class SizeBorder extends Border {
     dbClickHandler(e){
         this.target?.dbClickHandler?.(e);
     }
-
-    clickHandler(e){
-        const innerText = this.target.innerText;
-        console.log(isOverflowHeight(innerText.textBox.elem))
-        console.log(isOverflowWidth(innerText.textBox.elem))
-    }
 }
