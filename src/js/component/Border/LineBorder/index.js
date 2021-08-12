@@ -163,6 +163,8 @@ export default class LineBorder extends SizeBorder {
     }
 
     detectCollisionShapeForMove({ dx, dy }){
+        if(!this.target.arrow) return;
+
         const pointA = LineBorder.startPoint.points[0];
         const pointB = LineBorder.startPoint.points[1];
         const pointAoffsetX = pointA.x + dx;
@@ -244,6 +246,8 @@ export default class LineBorder extends SizeBorder {
 
     //모양요소 흐름선 정보 갱신
     adjustCollisionInfo(){
+        if(!this.target.arrow) return;
+
         const collisionInfos = LineBorder.startPoint.collisionInfo;
         const line = this.target;
         for(const info of collisionInfos){
