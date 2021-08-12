@@ -130,6 +130,7 @@ export const PHRASES = {
 }
 
 export const BEHAVIOR = {
+    INIT: '초기화',
     CREATE : '생성',
     MODIFY : '수정',
     MOVE : '이동',
@@ -142,4 +143,26 @@ export const KEYEVENT = {
     UP : 'ArrowUp',
     RIGHT : 'ArrowRight',
     DOWN : 'ArrowDown',
+}
+
+export const ComponentKor = {
+    All : '페이지',
+    CustomElement : '커스텀 엘리먼트',
+    GraphicElement : '그래픽 엘리먼트',
+    GText: '텍스트',
+    Group: '그룹',
+    Shape: '모양',
+    InnerText: '내부텍스트',
+    Line: '선',
+    GLine: '흐름선',
+    GPolyline: '직선',
+    GDisk: '디스크',
+    GDocument: '서류',
+    GInputoutput: '입출력',
+    GJudgment: '판단',
+    GPageconn: '페이지연결',
+    GPinput: '수동입력',
+    GReady: '준비',
+    GProcess: '처리',
+    GTerminal: '단말'
 }

@@ -1,6 +1,6 @@
 import ComponentRepository from '../ComponentRepository';
 import { deserialize } from '../util';
-import {COMPONENT_TYPE, HISTORY_VIEW_ID, PHRASES} from '../constant';
+import {BEHAVIOR, COMPONENT_TYPE, HISTORY_VIEW_ID, PHRASES} from '../constant';
 
 let instance = null;
 class HistoryManager {
@@ -93,7 +93,7 @@ class HistoryManager {
     initHistory(svgElements){
         this.historyIndex = 0;
         this.history = [{
-            behavior: '초기화',
+            behavior: BEHAVIOR.INIT,
             type: 'All',
             svgElements
         }];
