@@ -4,6 +4,7 @@ import EventController from '../../../service/EventController';
 import {BEHAVIOR, BOARD_ID, COLOR, COMPONENT_TYPE, FONT} from "../../../service/constant";
 import HistoryManager from '../../../service/HistoryManager';
 import ComponentRepository from "../../../service/ComponentRepository";
+import {GText, Shape} from "../../index";
 
 export default class GroupBorder extends Border {
     static startPoint = {};
@@ -103,6 +104,7 @@ export default class GroupBorder extends Border {
 
     mouseDownHandler(e){
         e.stopPropagation();
+        if(e.shiftKey) this.clickShapeInRange(e);
         GroupBorder.startPoint.x = TransformManager.changeDocXToSvgX(e.pageX);
         GroupBorder.startPoint.y = TransformManager.changeDocYToSvgY(e.pageY);
         this.startPointInit();
@@ -116,6 +118,7 @@ export default class GroupBorder extends Border {
 
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
+            this.moveCompleteHandler();
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
         }
@@ -156,5 +159,23 @@ export default class GroupBorder extends Border {
     moveCompleteHandler(){
         GroupBorder.startPoint = {};
         HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MOVE, type:`Group` });
+    }
+
+    clickShapeInRange(e){
+        const x = TransformManager.changeDocXToSvgX(e.pageX);
+        const y = TransformManager.changeDocYToSvgY(e.pageY);
+        for(const key in ComponentRepository) {
+            const shape = ComponentRepository.getComponentById(key);
+            if (!(shape instanceof Shape) && !(shape instanceof GText)) continue;
+
+            const startX = shape.x;
+            const startY = shape.y;
+            const endX = shape.x + shape.width;
+            const endY = shape.y + shape.height;
+
+            if(x >= startX && y >= startY && x <= endX && y <= endY) {
+                shape.clickHandler(e);
+            }
+        }
     }
 }

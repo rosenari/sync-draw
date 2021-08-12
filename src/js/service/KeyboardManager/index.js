@@ -13,10 +13,12 @@ class KeyboardManager {
     }
 
     eventInit(){
+        const board = ComponentRepository.getComponentById(BOARD_ID);
+        const pageMenuBar = ComponentRepository.getComponentById(MENU_BAR.PAGE_MENU_BAR_ID);
+        const zoomMenuBar = ComponentRepository.getComponentById(MENU_BAR.ZOOM_MENU_BAR_ID);
+        const moveOffset = 10;
+
         window.addEventListener('keydown', (e) => {
-            const board = ComponentRepository.getComponentById(BOARD_ID);
-            const pageMenuBar = ComponentRepository.getComponentById(MENU_BAR.PAGE_MENU_BAR_ID);
-            const moveOffset = 10;
             if(e.ctrlKey && e.key === 'z'){
                 HistoryManager.undo();
             }else if(e.ctrlKey && e.key === 'x'){
@@ -37,6 +39,18 @@ class KeyboardManager {
                 this.moveHandler({ board, dx: moveOffset, dy: 0 });
             }else if(e.key === KEYEVENT.DOWN){
                 this.moveHandler({ board, dx: 0, dy: moveOffset });
+            }else if(e.ctrlKey && e.key === 'a'){
+
+            }
+        });
+
+        window.addEventListener('mousewheel', (e) => {
+            if(e.ctrlKey){
+                if(e.deltaY < 0) { //down
+                    zoomMenuBar.zoomOutBtn.clickHandler();
+                }else { //up
+                    zoomMenuBar.zoomInBtn.clickHandler();
+                }
             }
         });
     }

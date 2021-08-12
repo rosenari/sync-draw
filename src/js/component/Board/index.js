@@ -54,6 +54,7 @@ export default class Board extends GraphicElement {
         groupList.forEach(registerGroup);
 
         this.elem.addEventListener('mousedown',(e) => {
+            if(e.shiftKey) return;
             this._mouseDownHandler(e);
         });
     }
@@ -158,8 +159,8 @@ export default class Board extends GraphicElement {
                 itemMenubar.selectMenu = itemMenubar.mouseBtn;
             }
 
-            this.destroyBorder(e);
             shape?.clickHandler?.();
+            this.destroyBorder(e);
             finish();
         }
     }
@@ -245,6 +246,20 @@ export default class Board extends GraphicElement {
         });
         this.border.x = Board.startPoint.x;
         this.border.y = Board.startPoint.y;
+    }
+
+    createSizeBorder(target){
+        this.border = new SizeBorder({
+            parentId: GROUP.TEMP_GROUP_ID,
+            target
+        });
+    }
+
+    createLineBorder(target){
+        this.border = new LineBorder({
+            parentId: GROUP.TEMP_GROUP_ID,
+            target
+        });
     }
 
     createGroupBorder({ x, y, width, height, shapes}){
@@ -345,20 +360,6 @@ export default class Board extends GraphicElement {
            id: tinyGUID(),
            startX: Board.startPoint.x,
            startY: Board.startPoint.y,
-        });
-    }
-
-    createSizeBorder(target){
-        this.border = new SizeBorder({
-            parentId: GROUP.TEMP_GROUP_ID,
-            target
-        });
-    }
-
-    createLineBorder(target){
-        this.border = new LineBorder({
-            parentId: GROUP.TEMP_GROUP_ID,
-            target
         });
     }
 }
