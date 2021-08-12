@@ -9,6 +9,8 @@ import {
     IterableWeakMap
 } from '../../service/util';
 import InnerText from './InnerText';
+import SizeBorder from '../Border/SizeBorder';
+import GroupBorder from '../Border/GroupBorder';
 
 export default class Shape extends GraphicElement {
     _x = 0;
@@ -228,6 +230,27 @@ export default class Shape extends GraphicElement {
             return;
         }
 
+        if(e?.shiftKey && board.border) {
+            if(!(board.border instanceof SizeBorder) && !(board.border instanceof GroupBorder)) return;
+            let shapes = [];
+            const target = this;
+            if(board.border instanceof SizeBorder) {
+                const sizeBorderTarget = board.border.target;
+                shapes.push(sizeBorderTarget);
+                if(sizeBorderTarget !== target) shapes.push(target);
+            }else if(board.border instanceof GroupBorder) {
+                shapes = board.border.shapes;
+                shapes.filter(shape => shape !== target);
+                shapes.push(target);
+            }
+            const { x, y, width, height} = createGroupInfo(shapes);
+            board.destroyBorder();
+            board.createGroupBorder({
+                x, y, width, height, shapes
+            });
+            return;
+        }
+
         this.elem.parentNode?.appendChild?.(this.elem);
         this.innerText.elem.parentNode?.appendChild?.(this.innerText.elem);
 
@@ -240,4 +263,15 @@ export default class Shape extends GraphicElement {
         styleMenubar.fillInput.elem.value = this.fill;
         styleMenubar.strokeInput.elem.value = this.strokeColor;
     }
+}
+
+function createGroupInfo(shapes){
+    const x = Math.min(...shapes.map(shape => shape.x));
+    const y = Math.min(...shapes.map(shape => shape.y));
+    const width = Math.max(...shapes.map(shape => shape.x + shape.width)) - x;
+    const height = Math.max(...shapes.map(shape => shape.y + shape.height )) - y;
+
+    return {
+        x, y, width, height
+    };
 }
