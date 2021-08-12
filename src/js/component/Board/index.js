@@ -21,7 +21,6 @@ import './index.css';
 export default class Board extends GraphicElement {
     static startPoint = {};
     _shapeGroup = null;
-    _borderGroup = null;
     _tempGroup = null;
     _border = null;
 
@@ -30,10 +29,6 @@ export default class Board extends GraphicElement {
         this.elem.setAttribute('style',`width: 100%; height: 100%;`);
 
         const groupList = [
-            {
-                id: GROUP.BORDER_GROUP_ID,
-                propsName: 'borderGroup'
-            },
             {
                 id: GROUP.SHAPE_GROUP_ID,
                 propsName: 'shapeGroup'
@@ -65,14 +60,6 @@ export default class Board extends GraphicElement {
 
     set shapeGroup(value) {
         this._shapeGroup = value;
-    }
-
-    get borderGroup() {
-        return this._borderGroup;
-    }
-
-    set borderGroup(value) {
-        this._borderGroup = value;
     }
 
     get tempGroup() {
