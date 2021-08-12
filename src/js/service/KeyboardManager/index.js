@@ -39,8 +39,6 @@ class KeyboardManager {
                 this.moveHandler({ board, dx: moveOffset, dy: 0 });
             }else if(e.key === KEYEVENT.DOWN){
                 this.moveHandler({ board, dx: 0, dy: moveOffset });
-            }else if(e.ctrlKey && e.key === 'a'){
-
             }
         });
 
