@@ -1,10 +1,17 @@
 import Border from '../index';
 import GraphicElement from '../../GraphicElement';
 import ComponentRepository from '../../../service/ComponentRepository';
-import {getOverflowHeight, getOverflowWidth, isOverflowHeight, isOverflowWidth, tinyGUID} from '../../../service/util';
+import {
+    getOverflowHeight,
+    getOverflowWidth,
+    isOverflowHeight,
+    isOverflowWidth,
+    setDisablePointerEvent,
+    tinyGUID
+} from '../../../service/util';
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
-import {COLOR, BORDER, GROUP, BEHAVIOR, KEYCODE, BOARD_ID, MENU_BAR} from '../../../service/constant';
+import {COLOR, BORDER, GROUP, BEHAVIOR, BOARD_ID} from '../../../service/constant';
 import HistoryManager from '../../../service/HistoryManager';
 
 export default class SizeBorder extends Border {
@@ -277,6 +284,7 @@ export default class SizeBorder extends Border {
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.moveCompleteHandler();
+            setDisablePointerEvent(false);
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
         }

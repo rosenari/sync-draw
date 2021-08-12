@@ -6,7 +6,7 @@ import {
     getOverflowWidth,
     isOverflowHeight,
     isOverflowWidth,
-    IterableWeakMap
+    IterableWeakMap, setDisablePointerEvent
 } from '../../service/util';
 import InnerText from './InnerText';
 import SizeBorder from '../Border/SizeBorder';
