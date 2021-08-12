@@ -205,11 +205,12 @@ export default class SizeBorder extends Border {
 
                                 this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
                                 this.renderTarget();
+                                this.detectOverflow();
                             }
 
                             EventController.mouseUpHandler = (e) => {
                                 e.stopPropagation();
-                                this.detectOverflow();
+                                this.adjustOverflowInfo();
 
                                 SizeBorder.startPoint = {};
                                 this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
@@ -298,11 +299,24 @@ export default class SizeBorder extends Border {
 
     detectOverflow(){
         const innerText = this.target.innerText;
+        if(innerText && !isOverflowWidth(innerText.textBox.elem) && !isOverflowHeight(innerText.textBox.elem)){
+            SizeBorder.startPoint.notOverflowInfo = {
+                x: this.x,
+                y: this.y,
+                width: this.width,
+                height: this.height
+            };
+        }
+    }
+
+    adjustOverflowInfo(){
+        const innerText = this.target.innerText;
         if(innerText && (isOverflowWidth(innerText.textBox.elem) || isOverflowHeight(innerText.textBox.elem))){
-            this.x = SizeBorder.startPoint.target.x;
-            this.y = SizeBorder.startPoint.target.y;
-            this.width = SizeBorder.startPoint.target.width;
-            this.height = SizeBorder.startPoint.target.height;
+            const adjustInfo = SizeBorder.startPoint.notOverflowInfo || SizeBorder.startPoint.target;
+            this.x = adjustInfo.x;
+            this.y = adjustInfo.y;
+            this.width = adjustInfo.width;
+            this.height = adjustInfo.height;
         }
     }
 
