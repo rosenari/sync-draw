@@ -1,4 +1,5 @@
 import ComponentRepository from '../ComponentRepository';
+import KeyboardManager from '../KeyboardManager';
 
 export default class EventController {
     _rootElem = null;
@@ -14,6 +15,8 @@ export default class EventController {
         this.rootElem.addEventListener('blur',this.blurHandler, true);
         this.rootElem.addEventListener('keyup',this.keyUpHandler);
         this.rootElem.addEventListener('input',this.inputHandler);
+
+        setTimeout(() => KeyboardManager.eventInit());
     }
 
     get rootElem() {

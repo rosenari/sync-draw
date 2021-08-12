@@ -283,17 +283,18 @@ export default class Board extends GraphicElement {
         const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
         const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
         if(placeholder){
-            placeholder.parentNode.removeChild(placeholder);
             ComponentRepository.removeComponentById(placeholder.id);
         }
+        this.tempGroup.elem.childNodes.forEach(childNode => ComponentRepository.removeComponentById(childNode.id));
         this.tempGroup.elem.innerHTML = '';
+
         this.border = null;
         styleMenubar.hide();
     }
 
     destroySpecificBorder(borderIds){
         borderIds.forEach((borderId) => {
-            document.getElementById(borderId)?.remove();
+            ComponentRepository.removeComponentById(borderId);
         });
     }
 
