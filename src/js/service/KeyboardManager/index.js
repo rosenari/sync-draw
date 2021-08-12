@@ -16,6 +16,7 @@ class KeyboardManager {
         window.addEventListener('keydown', (e) => {
             const board = ComponentRepository.getComponentById(BOARD_ID);
             const pageMenuBar = ComponentRepository.getComponentById(MENU_BAR.PAGE_MENU_BAR_ID);
+            const moveOffset = 10;
             if(e.ctrlKey && e.key === 'z'){
                 HistoryManager.undo();
             }else if(e.ctrlKey && e.key === 'x'){
@@ -29,23 +30,21 @@ class KeyboardManager {
             }else if(e.key === KEYEVENT.deleteKey){
                 board.border?.deleteHandler?.();
             }else if(e.key === KEYEVENT.LEFT){
-                board.border?.startPointInit?.();
-                board.border?.moveHandler?.({ dx: -10, dy: 0 });
-                board.border?.moveCompleteHandler();
+                this.moveHandler({ board, dx: -moveOffset, dy: 0 });
             }else if(e.key === KEYEVENT.UP){
-                board.border?.startPointInit?.();
-                board.border?.moveHandler?.({ dx: 0, dy: -10 });
-                board.border?.moveCompleteHandler();
+                this.moveHandler({ board, dx: 0, dy: -moveOffset });
             }else if(e.key === KEYEVENT.RIGHT){
-                board.border?.startPointInit?.();
-                board.border?.moveHandler?.({ dx: 10, dy: 0 });
-                board.border?.moveCompleteHandler();
+                this.moveHandler({ board, dx: moveOffset, dy: 0 });
             }else if(e.key === KEYEVENT.DOWN){
-                board.border?.startPointInit?.();
-                board.border?.moveHandler?.({ dx: 0, dy: 10 });
-                board.border?.moveCompleteHandler();
+                this.moveHandler({ board, dx: 0, dy: moveOffset });
             }
         });
+    }
+
+    moveHandler({ board, dx, dy }){
+        board.border?.startPointInit?.();
+        board.border?.moveHandler?.({ dx, dy });
+        board.border?.moveCompleteHandler();
     }
 
 }
