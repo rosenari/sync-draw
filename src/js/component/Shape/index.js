@@ -147,7 +147,7 @@ export default class Shape extends GraphicElement {
 
     removeLinkedLine({ line, pointInfo }){
         for(const storeLine of this.linkedLine.keys()) {
-            if( pointInfo.index === Number(this.linkedLine.get(storeLine).index)){
+            if( line === storeLine && Number(pointInfo.index) === Number(this.linkedLine.get(storeLine).index)){
                 this.linkedLine.delete(line);
             }
         }
