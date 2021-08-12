@@ -8,6 +8,8 @@ import StyleMenubar from './component/StyleMenubar';
 import HistoryMenubar from './component/HistoryMenubar';
 import CustomModal from './component/CustomModal';
 import Toast from './component/Toast';
+import HistoryView from "./component/HistoryView";
+import {HISTORY_VIEW_ID} from "./service/constant";
 
 export default class App {
     _id = 'app';
@@ -22,6 +24,7 @@ export default class App {
     _confirmModal = null;
     _selectModal = null;
     _toast = null;
+    _historyView = null;
     _controller = null;
 
     constructor({ elem }) {
@@ -79,6 +82,11 @@ export default class App {
         this.toast = new Toast({
             parentId: this.id,
             id: 'toast'
+        });
+
+        this.historyView = new HistoryView({
+            parentId: this.id,
+            id: HISTORY_VIEW_ID
         });
 
         this.controller = new EventController(this.elem);
@@ -179,6 +187,14 @@ export default class App {
 
     set selectModal(value) {
         this._selectModal = value;
+    }
+
+    get historyView() {
+        return this._historyView;
+    }
+
+    set historyView(value) {
+        this._historyView = value;
     }
 
     get controller() {
