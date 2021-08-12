@@ -133,3 +133,11 @@ export const BEHAVIOR = {
     MOVE : '이동',
     DELETE : '삭제'
 }
+
+export const KEYEVENT = {
+    deleteKey : 'Delete',
+    LEFT : 'ArrowLeft',
+    UP : 'ArrowUp',
+    RIGHT : 'ArrowRight',
+    DOWN : 'ArrowDown',
+}
