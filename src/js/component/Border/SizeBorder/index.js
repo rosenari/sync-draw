@@ -232,10 +232,12 @@ export default class SizeBorder extends Border {
                                 e.stopPropagation();
                                 this.adjustOverflowInfo();
 
-                                SizeBorder.startPoint = {};
                                 this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
                                 this.renderTarget();
-                                HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
+                                if(!this.isEqualTarget(SizeBorder.startPoint.target)) {
+                                    HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
+                                }
+                                SizeBorder.startPoint = {};
                                 EventController.mouseMoveHandler = null;
                                 EventController.mouseUpHandler = null;
                             }
@@ -339,6 +341,13 @@ export default class SizeBorder extends Border {
         }
     }
 
+    isEqualTarget({ x, y, width, height }){
+        return (x === undefined ? true : x === this.target.x)
+            && (y === undefined ? true :  y === this.target.y)
+            && (width === undefined ? true : width === this.target.width)
+            && (height === undefined ? true : height === this.target.height) ;
+    }
+
     moveHandler({ dx, dy }){
         let x = SizeBorder.startPoint.target.x + dx;
         let y = SizeBorder.startPoint.target.y + dy;
@@ -355,7 +364,7 @@ export default class SizeBorder extends Border {
     }
 
     moveCompleteHandler(){
-        if(SizeBorder.startPoint.target.x !== this.target.x || SizeBorder.startPoint.target.y !== this.target.y) {
+        if(!this.isEqualTarget(SizeBorder.startPoint.target)) {
             HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MOVE, type: `${this.target.type}`});
         }
 
