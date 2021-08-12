@@ -1,11 +1,16 @@
 import ComponentRepository from '../ComponentRepository';
-import {deserialize} from "../util";
+import { deserialize } from "../util";
 
 let instance = null;
 class HistoryManager {
     _running = false; //mutex
     _history = [];
     _historyIndex = -1;
+    _currentPage = [];
+
+    constructor() {
+        this.restoreAutoStorePage();
+    }
 
     static getInstance() {
         if(!instance) instance = new HistoryManager();
@@ -36,6 +41,14 @@ class HistoryManager {
         this._running = value;
     }
 
+    get currentPage(){
+        return this._currentPage;
+    }
+
+    set currentPage(value){
+        this._currentPage = value;
+    }
+
     async undo() {
         const prevIndex = this.historyIndex - 1;
         await this.commonDo(prevIndex);
@@ -50,11 +63,11 @@ class HistoryManager {
         if(this.running) return;
         this.running = true;
         if(Index < -1){
-            alert('이전 작업이 없습니다.');
+            alert('이전 작업이 없습니다.'); //커스텀 모달로 교체예정
             this.running = false;
             return;
         }else if(Index > this.history.length - 1){
-            alert('다음 작업이 없습니다.');
+            alert('다음 작업이 없습니다.'); //커스텀 모달로 교체예정
             this.running = false;
             return;
         }
@@ -62,12 +75,25 @@ class HistoryManager {
         this.historyIndex = Index;
         ComponentRepository.removeSvgElements();
         if(this.history[Index]?.svgElements) {
-            lineFirstSort(this.history[Index]?.svgElements);
-            for (const json of this.history[Index]?.svgElements) {
-                await deserialize(json);
-            }
+            await this.adjustSvgElements(this.history[Index].svgElements);
         }
         this.running = false;
+    }
+
+    async adjustSvgElements(svgElements){
+        lineFirstSort(svgElements);
+        for (const json of svgElements) {
+            await deserialize(json);
+        }
+    }
+
+    initHistory(svgElements){
+        this.historyIndex = 0;
+        this.history = [{
+            behavior: 'init',
+            type: 'All',
+            svgElements
+        }];
     }
 
     updateHistoryToLatest({ behavior, type }) {
@@ -80,6 +106,95 @@ class HistoryManager {
             type,
             svgElements
         });
+
+        this.currentPage = svgElements;
+        this.autoStoreCurrentPage();
+    }
+
+    autoStoreCurrentPage() {
+        const storeData = JSON.stringify(this.currentPage);
+        localStorage.setItem('auto', storeData);
+    }
+
+    storeCurrentPage(name){
+        const storeData = this.currentPage;
+        const prevStoreData = localStorage.getItem('storeData');
+        if(prevStoreData){
+            localStorage.setItem('storeData', JSON.stringify([
+                ...JSON.parse(prevStoreData),
+                {
+                    name,
+                    data:storeData
+                }
+            ]));
+            return;
+        }
+        localStorage.setItem('storeData', JSON.stringify([{
+            name,
+            data: storeData
+        }]));
+    }
+
+    async restoreAutoStorePage(){
+        this.running = true;
+        const autoStoreData = localStorage.getItem('auto');
+        if(autoStoreData) {
+            const svgElements = JSON.parse(autoStoreData);
+            await this.adjustSvgElements(svgElements);
+            this.initHistory(svgElements);
+        }
+        this.running = false;
+    }
+
+    async restorePage(name){
+        if(this.running) return;
+        this.running = true;
+        const prevStoreData = localStorage.getItem('storeData');
+        if(!prevStoreData){
+            alert('저장내역이 존재하지 않습니다.'); //커스텀 모달로 교체예정
+            this.running = false;
+            return;
+        }
+        const storeData = JSON.parse(prevStoreData).find(data => data.name === name);
+        if(!storeData){
+            alert('해당이름의 저장내역이 존재하지 않습니다.'); //커스텀 모달로 교체예정
+            this.running = false;
+            return;
+        }
+
+        const svgElements = storeData.data;
+        ComponentRepository.removeSvgElements();
+        await this.adjustSvgElements(svgElements);
+        this.initHistory(svgElements);
+
+        this.currentPage = svgElements;
+        this.autoStoreCurrentPage();
+        this.running = false;
+    }
+
+
+    isStoreName(name){
+        const prevStoreData = localStorage.getItem('storeData');
+        if(!prevStoreData) return false;
+
+        const storeData = JSON.parse(prevStoreData);
+        return storeData.find(data => data.name === name);
+    }
+
+    clearHistory(){
+        this.historyIndex = -1;
+        this.history = [];
+    }
+
+    clearCurrentPage(){
+        ComponentRepository.removeSvgElements();
+        this.currentPage = [];
+        localStorage.removeItem('auto');
+    }
+
+    clear(){
+        this.clearHistory();
+        this.clearCurrentPage();
     }
 }
 
