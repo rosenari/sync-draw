@@ -159,8 +159,8 @@ export default class Board extends GraphicElement {
                 itemMenubar.selectMenu = itemMenubar.mouseBtn;
             }
 
-            shape?.clickHandler?.();
             this.destroyBorder(e);
+            shape?.clickHandler?.();
             finish();
         }
     }
