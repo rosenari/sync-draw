@@ -108,7 +108,6 @@ export async function deserialize(json){
     return shape;
 }
 
-
 async function changeTypeStringToClass(type){
     const classPath = type.join('/');
     const classObj = await import('../../component/'+ classPath + '/index.js');

@@ -17,6 +17,7 @@ export default class GroupBorder extends Border {
         this.height = height;
         this.shapes = shapes;
         this.elem.setAttribute('style','cursor:move;');
+        this.elem.setAttribute('stroke', COLOR.ORANGE);
     }
 
     get x(){
