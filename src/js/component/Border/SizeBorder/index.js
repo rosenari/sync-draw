@@ -4,8 +4,8 @@ import ComponentRepository from '../../../service/ComponentRepository';
 import {getOverflowHeight, getOverflowWidth, isOverflowHeight, isOverflowWidth, tinyGUID} from '../../../service/util';
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
-import {COLOR, BORDER, GROUP} from '../../../service/constant';
-import HistoryManager from "../../../service/HistoryManager";
+import {COLOR, BORDER, GROUP, BEHAVIOR} from '../../../service/constant';
+import HistoryManager from '../../../service/HistoryManager';
 
 export default class SizeBorder extends Border {
     static startPoint = {};
@@ -94,7 +94,7 @@ export default class SizeBorder extends Border {
     set fontSize(value){
         this.target.fontSize = value;
         if(this.target.fontSize){
-            HistoryManager.updateHistoryToLatest({ behavior: 'changeStyle',
+            HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
                 type:`${this.target.type}` });
         }
     }
@@ -106,7 +106,7 @@ export default class SizeBorder extends Border {
     set fontColor(value){
         this.target.fontColor = value;
         if(this.target.fontColor){
-            HistoryManager.updateHistoryToLatest({ behavior: 'changeStyle',
+            HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
                 type:`${this.target.type}` });
         }
     }
@@ -117,7 +117,7 @@ export default class SizeBorder extends Border {
 
     set fill(value){
         this.target.fill = value;
-        if(this.target.fill) HistoryManager.updateHistoryToLatest({ behavior: 'changeStyle',
+        if(this.target.fill) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
             type:`${this.target.type}` });
     }
 
@@ -127,7 +127,7 @@ export default class SizeBorder extends Border {
 
     set strokeColor(value){
         this.target.strokeColor = value;
-        if(this.target.strokeColor) HistoryManager.updateHistoryToLatest({ behavior: 'changeStyle',
+        if(this.target.strokeColor) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
             type:`${this.target.type}` });
     }
 
@@ -219,7 +219,7 @@ export default class SizeBorder extends Border {
                                 SizeBorder.startPoint = {};
                                 this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
                                 this.renderTarget();
-                                HistoryManager.updateHistoryToLatest({ behavior: 'changeSize', type:`${this.target.type}` });
+                                HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
                                 EventController.mouseMoveHandler = null;
                                 EventController.mouseUpHandler = null;
                             }
@@ -284,7 +284,7 @@ export default class SizeBorder extends Border {
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             if(SizeBorder.startPoint.target.x !== this.target.x || SizeBorder.startPoint.target.y !== this.target.y) {
-                HistoryManager.updateHistoryToLatest({behavior: 'move', type: `${this.target.type}`});
+                HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MOVE, type: `${this.target.type}`});
             }
 
             SizeBorder.startPoint = {};

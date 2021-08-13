@@ -9,7 +9,7 @@ import CreateBorder from '../Border/CreateBorder';
 import DragBorder from '../Border/DragBorder';
 import { GTerminal, GReady, GProcess, GJudgment, GPageconn, GDocument,
     GInputoutput, GPinput, GText, GDisk, GLine, GPolyline} from '../../component';
-import {BOARD_ID, MENU_BAR} from '../../service/constant';
+import {BOARD_ID, CURSOR_TYPE, MENU_BAR} from '../../service/constant';
 import './index.css';
 
 export default class ItemMenubar extends CustomElement{
@@ -42,7 +42,7 @@ export default class ItemMenubar extends CustomElement{
                 name: 'hand',
                 icon: HAND_GRAB,
                 iconSize: { width: '35', height: '35' },
-                cursorType: 'grab'
+                cursorType: CURSOR_TYPE.GRAB
             },
             {
                 name: 'mouse',
@@ -53,7 +53,7 @@ export default class ItemMenubar extends CustomElement{
             {
                 name: 'text',
                 content: 'Text',
-                cursorType: 'crosshair',
+                cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
                 relatedClass: GText
             },
@@ -61,7 +61,7 @@ export default class ItemMenubar extends CustomElement{
                 name: 'terminal',
                 icon: TERMINAL_ICON,
                 iconSize: { width: '34', height: '18' },
-                cursorType: 'crosshair',
+                cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
                 relatedClass: GTerminal
             },
@@ -69,7 +69,7 @@ export default class ItemMenubar extends CustomElement{
                 name: 'ready',
                 icon: READY_ICON,
                 iconSize: { width:'34', height: '18' },
-                cursorType: 'crosshair',
+                cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
                 relatedClass: GReady
             },
@@ -77,7 +77,7 @@ export default class ItemMenubar extends CustomElement{
                 name: 'process',
                 icon: PROCESS_ICON,
                 iconSize: { width: '34', height: '18'},
-                cursorType: 'crosshair',
+                cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
                 relatedClass: GProcess
             },
@@ -85,7 +85,7 @@ export default class ItemMenubar extends CustomElement{
                 name: 'judgment',
                 icon: JUDGMENT_ICON,
                 iconSize: { width:'34', height:'18' },
-                cursorType: 'crosshair',
+                cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
                 relatedClass: GJudgment
             },
@@ -93,21 +93,21 @@ export default class ItemMenubar extends CustomElement{
                 name: 'line',
                 icon: LINE_ICON,
                 iconSize: { width:'34', height:'10' },
-                cursorType: 's-resize',
+                cursorType: CURSOR_TYPE.SRESIZE,
                 relatedClass: GLine
             },
             {
                 name: 'ployline',
                 icon: POLYLINE_ICON,
                 iconSize: { width:'34', height:'45' },
-                cursorType: 's-resize',
+                cursorType: CURSOR_TYPE.SRESIZE,
                 relatedClass: GPolyline
             },
             {
                 name: 'pageconn',
                 icon: PAGECONN_ICON,
                 iconSize: { width: '40', height: '40' },
-                cursorType: 'crosshair',
+                cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
                 relatedClass: GPageconn
             },
@@ -115,7 +115,7 @@ export default class ItemMenubar extends CustomElement{
                 name: 'doc',
                 icon: DOCUMENT_ICON,
                 iconSize: { width: '35', height: '35' },
-                cursorType: 'crosshair',
+                cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
                 relatedClass: GDocument
             },
@@ -123,7 +123,7 @@ export default class ItemMenubar extends CustomElement{
                 name: 'disk',
                 icon: DISK_ICON,
                 iconSize: { width: '35', height: '35' },
-                cursorType: 'crosshair',
+                cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
                 relatedClass: GDisk
             },
@@ -131,7 +131,7 @@ export default class ItemMenubar extends CustomElement{
                 name: 'io',
                 icon: IO_ICON,
                 iconSize: { width: '34', height: '18' },
-                cursorType: 'crosshair',
+                cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
                 relatedClass: GInputoutput
             },
@@ -139,7 +139,7 @@ export default class ItemMenubar extends CustomElement{
                 name: 'pinput',
                 icon: PINPUT_ICON,
                 iconSize: { width: '34', height: '34' },
-                cursorType: 'crosshair',
+                cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
                 relatedClass: GPinput
             }

@@ -1,15 +1,15 @@
 import Path from '../index';
 import TransformManager from '../../../../service/TransformManager';
-import {RATIO} from '../../../../service/constant';
+import {COMPONENT_TYPE, RATIO} from '../../../../service/constant';
 
 class GDisk extends Path{
-    static type = 'GDisk';
+    static type = COMPONENT_TYPE.GDisk;
     type = GDisk.type;
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });
 
-        if(this.id !== 'placeholder') this.createInnerText('디스크');
+        this.createInnerText('디스크');
     }
 
     render(){
