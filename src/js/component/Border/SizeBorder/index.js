@@ -1,10 +1,17 @@
 import Border from '../index';
 import GraphicElement from '../../GraphicElement';
 import ComponentRepository from '../../../service/ComponentRepository';
-import {isOverflowHeight, isOverflowWidth, tinyGUID} from '../../../service/util';
+import {
+    getOverflowHeight,
+    getOverflowWidth,
+    isOverflowHeight,
+    isOverflowWidth,
+    setDisablePointerEvent,
+    tinyGUID
+} from '../../../service/util';
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
-import {COLOR, BORDER, GROUP, BEHAVIOR, KEYCODE, BOARD_ID, MENU_BAR} from '../../../service/constant';
+import {COLOR, BORDER, GROUP, BEHAVIOR, BOARD_ID} from '../../../service/constant';
 import HistoryManager from '../../../service/HistoryManager';
 
 export default class SizeBorder extends Border {
@@ -93,6 +100,19 @@ export default class SizeBorder extends Border {
 
     set fontSize(value){
         this.target.fontSize = value;
+        const target = this.target.innerText.textBox;
+
+        while(isOverflowWidth(target.elem)){
+            this.width += getOverflowWidth(target.elem);
+            this.renderEdge({ x: this.x, y: this.y, width: this.width, height: this.height });
+            this.renderTarget();
+        }
+        while(isOverflowHeight(target.elem)){
+            this.height += getOverflowHeight(target.elem);
+            this.renderEdge({ x: this.x, y: this.y, width: this.width, height: this.height });
+            this.renderTarget();
+        }
+
         if(this.target.fontSize){
             HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
                 type:`${this.target.type}` });
@@ -212,10 +232,13 @@ export default class SizeBorder extends Border {
                                 e.stopPropagation();
                                 this.adjustOverflowInfo();
 
-                                SizeBorder.startPoint = {};
                                 this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
                                 this.renderTarget();
-                                HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
+                                if(!this.isEqualTarget(SizeBorder.startPoint.target)) {
+                                    HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
+                                }
+                                this.refocusThisBorder();
+                                SizeBorder.startPoint = {};
                                 EventController.mouseMoveHandler = null;
                                 EventController.mouseUpHandler = null;
                             }
@@ -264,6 +287,7 @@ export default class SizeBorder extends Border {
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.moveCompleteHandler();
+            this.refocusThisBorder();
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
         }
@@ -318,6 +342,13 @@ export default class SizeBorder extends Border {
         }
     }
 
+    isEqualTarget({ x, y, width, height }){
+        return (x === undefined ? true : x === this.target.x)
+            && (y === undefined ? true :  y === this.target.y)
+            && (width === undefined ? true : width === this.target.width)
+            && (height === undefined ? true : height === this.target.height) ;
+    }
+
     moveHandler({ dx, dy }){
         let x = SizeBorder.startPoint.target.x + dx;
         let y = SizeBorder.startPoint.target.y + dy;
@@ -334,7 +365,7 @@ export default class SizeBorder extends Border {
     }
 
     moveCompleteHandler(){
-        if(SizeBorder.startPoint.target.x !== this.target.x || SizeBorder.startPoint.target.y !== this.target.y) {
+        if(!this.isEqualTarget(SizeBorder.startPoint.target)) {
             HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MOVE, type: `${this.target.type}`});
         }
 

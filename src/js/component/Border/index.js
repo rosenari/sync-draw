@@ -1,5 +1,7 @@
 import GraphicElement from '../GraphicElement';
-import {COLOR} from '../../service/constant';
+import {BOARD_ID, BORDER, COLOR} from '../../service/constant';
+import ComponentRepository from '../../service/ComponentRepository';
+import {setDisablePointerEvent} from '../../service/util';
 
 export default class Border extends GraphicElement{
     _shape = null;
@@ -89,5 +91,12 @@ export default class Border extends GraphicElement{
 
     set shape(value) {
         this._shape = value;
+    }
+
+    refocusThisBorder(){
+        setDisablePointerEvent(false);
+        const board = ComponentRepository.getComponentById(BOARD_ID);
+        board.destroySpecificBorder([BORDER.DRAG_BORDER_ID]);
+        board.border = this;
     }
 }

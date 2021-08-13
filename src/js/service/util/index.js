@@ -1,5 +1,5 @@
 import ComponentRepository from '../ComponentRepository';
-import { RANDOM_MAX } from '../constant';
+import {MENU_BAR, RANDOM_MAX} from '../constant';
 import { Components } from '../../component';
 
 export function add(x, y){
@@ -111,4 +111,17 @@ export function deserialize(json){
 
 function changeTypeStringToClass(type){
     return Components[type];
+}
+
+export function setDisablePointerEvent(disable) {
+    const menuBar = [ MENU_BAR.PAGE_MENU_BAR_ID,
+        MENU_BAR.ITEM_MENU_BAR_ID,
+        MENU_BAR.STYLE_MENU_BAR_ID,
+        MENU_BAR.HISTORY_MENU_BAR_ID].map(id => ComponentRepository.getComponentById(id));
+
+    if(disable){
+        menuBar.forEach(menu => menu.elem.classList.add('disable-pointer-event'));
+    } else {
+        menuBar.forEach(menu => menu.elem.classList.remove('disable-pointer-event'));
+    }
 }

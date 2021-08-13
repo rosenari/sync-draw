@@ -22,8 +22,8 @@ class Line extends Shape {
             id: id + '_line',
             tagName: 'polyline',
             handlers: {
-                clickHandler: () => {
-                    this.clickHandler();
+                clickHandler: (e) => {
+                    this.clickHandler(e);
                 }
             }
         });
@@ -153,6 +153,11 @@ class Line extends Shape {
         const itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID);
         const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
         if(ComponentRepository.getComponentById(itemMenubar.selectMenu).name !== 'mouse'){
+            return;
+        }
+
+        if(e?.shiftKey && board.border) {
+            super.clickHandler(e);
             return;
         }
 
