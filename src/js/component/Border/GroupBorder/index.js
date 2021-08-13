@@ -1,8 +1,9 @@
 import Border from '../index';
 import TransformManager from '../../../service/TransformManager';
 import EventController from '../../../service/EventController';
-import {BEHAVIOR, COLOR, FONT} from "../../../service/constant";
+import {BEHAVIOR, BOARD_ID, COLOR, COMPONENT_TYPE, FONT} from "../../../service/constant";
 import HistoryManager from '../../../service/HistoryManager';
+import ComponentRepository from "../../../service/ComponentRepository";
 
 export default class GroupBorder extends Border {
     static startPoint = {};
@@ -104,29 +105,17 @@ export default class GroupBorder extends Border {
         e.stopPropagation();
         GroupBorder.startPoint.x = TransformManager.changeDocXToSvgX(e.pageX);
         GroupBorder.startPoint.y = TransformManager.changeDocYToSvgY(e.pageY);
-        GroupBorder.startPoint.borderX = TransformManager.changeDocXToSvgX(this.x);
-        GroupBorder.startPoint.borderY = TransformManager.changeDocYToSvgY(this.y);
-        GroupBorder.startPoint.shapes = this.shapes.map(({ x, y }) => {
-            return { x, y }
-        });
+        this.startPointInit();
 
         EventController.mouseMoveHandler = (e) => {
             e.stopPropagation();
             const dx = TransformManager.changeDocXToSvgX(e.pageX) - GroupBorder.startPoint.x;
             const dy = TransformManager.changeDocYToSvgY(e.pageY) - GroupBorder.startPoint.y;
-            let x = GroupBorder.startPoint.borderX + dx;
-            let y = GroupBorder.startPoint.borderY + dy;
-
-            this.x = x;
-            this.y = y;
-
-            this.renderShapes({ dx, dy });
+            this.moveHandler({ dx, dy });
         }
 
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
-            GroupBorder.startPoint = {};
-            HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MOVE, type:`Group` });
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
         }
@@ -138,5 +127,34 @@ export default class GroupBorder extends Border {
             shape.x = TransformManager.changeSvgXToDocX(GroupBorder.startPoint.shapes[index].x + dx);
             shape.y = TransformManager.changeSvgYToDocY(GroupBorder.startPoint.shapes[index].y + dy);
         }
+    }
+
+    deleteHandler() {
+        this.shapes.forEach(shape => ComponentRepository.removeComponentById(shape.id));
+        HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.DELETE, type: 'Group' });
+        ComponentRepository.getComponentById(BOARD_ID).destroyBorder();
+    }
+
+    startPointInit(){
+        GroupBorder.startPoint.borderX = TransformManager.changeDocXToSvgX(this.x);
+        GroupBorder.startPoint.borderY = TransformManager.changeDocYToSvgY(this.y);
+        GroupBorder.startPoint.shapes = this.shapes.map(({ x, y }) => {
+            return { x, y }
+        });
+    }
+
+    moveHandler({ dx, dy }){
+        let x = GroupBorder.startPoint.borderX + dx;
+        let y = GroupBorder.startPoint.borderY + dy;
+
+        this.x = x;
+        this.y = y;
+
+        this.renderShapes({ dx, dy });
+    }
+
+    moveCompleteHandler(){
+        GroupBorder.startPoint = {};
+        HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MOVE, type:`Group` });
     }
 }
