@@ -1,22 +1,22 @@
 import ComponentRepository from '../../service/ComponentRepository';
 import {tinyGUID} from '../../service/util';
-import SizeBorder from '../Border/SizeBorder';
 import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
 import HistoryManager from '../../service/HistoryManager';
 import { GraphicElement, Group, GText, Line, GLine, GPolyline } from '../../component';
-import './index.css';
 import {
     BOARD_ID,
     BORDER,
     COLOR,
     MENU_BAR,
     PLACE_HOLDER_ID,
-    GROUP
+    GROUP, BEHAVIOR
 } from '../../service/constant';
-import DragBorder from "../Border/DragBorder";
-import GroupBorder from "../Border/GroupBorder";
-import LineBorder from "../Border/LineBorder";
+import SizeBorder from '../Border/SizeBorder';
+import DragBorder from '../Border/DragBorder';
+import GroupBorder from '../Border/GroupBorder';
+import LineBorder from '../Border/LineBorder';
+import './index.css';
 
 export default class Board extends GraphicElement {
     static startPoint = {};
@@ -182,7 +182,7 @@ export default class Board extends GraphicElement {
                 const lastIndex = Board.startPoint.line.points.length - 1;
                 Board.startPoint.line.removePoint(lastIndex);
             }
-            HistoryManager.updateHistoryToLatest({ behavior: 'create', type:`${Board.startPoint.line.type}` });
+            HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.CREATE, type:`${Board.startPoint.line.type}` });
 
             itemMenubar.selectMenu = itemMenubar.mouseBtn;
 
@@ -333,7 +333,7 @@ export default class Board extends GraphicElement {
             height: this.border.height
         });
 
-        HistoryManager.updateHistoryToLatest({ behavior: 'create', type:`${shape.type}` });
+        HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.CREATE, type:`${shape.type}` });
 
         return shape;
     }

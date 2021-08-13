@@ -4,7 +4,7 @@ import HistoryManager from '../../../service/HistoryManager';
 import { tinyGUID } from '../../../service/util';
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
-import { COLOR, GROUP } from '../../../service/constant';
+import {BEHAVIOR, COLOR, GROUP} from '../../../service/constant';
 import SizeBorder from '../SizeBorder';
 import { Line, Shape } from '../../../component';
 import './index.css';
@@ -64,7 +64,7 @@ export default class LineBorder extends SizeBorder {
                         EventController.mouseUpHandler = () => {
                             this.adjustCollisionInfo();
                             this.renderTarget();
-                            HistoryManager.updateHistoryToLatest({ behavior: 'changePoint', type:`${this.target.type}` });
+                            HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
                             SizeBorder.startPoint = {};
                             EventController.mouseMoveHandler = null;
                             EventController.mouseOverHandler = null;
@@ -117,7 +117,7 @@ export default class LineBorder extends SizeBorder {
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.renderTarget();
-            HistoryManager.updateHistoryToLatest({ behavior: 'move', type:`${this.target.type}` });
+            HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MOVE, type:`${this.target.type}` });
             SizeBorder.startPoint = {};
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;

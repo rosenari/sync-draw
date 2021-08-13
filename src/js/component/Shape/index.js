@@ -1,6 +1,6 @@
 import GraphicElement from '../GraphicElement';
 import ComponentRepository from '../../service/ComponentRepository';
-import {BOARD_ID, COLOR, MENU_BAR , FONT} from '../../service/constant';
+import {BOARD_ID, COLOR, MENU_BAR, FONT, PLACE_HOLDER_ID} from '../../service/constant';
 import {
     getOverflowHeight,
     getOverflowWidth,
@@ -8,7 +8,7 @@ import {
     isOverflowWidth,
     IterableWeakMap
 } from '../../service/util';
-import InnerText from "./InnerText";
+import InnerText from './InnerText';
 
 export default class Shape extends GraphicElement {
     _x = 0;
@@ -150,6 +150,8 @@ export default class Shape extends GraphicElement {
     }
 
     createInnerText(defaultText = 'shape') {
+        if(this.id === PLACE_HOLDER_ID) return;
+
         this.innerText = new InnerText({
             parentId: this.parentId,
             id: this.id + '-innerText',

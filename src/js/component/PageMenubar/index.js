@@ -1,6 +1,6 @@
 import CustomElement from '../CustomElement';
 import CustomButton from '../CustomButton';
-import { BUTTON, MENU_BAR } from '../../service/constant';
+import {BUTTON, MENU_BAR, PHRASES} from '../../service/constant';
 import ComponentRepository from '../../service/ComponentRepository';
 import HistoryManager from '../../service/HistoryManager';
 import './index.css';
@@ -27,7 +27,7 @@ export default class PageMenubar extends CustomElement{
             handlers:{
                 clickHandler: function(e){
                     const modal = ComponentRepository.getComponentById('confirm-modal');
-                    modal.content = '정말 초기화 하시겠습니까 ?';
+                    modal.content = PHRASES.INIT;
                     modal.confirmHandler = () => {
                         HistoryManager.clear();
                         modal.hide();
@@ -48,7 +48,7 @@ export default class PageMenubar extends CustomElement{
             handlers:{
                 clickHandler: function(e){
                     const modal = ComponentRepository.getComponentById('prompt-modal');
-                    modal.content = '저장할 이름을 입력해주세요.';
+                    modal.content = PHRASES.STORE_NAME_INPUT;
                     modal.confirmHandler = () => {
                         const name = modal.input.elem.value;
                         if(!name){
@@ -80,7 +80,7 @@ export default class PageMenubar extends CustomElement{
                 clickHandler: function(e){
                     const modal = ComponentRepository.getComponentById('select-modal');
                     modal.select.options = {
-                        '복구할 이름을 선택해주세요.': '',
+                        [PHRASES.RESTORE_NAME_SELECT]: '',
                         ...HistoryManager.getStoreNames()
                     };
                     modal.confirmHandler = () => {
@@ -93,7 +93,6 @@ export default class PageMenubar extends CustomElement{
                         modal.hide();
                     }
                     modal.show();
-                    //HistoryManager.restorePage(name);
                 }
             }});
     }

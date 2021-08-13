@@ -1,15 +1,15 @@
 import Polygon from '../index';
 import TransformManager from '../../../../service/TransformManager';
-import {RATIO} from '../../../../service/constant';
+import {COMPONENT_TYPE, RATIO} from '../../../../service/constant';
 
 class GReady extends Polygon {
-    static type = 'GReady';
+    static type = COMPONENT_TYPE.GReady;
     type = GReady.type;
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });
 
-        if(this.id !== 'placeholder') this.createInnerText('준비');
+        this.createInnerText('준비');
     }
 
     render(){

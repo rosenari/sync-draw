@@ -2,11 +2,11 @@ import GraphicElement from '../../GraphicElement';
 import CustomElement from '../../CustomElement';
 import {getOverflowHeight, isOverflowHeight, rgbToHex} from '../../../service/util';
 import ComponentRepository from '../../../service/ComponentRepository';
-import { BOARD_ID } from '../../../service/constant';
-import HistoryManager from "../../../service/HistoryManager";
+import {BEHAVIOR, BOARD_ID, COMPONENT_TYPE, PHRASES} from '../../../service/constant';
+import HistoryManager from '../../../service/HistoryManager';
 
 export default class InnerText extends GraphicElement{
-    static type = 'InnerText';
+    static type = COMPONENT_TYPE.InnerText;
     static padding = 20;
     type = InnerText.type;
     _foreignObj = null;
@@ -46,11 +46,11 @@ export default class InnerText extends GraphicElement{
                         relatedShape.height += getOverflowHeight(this._textBox.elem);
                     }
                     if(this._textBox.elem.innerText.length > 50){
-                        alert('텍스트 입력은 50자 이상을 초과할 수 없습니다.');
+                        alert(PHRASES.TEXT_INPUT_OVER);
                         this._textBox.elem.innerText = this._textBox.elem.innerText.slice(0,50);
                     }
                     if (e.code === 'Enter') {
-                        HistoryManager.updateHistoryToLatest({behavior: 'modify', type: `${this.type}`});
+                        HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MODIFY, type: `${this.type}`});
                         this._textBox.elem.innerText = this._textBox.elem.innerText.trim();
                         return this._textBox.elem.blur();
                     }
