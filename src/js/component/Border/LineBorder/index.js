@@ -48,6 +48,7 @@ export default class LineBorder extends SizeBorder {
                             }),
                             index: e.target.dataset.index
                         }
+                        this.startPointInit();
 
                         EventController.mouseMoveHandler = (e) => {
                             const dx = TransformManager.changeDocXToSvgX(e.pageX) - LineBorder.startPoint.x;
@@ -65,7 +66,10 @@ export default class LineBorder extends SizeBorder {
                         EventController.mouseUpHandler = () => {
                             this.adjustCollisionInfo();
                             this.renderTarget();
-                            HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
+                            if(!this.isEqualTarget(LineBorder.startPoint.points)){
+                                HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
+                            }
+                            this.refocusThisBorder();
                             LineBorder.startPoint = {};
                             EventController.mouseMoveHandler = null;
                             EventController.mouseOverHandler = null;
@@ -108,6 +112,7 @@ export default class LineBorder extends SizeBorder {
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.moveCompleteHandler();
+            this.refocusThisBorder();
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
         }
@@ -163,6 +168,8 @@ export default class LineBorder extends SizeBorder {
     }
 
     detectCollisionShapeForMove({ dx, dy }){
+        if(!this.target.arrow) return;
+
         const pointA = LineBorder.startPoint.points[0];
         const pointB = LineBorder.startPoint.points[1];
         const pointAoffsetX = pointA.x + dx;
@@ -244,7 +251,9 @@ export default class LineBorder extends SizeBorder {
 
     //모양요소 흐름선 정보 갱신
     adjustCollisionInfo(){
-        const collisionInfos = LineBorder.startPoint.collisionInfo;
+        if(!this.target.arrow) return;
+
+        const collisionInfos = LineBorder.startPoint.collisionInfo || [];
         const line = this.target;
         for(const info of collisionInfos){
             info.shape.elem.classList.remove('shape-collision');
@@ -253,6 +262,17 @@ export default class LineBorder extends SizeBorder {
                 pointInfo: info.pointInfo
             });
         }
+    }
+
+    isEqualTarget(points) {
+        const target = [...this.points].map(point => {
+            return {
+                x: TransformManager.changeDocXToSvgX(point.getAttribute('cx')),
+                y: TransformManager.changeDocYToSvgY(point.getAttribute('cy')),
+                index: point.dataset.index
+            }
+        });
+        return JSON.stringify(target) === JSON.stringify(points);
     }
 
     deleteHandler() {
@@ -285,7 +305,9 @@ export default class LineBorder extends SizeBorder {
     moveCompleteHandler(){
         this.adjustCollisionInfo();
         this.renderTarget();
-        HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MOVE, type:`${this.target.type}` });
+        if(!this.isEqualTarget(LineBorder.startPoint.points)) {
+            HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MOVE, type: `${this.target.type}`});
+        }
         LineBorder.startPoint = {};
     }
 }

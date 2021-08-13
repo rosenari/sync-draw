@@ -1,5 +1,5 @@
 import ComponentRepository from '../../service/ComponentRepository';
-import {tinyGUID} from '../../service/util';
+import {tinyGUID, setDisablePointerEvent} from '../../service/util';
 import EventController from '../../service/EventController';
 import TransformManager from '../../service/TransformManager';
 import HistoryManager from '../../service/HistoryManager';
@@ -21,7 +21,6 @@ import './index.css';
 export default class Board extends GraphicElement {
     static startPoint = {};
     _shapeGroup = null;
-    _borderGroup = null;
     _tempGroup = null;
     _border = null;
 
@@ -30,10 +29,6 @@ export default class Board extends GraphicElement {
         this.elem.setAttribute('style',`width: 100%; height: 100%;`);
 
         const groupList = [
-            {
-                id: GROUP.BORDER_GROUP_ID,
-                propsName: 'borderGroup'
-            },
             {
                 id: GROUP.SHAPE_GROUP_ID,
                 propsName: 'shapeGroup'
@@ -65,14 +60,6 @@ export default class Board extends GraphicElement {
 
     set shapeGroup(value) {
         this._shapeGroup = value;
-    }
-
-    get borderGroup() {
-        return this._borderGroup;
-    }
-
-    set borderGroup(value) {
-        this._borderGroup = value;
     }
 
     get tempGroup() {
@@ -145,22 +132,22 @@ export default class Board extends GraphicElement {
             }
 
             if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id) {
-                if(this.border instanceof SizeBorder) return;
+                if(this.border instanceof SizeBorder){
+                    return;
+                }
                 if(this.border instanceof DragBorder && this.border.groupingShape()) {
                     this.destroySpecificBorder([BORDER.DRAG_BORDER_ID]);
                     finish();
                     return;
                 }
             }
-
             if(selected?.relatedClass) {
                 shape = this.createShape(selected.relatedClass);
 
                 itemMenubar.selectMenu = itemMenubar.mouseBtn;
             }
-
-            shape?.clickHandler?.();
             this.destroyBorder(e);
+            shape?.clickHandler?.();
             finish();
         }
     }
@@ -268,6 +255,9 @@ export default class Board extends GraphicElement {
             id: BORDER.GROUP_BORDER_ID,
             x, y, width, height, shapes
         });
+
+        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
+        styleMenubar.show();
     }
 
     renderBorder(e) {
@@ -361,18 +351,5 @@ export default class Board extends GraphicElement {
            startX: Board.startPoint.x,
            startY: Board.startPoint.y,
         });
-    }
-}
-
-function setDisablePointerEvent(disable) {
-    const menuBar = [ MENU_BAR.PAGE_MENU_BAR_ID,
-        MENU_BAR.ITEM_MENU_BAR_ID,
-        MENU_BAR.STYLE_MENU_BAR_ID,
-        MENU_BAR.HISTORY_MENU_BAR_ID].map(id => ComponentRepository.getComponentById(id));
-
-    if(disable){
-        menuBar.forEach(menu => menu.elem.classList.add('disable-pointer-event'));
-    } else {
-        menuBar.forEach(menu => menu.elem.classList.remove('disable-pointer-event'));
     }
 }
