@@ -1,6 +1,6 @@
 import CustomElement from '../CustomElement';
 import CustomButton from '../CustomButton';
-import {APP_ID, BUTTON, MENU_BAR} from '../../service/constant';
+import { BUTTON, MENU_BAR } from '../../service/constant';
 import ComponentRepository from '../../service/ComponentRepository';
 import HistoryManager from '../../service/HistoryManager';
 import './index.css';

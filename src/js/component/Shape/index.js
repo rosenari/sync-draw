@@ -1,7 +1,6 @@
 import GraphicElement from '../GraphicElement';
 import ComponentRepository from '../../service/ComponentRepository';
-import SizeBorder from '../Border/SizeBorder';
-import {BOARD_ID, COLOR, MENU_BAR, GROUP, FONT} from '../../service/constant';
+import {BOARD_ID, COLOR, MENU_BAR , FONT} from '../../service/constant';
 import {
     getOverflowHeight,
     getOverflowWidth,
@@ -174,9 +173,7 @@ export default class Shape extends GraphicElement {
     }
 
     serialize(){
-        const type = ['Shape',
-            this.__proto__.__proto__.__proto__.constructor.name,
-            this.__proto__.__proto__.constructor.name];
+        const type = this.type;
         const text = this.innerText.textBox.elem.innerText;
         const property = {
             id: this.id,
@@ -229,10 +226,7 @@ export default class Shape extends GraphicElement {
         this.innerText.elem.parentNode?.appendChild?.(this.innerText.elem);
 
         board.destroyBorder();
-        board.border = new SizeBorder({
-            parentId: GROUP.TEMP_GROUP_ID,
-            target: this
-        });
+        board.createSizeBorder(this);
 
         styleMenubar.show();
         styleMenubar.fontSizeSelect.elem.value = this.innerText.fontSize;

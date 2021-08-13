@@ -3,13 +3,12 @@ import { deserialize } from "../util";
 
 let instance = null;
 class HistoryManager {
-    _running = false; //mutex
     _history = [];
     _historyIndex = -1;
     _currentPage = [];
 
     constructor() {
-        this.restoreAutoStorePage();
+        setTimeout(() => this.restoreAutoStorePage());
     }
 
     static getInstance() {
@@ -49,41 +48,36 @@ class HistoryManager {
         this._currentPage = value;
     }
 
-    async undo() {
+    undo() {
         const prevIndex = this.historyIndex - 1;
-        await this.commonDo(prevIndex);
+        this.commonDo(prevIndex);
     }
 
-    async redo() {
+    redo() {
         const nextIndex = this.historyIndex + 1;
-        await this.commonDo(nextIndex);
+        this.commonDo(nextIndex);
     }
 
-    async commonDo(Index) {
-        if(this.running) return;
-        this.running = true;
+    commonDo(Index) {
         if(Index < -1){
             alert('이전 작업이 없습니다.'); //커스텀 모달로 교체예정
-            this.running = false;
             return;
         }else if(Index > this.history.length - 1){
             alert('다음 작업이 없습니다.'); //커스텀 모달로 교체예정
-            this.running = false;
             return;
         }
 
         this.historyIndex = Index;
         ComponentRepository.removeSvgElements();
         if(this.history[Index]?.svgElements) {
-            await this.adjustSvgElements(this.history[Index].svgElements);
+            this.adjustSvgElements(this.history[Index].svgElements);
         }
-        this.running = false;
     }
 
-    async adjustSvgElements(svgElements){
+    adjustSvgElements(svgElements){
         lineFirstSort(svgElements);
         for (const json of svgElements) {
-            await deserialize(json);
+            deserialize(json);
         }
     }
 
@@ -94,6 +88,13 @@ class HistoryManager {
             type: 'All',
             svgElements
         }];
+    }
+
+    removeLatestHistory(){
+        const deleted = this.history.splice(this.historyIndex);
+        if(deleted.length > 0){
+            this.historyIndex -= 1;
+        }
     }
 
     updateHistoryToLatest({ behavior, type }) {
@@ -136,18 +137,28 @@ class HistoryManager {
         }]));
     }
 
-    async restoreAutoStorePage(){
+    restoreAutoStorePage(){
         this.running = true;
         const autoStoreData = localStorage.getItem('auto');
         if(autoStoreData) {
-            const svgElements = JSON.parse(autoStoreData);
-            await this.adjustSvgElements(svgElements);
-            this.initHistory(svgElements);
+            const modal = ComponentRepository.getComponentById('confirm-modal');
+            modal.content = '자동저장 내역을 복구 하시겠습니까 ?';
+            modal.confirmHandler = () => {
+                const svgElements = JSON.parse(autoStoreData);
+                this.adjustSvgElements(svgElements);
+                this.initHistory(svgElements);
+                modal.hide();
+            }
+            modal.cancelHandler = () => {
+                localStorage.removeItem('auto');
+                modal.hide();
+            }
+            modal.show();
         }
         this.running = false;
     }
 
-    async restorePage(name){
+    restorePage(name){
         if(this.running) return;
         this.running = true;
         const prevStoreData = localStorage.getItem('storeData');
@@ -165,7 +176,7 @@ class HistoryManager {
 
         const svgElements = storeData.data;
         ComponentRepository.removeSvgElements();
-        await this.adjustSvgElements(svgElements);
+        this.adjustSvgElements(svgElements);
         this.initHistory(svgElements);
 
         this.currentPage = svgElements;
@@ -216,9 +227,9 @@ function lineFirstSort(elements) {
     elements.sort((A, B) => {
         const svgA = JSON.parse(A);
         const svgB = JSON.parse(B);
-        if(svgA.type?.[1] !== 'Line' && !svgB.type?.[1] === 'Line') {
+        if(svgA.type !== 'GLine' && !svgB.type === 'GLine') {
             return 1;
-        }else if(svgA.type?.[1] === 'Line' && !svgB.type?.[1] !== 'Line'){
+        }else if(svgA.type === 'GLine' && !svgB.type !== 'GLine'){
             return -1;
         }
         return 0;
