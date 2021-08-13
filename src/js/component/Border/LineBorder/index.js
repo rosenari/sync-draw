@@ -18,6 +18,7 @@ export default class LineBorder extends SizeBorder {
             parentId,
             target
         });
+        this.elem.setAttribute('stroke-dasharray','0');
     }
 
     render() {

@@ -66,6 +66,7 @@ export const COLOR = {
     ORANGE : '#FFA500',
     KAKAO : '#FEE500',
     BLACK : '#555555',
+    GRAY : '#808080',
     WHITE : '#FFFFFF'
 }
 

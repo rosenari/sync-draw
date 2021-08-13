@@ -6,7 +6,7 @@ import ItemMenubar from './component/ItemMenubar';
 import ZoomMenubar from './component/ZoomMenubar';
 import StyleMenubar from './component/StyleMenubar';
 import HistoryMenubar from './component/HistoryMenubar';
-import CustomElement from './component/CustomElement';
+import CustomModal from "./component/CustomModal";
 
 export default class App {
     _id = 'app';
@@ -17,7 +17,9 @@ export default class App {
     _zoomMenubar = null;
     _styleMenubar = null;
     _historyMenubar = null;
-    _logo = null;
+    _promptModal = null;
+    _confirmModal = null;
+    _selectModal = null;
     _controller = null;
 
     constructor({ elem }) {
@@ -51,11 +53,25 @@ export default class App {
             parentId: this.id
         });
 
-        this.logo = new CustomElement({
+        this.promptModal = new CustomModal({
             parentId: this.id,
-            tagName: 'div',
-            content: 'SyncDraw',
-            classList:['logo']
+            id: 'prompt-modal',
+            type: 'prompt',
+            content: '입력 모달'
+        });
+
+        this.confirmModal = new CustomModal({
+            parentId: this.id,
+            id: 'confirm-modal',
+            type: 'confirm',
+            content: '확인 모달'
+        });
+
+        this.selectModal = new CustomModal({
+            parentId: this.id,
+            id: 'select-modal',
+            type: 'select',
+            content: '선택 모달'
         });
 
         this.controller = new EventController(this.elem);
@@ -126,12 +142,28 @@ export default class App {
         this._historyMenubar = value;
     }
 
-    get logo() {
-        return this._logo;
+    get promptModal() {
+        return this._promptModal;
     }
 
-    set logo(value) {
-        this._logo = value;
+    set promptModal(value) {
+        this._promptModal = value;
+    }
+
+    get confirmModal() {
+        return this._confirmModal;
+    }
+
+    set confirmModal(value) {
+        this._confirmModal = value;
+    }
+
+    get selectModal() {
+        return this._selectModal;
+    }
+
+    set selectModal(value) {
+        this._selectModal = value;
     }
 
     get controller() {

@@ -12,7 +12,7 @@ export default class DragBorder extends Border{
             id: BORDER.DRAG_BORDER_ID
         });
         this.elem.setAttribute('stroke-dasharray','5');
-        this.elem.setAttribute('fill',COLOR.ORANGE);
+        this.elem.setAttribute('fill',COLOR.GRAY);
         this.elem.setAttribute('fill-opacity','0.2');
     }
 

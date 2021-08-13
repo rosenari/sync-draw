@@ -23,8 +23,13 @@
     margin-left:5px;
     width:40px;
     height:40px;
-    background: #FEE500;
+    background: white;
     border:1px solid #ddd;
     border-radius: 5px;
     cursor: pointer;
+    transition: background 0.5s;
+}
+
+.zoom-btn:hover{
+    background:gray;
 }
