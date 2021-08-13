@@ -240,7 +240,7 @@ export default class Shape extends GraphicElement {
                 if(sizeBorderTarget !== target) shapes.push(target);
             }else if(board.border instanceof GroupBorder) {
                 shapes = board.border.shapes;
-                shapes.filter(shape => shape !== target);
+                shapes = shapes.filter(shape => shape !== target);
                 shapes.push(target);
             }
             const { x, y, width, height} = createGroupInfo(shapes);
