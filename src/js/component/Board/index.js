@@ -255,6 +255,9 @@ export default class Board extends GraphicElement {
             id: BORDER.GROUP_BORDER_ID,
             x, y, width, height, shapes
         });
+
+        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
+        styleMenubar.show();
     }
 
     renderBorder(e) {
