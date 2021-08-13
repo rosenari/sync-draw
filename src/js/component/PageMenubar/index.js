@@ -58,8 +58,19 @@ export default class PageMenubar extends CustomElement{
                             return;
                         }
                         if(HistoryManager.isStoreName(name)){
-                            const answer = confirm('이미 존재하는 이름입니다. 덮어쓰시겠습니까 ?'); //커스텀 모달로 교체예정
-                            if(!answer) return;
+                            modal.hide();
+                            const confirmModal = ComponentRepository.getComponentById('confirm-modal');
+                            confirmModal.title = '💾 덮어쓰기';
+                            confirmModal.content = PHRASES.ALREADY_NAME;
+                            confirmModal.confirmHandler = () => {
+                                HistoryManager.storeCurrentPage(name);
+                                confirmModal.hide();
+                            }
+                            confirmModal.cancelHandler = () => {
+                                confirmModal.hide();
+                            }
+                            confirmModal.show();
+                            return;
                         }
                         HistoryManager.storeCurrentPage(name);
                         modal.hide();
