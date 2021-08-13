@@ -237,6 +237,7 @@ export default class SizeBorder extends Border {
                                 if(!this.isEqualTarget(SizeBorder.startPoint.target)) {
                                     HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
                                 }
+                                this.refocusThisBorder();
                                 SizeBorder.startPoint = {};
                                 EventController.mouseMoveHandler = null;
                                 EventController.mouseUpHandler = null;
@@ -286,7 +287,7 @@ export default class SizeBorder extends Border {
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.moveCompleteHandler();
-            setDisablePointerEvent(false);
+            this.refocusThisBorder();
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
         }
