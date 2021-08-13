@@ -2,16 +2,19 @@ import GraphicElement from '../GraphicElement';
 import CustomElement from '../CustomElement';
 import {getOverflowHeight, isOverflowHeight, rgbToHex} from '../../service/util';
 import ComponentRepository from '../../service/ComponentRepository';
-import SizeBorder from '../Border/SizeBorder';
 import TransformManager from '../../service/TransformManager';
-import {BOARD_ID, COLOR, GROUP, MENU_BAR, FONT} from '../../service/constant';
+import {BOARD_ID, COLOR, MENU_BAR, FONT} from '../../service/constant';
+import HistoryManager from '../../service/HistoryManager';
 
 class GText extends GraphicElement {
+    static type = 'GText';
     _foreignObj = null;
     _textBox = null;
 
     constructor({ parentId, id, x, y, width, height, classList, handlers }) {
         super({ parentId, id, tagName: 'g', classList, handlers });
+        this.type = GText.type;
+
         this.foreignObj = new GraphicElement({
             parentId:this.id,
             id:id + '-foreignobj',
@@ -34,6 +37,7 @@ class GText extends GraphicElement {
                     this.clickHandler(e);
                 },
                 blurHandler: (e) => {
+                    HistoryManager.updateHistoryToLatest({behavior: 'modify', type: `${this.type}`});
                     this.textBox.elem.setAttribute('contenteditable','false');
                 },
                 keyUpHandler: (e) => {
@@ -120,7 +124,7 @@ class GText extends GraphicElement {
     }
 
     serialize(){
-        const type = [this.__proto__.__proto__.constructor.name];
+        const type = this.type;
         const text = this.textBox.elem.innerText;
         const property = {
             id: this.id,
@@ -154,10 +158,7 @@ class GText extends GraphicElement {
         const board = ComponentRepository.getComponentById(BOARD_ID);
         const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
         board.destroyBorder();
-        board.border = new SizeBorder({
-            parentId: GROUP.TEMP_GROUP_ID,
-            target: this
-        });
+        board.createSizeBorder(this);
         styleMenubar.fontSizeSelect.elem.value = this.fontSize;
         styleMenubar.fontColorInput.elem.value = this.fontColor;
         styleMenubar.show();

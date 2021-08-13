@@ -1,9 +1,8 @@
 import Border from '../index';
 import {BOARD_ID, BORDER, COLOR, MENU_BAR} from '../../../service/constant';
-import Shape from '../../Shape';
 import ComponentRepository from '../../../service/ComponentRepository';
 import TransformManager from '../../../service/TransformManager';
-import GText from '../../GText';
+import { Shape, GText} from '../../../component';
 
 export default class DragBorder extends Border{
     constructor({ parentId }) {

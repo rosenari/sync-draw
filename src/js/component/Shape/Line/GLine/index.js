@@ -2,6 +2,8 @@ import GraphicElement from '../../../GraphicElement';
 import Line from '../index';
 
 class GLine extends Line {
+    static type = 'GLine';
+    type = GLine.type;
     _marker = null;
     _arrow = null;
 

@@ -3,6 +3,8 @@ import TransformManager from '../../../../service/TransformManager';
 import {RATIO} from '../../../../service/constant';
 
 class GPageconn extends Polygon{
+    static type = 'GPageconn';
+    type = GPageconn.type;
 
     constructor({ parentId, id, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
         super({ parentId, id, x, y, width, height, classList, handlers });

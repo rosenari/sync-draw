@@ -126,7 +126,7 @@ class Line extends Shape {
     }
 
     serialize(){
-        const type = ['Shape','Line', this.__proto__.constructor.name];
+        const type = this.type;
         const property = {
             id: this.id,
             parentId: this.parentId,
@@ -160,10 +160,7 @@ class Line extends Shape {
         this.elem.parentNode?.appendChild?.(this.elem);
 
         board.destroyBorder();
-        board.border = new LineBorder({
-            parentId: GROUP.TEMP_GROUP_ID,
-            target: this
-        });
+        board.createLineBorder(this);
 
         styleMenubar.strokeInput.elem.value = this.strokeColor;
         styleMenubar.show();
