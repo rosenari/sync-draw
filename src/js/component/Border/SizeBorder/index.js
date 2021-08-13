@@ -1,10 +1,10 @@
 import Border from '../index';
 import GraphicElement from '../../GraphicElement';
 import ComponentRepository from '../../../service/ComponentRepository';
-import {getOverflowHeight, getOverflowWidth, isOverflowHeight, isOverflowWidth, tinyGUID} from '../../../service/util';
+import {isOverflowHeight, isOverflowWidth, tinyGUID} from '../../../service/util';
 import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
-import {COLOR, BORDER, GROUP, BEHAVIOR} from '../../../service/constant';
+import {COLOR, BORDER, GROUP, BEHAVIOR, KEYCODE, BOARD_ID, MENU_BAR} from '../../../service/constant';
 import HistoryManager from '../../../service/HistoryManager';
 
 export default class SizeBorder extends Border {
@@ -252,39 +252,18 @@ export default class SizeBorder extends Border {
         e.stopPropagation();
         SizeBorder.startPoint.x = TransformManager.changeDocXToSvgX(e.pageX);
         SizeBorder.startPoint.y = TransformManager.changeDocYToSvgY(e.pageY);
-        SizeBorder.startPoint.target = {
-            x: this.target.x,
-            y: this.target.y,
-            width: this.target.width,
-            height: this.target.height
-        }
+        this.startPointInit();
 
         EventController.mouseMoveHandler = (e) => {
             e.stopPropagation();
             const dx = TransformManager.changeDocXToSvgX(e.pageX) - SizeBorder.startPoint.x;
             const dy = TransformManager.changeDocYToSvgY(e.pageY) - SizeBorder.startPoint.y;
-            let x = SizeBorder.startPoint.target.x + dx;
-            let y = SizeBorder.startPoint.target.y + dy;
-            let width = SizeBorder.startPoint.target.width;
-            let height = SizeBorder.startPoint.target.height;
-
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-
-            this.renderEdge({ x:this.x, y:this.y, width:this.width, height:this.height });
-            this.renderTarget();
+            this.moveHandler({ dx, dy });
         }
 
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
-            if(SizeBorder.startPoint.target.x !== this.target.x || SizeBorder.startPoint.target.y !== this.target.y) {
-                HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MOVE, type: `${this.target.type}`});
-            }
-
-            SizeBorder.startPoint = {};
-            this.renderTarget();
+            this.moveCompleteHandler();
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
         }
@@ -322,5 +301,44 @@ export default class SizeBorder extends Border {
 
     dbClickHandler(e){
         this.target?.dbClickHandler?.(e);
+    }
+
+    deleteHandler() {
+        ComponentRepository.removeComponentById(this.target.id);
+        HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.DELETE, type: this.target.type });
+        ComponentRepository.getComponentById(BOARD_ID).destroyBorder();
+    }
+
+    startPointInit(){
+        SizeBorder.startPoint.target = {
+            x: this.target.x,
+            y: this.target.y,
+            width: this.target.width,
+            height: this.target.height
+        }
+    }
+
+    moveHandler({ dx, dy }){
+        let x = SizeBorder.startPoint.target.x + dx;
+        let y = SizeBorder.startPoint.target.y + dy;
+        let width = SizeBorder.startPoint.target.width;
+        let height = SizeBorder.startPoint.target.height;
+
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+
+        this.renderEdge({ x:this.x, y:this.y, width:this.width, height:this.height });
+        this.renderTarget();
+    }
+
+    moveCompleteHandler(){
+        if(SizeBorder.startPoint.target.x !== this.target.x || SizeBorder.startPoint.target.y !== this.target.y) {
+            HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MOVE, type: `${this.target.type}`});
+        }
+
+        SizeBorder.startPoint = {};
+        this.renderTarget();
     }
 }
