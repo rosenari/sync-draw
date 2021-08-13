@@ -38,6 +38,7 @@ export default class InnerText extends GraphicElement{
                     relatedShape.clickHandler(e);
                 },
                 blurHandler: (e) => {
+                    HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MODIFY, type: `${this.type}`});
                     this._textBox.elem.setAttribute('contenteditable','false');
                 },
                 keyUpHandler: (e) => {
