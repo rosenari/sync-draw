@@ -27,6 +27,7 @@ export default class PageMenubar extends CustomElement{
             handlers:{
                 clickHandler: function(e){
                     const modal = ComponentRepository.getComponentById('confirm-modal');
+                    modal.title = '📄 새페이지';
                     modal.content = PHRASES.INIT;
                     modal.confirmHandler = () => {
                         HistoryManager.clear();
@@ -48,6 +49,7 @@ export default class PageMenubar extends CustomElement{
             handlers:{
                 clickHandler: function(e){
                     const modal = ComponentRepository.getComponentById('prompt-modal');
+                    modal.title = '💾 저장하기';
                     modal.content = PHRASES.STORE_NAME_INPUT;
                     modal.confirmHandler = () => {
                         const name = modal.input.elem.value;
@@ -79,14 +81,21 @@ export default class PageMenubar extends CustomElement{
             handlers:{
                 clickHandler: function(e){
                     const modal = ComponentRepository.getComponentById('select-modal');
+                    modal.title = '🔎 복구 및 삭제';
+                    modal.confirmBtn.elem.innerText = '복구';
                     modal.select.options = {
-                        [PHRASES.RESTORE_NAME_SELECT]: '',
+                        [PHRASES.NAME_SELECT]: '',
                         ...HistoryManager.getStoreNames()
                     };
                     modal.confirmHandler = () => {
                         const name = modal.select.elem.value;
                         if(name) HistoryManager.restorePage(name);
 
+                        modal.hide();
+                    }
+                    modal.deleteHandler = () => {
+                        const name = modal.select.elem.value;
+                        if(name) HistoryManager.deletePage(name);
                         modal.hide();
                     }
                     modal.cancelHandler = () => {

@@ -118,13 +118,13 @@ export const PHRASES = {
     INIT : '정말 초기화 하시겠습니까 ?',
     STORE_NAME_INPUT : '저장할 이름을 입력해주세요.',
     ALREADY_NAME : '이미 존재하는 이름입니다. 덮어쓰시겠습니까 ?',
-    RESTORE_NAME_SELECT : '복구할 이름을 선택해주세요.',
+    NAME_SELECT : '이름을 선택해주세요.',
     TEXT_INPUT_OVER : '텍스트 입력은 50자 이상을 초과할 수 없습니다.',
     NOT_EXIST_PREV_TASK : '이전 작업이 없습니다.',
     NOT_EXIST_NEXT_TASK : '다음 작업이 없습니다.',
     NOT_EXIST_STORE : '저장내역이 존재하지 않습니다.',
     NOT_EXIST_NAME_STORE : '해당이름의 저장내역이 존재하지 않습니다.',
-    AUTO_RESTORE : '자동저장 내역을 복구 하시겠습니까 ?'
+    AUTO_RESTORE : '자동저장내역을 복구 하시겠습니까 ?'
 }
 
 export const BEHAVIOR = {
