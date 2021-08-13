@@ -69,6 +69,7 @@ export default class LineBorder extends SizeBorder {
                             if(!this.isEqualTarget(LineBorder.startPoint.points)){
                                 HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
                             }
+                            this.refocusThisBorder();
                             LineBorder.startPoint = {};
                             EventController.mouseMoveHandler = null;
                             EventController.mouseOverHandler = null;
@@ -111,6 +112,7 @@ export default class LineBorder extends SizeBorder {
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.moveCompleteHandler();
+            this.refocusThisBorder();
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
         }

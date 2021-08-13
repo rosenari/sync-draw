@@ -1,10 +1,10 @@
 import Border from '../index';
 import TransformManager from '../../../service/TransformManager';
 import EventController from '../../../service/EventController';
-import {BEHAVIOR, BOARD_ID, COLOR, COMPONENT_TYPE, FONT} from "../../../service/constant";
+import {BEHAVIOR, BOARD_ID, COLOR, FONT} from "../../../service/constant";
 import HistoryManager from '../../../service/HistoryManager';
 import ComponentRepository from "../../../service/ComponentRepository";
-import {GText, Shape} from "../../index";
+import {GText, Shape} from '../../index';
 
 export default class GroupBorder extends Border {
     static startPoint = {};
@@ -119,6 +119,7 @@ export default class GroupBorder extends Border {
         EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.moveCompleteHandler();
+            this.refocusThisBorder();
             EventController.mouseMoveHandler = null;
             EventController.mouseUpHandler = null;
         }

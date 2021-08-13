@@ -132,20 +132,20 @@ export default class Board extends GraphicElement {
             }
 
             if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id) {
-                if(this.border instanceof SizeBorder) return;
+                if(this.border instanceof SizeBorder){
+                    return;
+                }
                 if(this.border instanceof DragBorder && this.border.groupingShape()) {
                     this.destroySpecificBorder([BORDER.DRAG_BORDER_ID]);
                     finish();
                     return;
                 }
             }
-
             if(selected?.relatedClass) {
                 shape = this.createShape(selected.relatedClass);
 
                 itemMenubar.selectMenu = itemMenubar.mouseBtn;
             }
-
             this.destroyBorder(e);
             shape?.clickHandler?.();
             finish();
