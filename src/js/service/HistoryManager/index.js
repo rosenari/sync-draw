@@ -1,6 +1,6 @@
 import ComponentRepository from '../ComponentRepository';
 import { deserialize } from '../util';
-import {COMPONENT_TYPE, PHRASES} from '../constant';
+import {BEHAVIOR, COMPONENT_TYPE, HISTORY_VIEW_ID, PHRASES} from '../constant';
 
 let instance = null;
 class HistoryManager {
@@ -23,6 +23,7 @@ class HistoryManager {
 
     set history(value) {
         this._history = value;
+        this.renderHistoryView();
     }
 
     get historyIndex() {
@@ -31,6 +32,7 @@ class HistoryManager {
 
     set historyIndex(value) {
         this._historyIndex = value;
+        this.renderHistoryView();
     }
 
     get running() {
@@ -91,7 +93,7 @@ class HistoryManager {
     initHistory(svgElements){
         this.historyIndex = 0;
         this.history = [{
-            behavior: 'init',
+            behavior: BEHAVIOR.INIT,
             type: 'All',
             svgElements
         }];
@@ -107,13 +109,13 @@ class HistoryManager {
     updateHistoryToLatest({ behavior, type }) {
         const svgElements = ComponentRepository.getSvgElements();
         const nextIndex = this.historyIndex + 1;
-        this.history.splice(nextIndex);
-        this.historyIndex = nextIndex;
+        if(this.history.length > 0) this.history.splice(nextIndex);
         this.history.push({
             behavior,
             type,
             svgElements
         });
+        this.historyIndex = nextIndex;
 
         this.currentPage = svgElements;
         this.autoStoreCurrentPage();
@@ -232,6 +234,12 @@ class HistoryManager {
     clear(){
         this.clearHistory();
         this.clearCurrentPage();
+    }
+
+    renderHistoryView(){
+        const historyView = ComponentRepository.getComponentById(HISTORY_VIEW_ID);
+        historyView.list = this.history;
+        historyView.currentIndex = this.historyIndex;
     }
 }
 
