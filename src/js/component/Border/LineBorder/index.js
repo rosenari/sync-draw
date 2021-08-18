@@ -13,6 +13,7 @@ export default class LineBorder extends SizeBorder {
     static startPoint = {};
     static padding = 30;
 
+
     constructor({ parentId, target }) {
         super({
             parentId,
@@ -27,11 +28,10 @@ export default class LineBorder extends SizeBorder {
     }
 
     createEdge(){
-        const tempGroup = ComponentRepository.getComponentById(GROUP.TEMP_GROUP_ID);
         const points = this.target.points;
         for(const i in points){
             const point = new GraphicElement({
-                parentId: tempGroup.id,
+                parentId: GROUP.TEMP_GROUP_ID,
                 id: tinyGUID(),
                 tagName: 'circle',
                 handlers: {
