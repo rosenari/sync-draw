@@ -1,6 +1,6 @@
 import ComponentRepository from '../ComponentRepository';
 import { deserialize } from '../util';
-import {BEHAVIOR, COMPONENT_TYPE, HISTORY_VIEW_ID, PHRASES} from '../constant';
+import {BEHAVIOR, COMPONENT_TYPE, HISTORY_VIEW_ID, MODAL, PHRASES} from '../constant';
 
 let instance = null;
 class HistoryManager {
@@ -61,8 +61,7 @@ class HistoryManager {
         this.commonDo(nextIndex);
     }
 
-    commonDo(Index) {
-        const toast = ComponentRepository.getComponentById('toast');
+    commonDo(Index, toast = ComponentRepository.getComponentById('toast')) {
         if(Index < -1){
             toast.content = PHRASES.NOT_EXIST_PREV_TASK;
             toast.show();
@@ -146,10 +145,9 @@ class HistoryManager {
         }]));
     }
 
-    restoreAutoStorePage(){
+    restoreAutoStorePage(modal = ComponentRepository.getComponentById(MODAL.CONFIRM_MODAL_ID)){
         const autoStoreData = localStorage.getItem('auto');
         if(autoStoreData) {
-            const modal = ComponentRepository.getComponentById('confirm-modal');
             modal.title = '⏰ 자동저장내역 복구';
             modal.content = PHRASES.AUTO_RESTORE;
             modal.confirmHandler = () => {
@@ -166,9 +164,8 @@ class HistoryManager {
         }
     }
 
-    restorePage(name){
+    restorePage(name, toast = ComponentRepository.getComponentById('toast')){
         const prevStoreData = localStorage.getItem('storeData');
-        const toast = ComponentRepository.getComponentById('toast');
         if(!prevStoreData){
             toast.content = PHRASES.NOT_EXIST_STORE;
             toast.show();
