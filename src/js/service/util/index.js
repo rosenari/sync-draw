@@ -125,3 +125,11 @@ export function setDisablePointerEvent(disable) {
         menuBar.forEach(menu => menu.elem.classList.remove('disable-pointer-event'));
     }
 }
+
+export function focusTextRange(elem){
+    const range = document.createRange();
+    range.selectNodeContents(elem);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+}

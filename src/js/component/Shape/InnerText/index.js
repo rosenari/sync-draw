@@ -1,6 +1,6 @@
 import GraphicElement from '../../GraphicElement';
 import CustomElement from '../../CustomElement';
-import {getOverflowHeight, isOverflowHeight, rgbToHex} from '../../../service/util';
+import {getOverflowHeight, isOverflowHeight, rgbToHex, focusTextRange} from '../../../service/util';
 import ComponentRepository from '../../../service/ComponentRepository';
 import {BEHAVIOR, BOARD_ID, COMPONENT_TYPE, PHRASES} from '../../../service/constant';
 import HistoryManager from '../../../service/HistoryManager';
@@ -8,12 +8,15 @@ import HistoryManager from '../../../service/HistoryManager';
 export default class InnerText extends GraphicElement{
     static type = COMPONENT_TYPE.InnerText;
     static padding = 20;
+    board = null;
     type = InnerText.type;
     _foreignObj = null;
     _textBox = null;
 
-    constructor({ parentId, id, x, y, width, height, content, relatedShapeId, classList, handlers }) {
+    constructor({ parentId, id, x, y, width, height, content, relatedShapeId, classList, handlers
+                    , board = ComponentRepository.getComponentById(BOARD_ID) }) {
         super({ parentId, id, tagName: 'g', classList, handlers });
+        this.board = board;
 
         this.foreignObj = new GraphicElement({
             parentId:this.id,
@@ -31,7 +34,7 @@ export default class InnerText extends GraphicElement{
                     this.textBox.elem.setAttribute('contenteditable','true');
                     focusTextRange(this.textBox.elem);
 
-                    destroyBorder();
+                    this.board.destroyBorder();
                 },
                 clickHandler: (e) => {
                     const relatedShape = ComponentRepository.getComponentById(relatedShapeId);
@@ -56,7 +59,7 @@ export default class InnerText extends GraphicElement{
                         return this._textBox.elem.blur();
                     }
 
-                    destroyBorder();
+                    this.board.destroyBorder();
                 }
             }
         });
@@ -138,17 +141,4 @@ export default class InnerText extends GraphicElement{
     set fontColor(value){
         this.textBox.elem.style.color = value;
     }
-}
-
-function destroyBorder(){
-    const board = ComponentRepository.getComponentById(BOARD_ID);
-    board.destroyBorder();
-}
-
-function focusTextRange(elem){
-    const range = document.createRange();
-    range.selectNodeContents(elem);
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
 }
