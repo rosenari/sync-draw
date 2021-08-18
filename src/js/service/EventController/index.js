@@ -16,7 +16,7 @@ export default class EventController {
         this.rootElem.addEventListener('keyup',this.keyUpHandler);
         this.rootElem.addEventListener('input',this.inputHandler);
 
-        setTimeout(() => KeyboardManager.eventInit());
+        setTimeout(() => KeyboardManager.eventInit({}));
     }
 
     get rootElem() {

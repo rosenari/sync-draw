@@ -12,12 +12,10 @@ class KeyboardManager {
         return instance;
     }
 
-    eventInit(){
-        const board = ComponentRepository.getComponentById(BOARD_ID);
-        const pageMenuBar = ComponentRepository.getComponentById(MENU_BAR.PAGE_MENU_BAR_ID);
-        const zoomMenuBar = ComponentRepository.getComponentById(MENU_BAR.ZOOM_MENU_BAR_ID);
+    eventInit({ board = ComponentRepository.getComponentById(BOARD_ID),
+              pageMenuBar = ComponentRepository.getComponentById(MENU_BAR.PAGE_MENU_BAR_ID),
+              zoomMenuBar = ComponentRepository.getComponentById(MENU_BAR.ZOOM_MENU_BAR_ID) }){
         const moveOffset = 10;
-
         window.addEventListener('keydown', (e) => {
             if(e.ctrlKey && e.key === 'z'){
                 HistoryManager.undo();
