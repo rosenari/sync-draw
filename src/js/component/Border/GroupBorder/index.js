@@ -1,18 +1,20 @@
 import Border from '../index';
 import TransformManager from '../../../service/TransformManager';
 import EventController from '../../../service/EventController';
-import {BEHAVIOR, BOARD_ID, COLOR, FONT} from "../../../service/constant";
+import {BEHAVIOR, BOARD_ID, COLOR, FONT} from '../../../service/constant';
 import HistoryManager from '../../../service/HistoryManager';
-import ComponentRepository from "../../../service/ComponentRepository";
+import ComponentRepository from '../../../service/ComponentRepository';
 import {GText, Shape} from '../../index';
 
 export default class GroupBorder extends Border {
     static startPoint = {};
+    board = null;
     _shapes = [];
 
-    constructor({ parentId, id, x, y, width, height, shapes }) {
+    constructor({ parentId, id, x, y, width, height, shapes, board = ComponentRepository.getComponentById(BOARD_ID) }) {
         super({ parentId, id });
 
+        this.board = board;
         this.x = x;
         this.y = y;
         this.width = width;
