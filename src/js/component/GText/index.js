@@ -8,12 +8,18 @@ import HistoryManager from '../../service/HistoryManager';
 
 class GText extends GraphicElement {
     static type = COMPONENT_TYPE.GText;
+    board = null;
+    styleMenubar = null;
     _foreignObj = null;
     _textBox = null;
 
-    constructor({ parentId, id, x, y, width, height, classList, handlers }) {
+    constructor({ parentId, id, x, y, width, height, classList, handlers,
+                board = ComponentRepository.getComponentById(BOARD_ID),
+                styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}) {
         super({ parentId, id, tagName: 'g', classList, handlers });
         this.type = GText.type;
+        this.board = board;
+        this.styleMenubar = styleMenubar;
 
         this.foreignObj = new GraphicElement({
             parentId:this.id,
@@ -31,7 +37,7 @@ class GText extends GraphicElement {
                     this.textBox.elem.setAttribute('contenteditable','true');
                     this.textBox.elem.focus();
 
-                    destroyBorder();
+                    this.board.destroyBorder();
                 },
                 clickHandler: (e) => {
                     this.clickHandler(e);
@@ -45,7 +51,7 @@ class GText extends GraphicElement {
                         this.height += getOverflowHeight(this.textBox.elem);
                     }
 
-                    destroyBorder();
+                    this.board.destroyBorder();
                 }
             }
         });
@@ -155,19 +161,12 @@ class GText extends GraphicElement {
     }
 
     clickHandler(e) {
-        const board = ComponentRepository.getComponentById(BOARD_ID);
-        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
-        board.destroyBorder();
-        board.createSizeBorder(this);
-        styleMenubar.fontSizeSelect.elem.value = this.fontSize;
-        styleMenubar.fontColorInput.elem.value = this.fontColor;
-        styleMenubar.show();
+        this.board.destroyBorder();
+        this.board.createSizeBorder(this);
+        this.styleMenubar.fontSizeSelect.elem.value = this.fontSize;
+        this.styleMenubar.fontColorInput.elem.value = this.fontColor;
+        this.styleMenubar.show();
     }
-}
-
-function destroyBorder(){
-    const board = ComponentRepository.getComponentById(BOARD_ID);
-    board.destroyBorder();
 }
 
 export default TransformManager.wrapShape(GText);
