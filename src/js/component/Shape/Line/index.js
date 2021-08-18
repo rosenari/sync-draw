@@ -7,8 +7,15 @@ import TransformManager from '../../../service/TransformManager';
 class Line extends Shape {
     _points = [];
     _line = null;
+    board = null;
+    itemMenubar = null;
+    styleMenubar = null;
 
-    constructor({ parentId, id, startX, startY, classList, handlers}) {
+
+    constructor({ parentId, id, startX, startY, classList, handlers,
+        board = ComponentRepository.getComponentById(BOARD_ID),
+        itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID),
+        styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}) {
         super({
             parentId,
             id,
@@ -16,6 +23,9 @@ class Line extends Shape {
             classList,
             handlers
         });
+        this.board = board;
+        this.styleMenubar = styleMenubar;
+        this.itemMenubar = itemMenubar;
 
         this.line = new GraphicElement({
             parentId: this.id,
@@ -149,25 +159,22 @@ class Line extends Shape {
     }
 
     clickHandler(e) {
-        const board = ComponentRepository.getComponentById(BOARD_ID);
-        const itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID);
-        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
-        if(ComponentRepository.getComponentById(itemMenubar.selectMenu).name !== 'mouse'){
+        if(ComponentRepository.getComponentById(this.itemMenubar.selectMenu).name !== 'mouse'){
             return;
         }
 
-        if(e?.shiftKey && board.border) {
+        if(e?.shiftKey && this.board.border) {
             super.clickHandler(e);
             return;
         }
 
         this.elem.parentNode?.appendChild?.(this.elem);
 
-        board.destroyBorder();
-        board.createLineBorder(this);
+        this.board.destroyBorder();
+        this.board.createLineBorder(this);
 
-        styleMenubar.strokeInput.elem.value = this.strokeColor;
-        styleMenubar.show();
+        this.styleMenubar.strokeInput.elem.value = this.strokeColor;
+        this.styleMenubar.show();
     }
 }
 
