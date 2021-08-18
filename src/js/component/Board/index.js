@@ -350,4 +350,8 @@ export default class Board extends GraphicElement {
            startY: Board.startPoint.y,
         });
     }
+
+    changeCursor(type){
+        this.elem.setAttribute('style',`width:100%;height:100%;cursor:${type};`);
+    }
 }

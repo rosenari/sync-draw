@@ -13,6 +13,7 @@ import {BOARD_ID, CURSOR_TYPE, MENU_BAR} from '../../service/constant';
 import './index.css';
 
 export default class ItemMenubar extends CustomElement{
+    board = null;
     _selectMenu = null;
     _handBtn = null; //화면 이동 탭
     _mouseBtn = null; //마우스 탭
@@ -29,13 +30,14 @@ export default class ItemMenubar extends CustomElement{
     _ioGBtn = null; //입출력 요소 탭
     _pinputGBtn = null; //수동입력 요소 탭
 
-    constructor({parentId}) {
+    constructor({parentId, board = ComponentRepository.getComponentById(BOARD_ID)}) {
         super({
             parentId,
             id: MENU_BAR.ITEM_MENU_BAR_ID,
             tagName: 'div',
             classList:['item-menu-bar']
         });
+        this.board = board;
 
         const buttonInfos = [
             {
@@ -154,7 +156,7 @@ export default class ItemMenubar extends CustomElement{
                 cursorType,
                 handlers: {
                     clickHandler: (e) => {
-                        ComponentRepository.getComponentById(BOARD_ID).destroyBorder();
+                        this.board.destroyBorder();
                         this.selectMenu = ComponentRepository.getComponentById(e.target.id);
                     }
                 }
@@ -191,7 +193,7 @@ export default class ItemMenubar extends CustomElement{
             if(this[key] instanceof CustomButton) this[key].elem.classList.remove('item-btn-active');
         }
         value.elem.classList.add('item-btn-active');
-        changeCursor(value.cursorType);
+        this.board.changeCursor(value.cursorType);
         this._selectMenu = value.id;
     }
 
@@ -306,8 +308,4 @@ export default class ItemMenubar extends CustomElement{
     set pinputGBtn(value) {
         this._pinputGBtn = value;
     }
-}
-
-function changeCursor(type){
-    ComponentRepository.getComponentById(BOARD_ID).elem.setAttribute('style',`width:100%;height:100%;cursor:${type};`)
 }
