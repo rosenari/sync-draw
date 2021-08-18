@@ -8,8 +8,8 @@ import StyleMenubar from './component/StyleMenubar';
 import HistoryMenubar from './component/HistoryMenubar';
 import CustomModal from './component/CustomModal';
 import Toast from './component/Toast';
-import HistoryView from "./component/HistoryView";
-import {HISTORY_VIEW_ID} from "./service/constant";
+import HistoryView from './component/HistoryView';
+import {HISTORY_VIEW_ID, MODAL, TOAST_ID} from './service/constant';
 
 export default class App {
     _id = 'app';
@@ -36,6 +36,32 @@ export default class App {
             classList: []
         });
 
+        this.promptModal = new CustomModal({
+            parentId: this.id,
+            id: MODAL.PROMPT_MODAL_ID,
+            type: 'prompt',
+            content: '입력 모달'
+        });
+
+        this.confirmModal = new CustomModal({
+            parentId: this.id,
+            id: MODAL.CONFIRM_MODAL_ID,
+            type: 'confirm',
+            content: '확인 모달'
+        });
+
+        this.selectModal = new CustomModal({
+            parentId: this.id,
+            id: MODAL.SELECT_MODAL_ID,
+            type: 'select',
+            content: '선택 모달'
+        });
+
+        this.toast = new Toast({
+            parentId: this.id,
+            id: TOAST_ID
+        });
+
         this.pageMenubar = new PageMenubar({
             parentId: this.id
         });
@@ -56,32 +82,6 @@ export default class App {
 
         this.historyMenubar = new HistoryMenubar({
             parentId: this.id
-        });
-
-        this.promptModal = new CustomModal({
-            parentId: this.id,
-            id: 'prompt-modal',
-            type: 'prompt',
-            content: '입력 모달'
-        });
-
-        this.confirmModal = new CustomModal({
-            parentId: this.id,
-            id: 'confirm-modal',
-            type: 'confirm',
-            content: '확인 모달'
-        });
-
-        this.selectModal = new CustomModal({
-            parentId: this.id,
-            id: 'select-modal',
-            type: 'select',
-            content: '선택 모달'
-        });
-
-        this.toast = new Toast({
-            parentId: this.id,
-            id: 'toast'
         });
 
         this.historyView = new HistoryView({

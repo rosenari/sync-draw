@@ -165,3 +165,11 @@ export const ComponentKor = {
     GProcess: '처리',
     GTerminal: '단말'
 }
+
+export const MODAL = {
+    CONFIRM_MODAL_ID : 'confirm-modal',
+    PROMPT_MODAL_ID : 'prompt-modal',
+    SELECT_MODAL_ID : 'select-modal'
+}
+
+export const TOAST_ID = 'toast';

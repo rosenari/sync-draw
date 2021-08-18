@@ -2,7 +2,7 @@ import CustomElement from '../CustomElement';
 import CustomButton from '../CustomButton';
 import CustomInput from '../CustomInput';
 import './index.css';
-import CustomSelect from "../CustomSelect";
+import CustomSelect from '../CustomSelect';
 
 export default class CustomModal extends CustomElement{
     _type = null;

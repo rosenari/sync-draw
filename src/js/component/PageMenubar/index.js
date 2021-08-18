@@ -1,6 +1,6 @@
 import CustomElement from '../CustomElement';
 import CustomButton from '../CustomButton';
-import {BUTTON, MENU_BAR, PHRASES} from '../../service/constant';
+import {BUTTON, MENU_BAR, MODAL, PHRASES} from '../../service/constant';
 import ComponentRepository from '../../service/ComponentRepository';
 import HistoryManager from '../../service/HistoryManager';
 import './index.css';
@@ -25,8 +25,8 @@ export default class PageMenubar extends CustomElement{
             content: '📄',
             classList:['page-btn','page-new-btn'],
             handlers:{
-                clickHandler: function(e){
-                    const modal = ComponentRepository.getComponentById('confirm-modal');
+                clickHandler: function(e,
+                                       modal = ComponentRepository.getComponentById(MODAL.CONFIRM_MODAL_ID)){
                     modal.title = '📄 새페이지';
                     modal.content = PHRASES.INIT;
                     modal.confirmHandler = () => {
@@ -47,19 +47,18 @@ export default class PageMenubar extends CustomElement{
             content: '💾',
             classList:['page-btn','page-save-btn'],
             handlers:{
-                clickHandler: function(e){
-                    const modal = ComponentRepository.getComponentById('prompt-modal');
-                    modal.title = '💾 저장하기';
-                    modal.content = PHRASES.STORE_NAME_INPUT;
-                    modal.confirmHandler = () => {
-                        const name = modal.input.elem.value;
+                clickHandler: function(e, promptModal = ComponentRepository.getComponentById(MODAL.PROMPT_MODAL_ID),
+                                       confirmModal = ComponentRepository.getComponentById(MODAL.CONFIRM_MODAL_ID)){
+                    promptModal.title = '💾 저장하기';
+                    promptModal.content = PHRASES.STORE_NAME_INPUT;
+                    promptModal.confirmHandler = () => {
+                        const name = promptModal.input.elem.value;
                         if(!name){
-                            modal.hide();
+                            promptModal.hide();
                             return;
                         }
                         if(HistoryManager.isStoreName(name)){
-                            modal.hide();
-                            const confirmModal = ComponentRepository.getComponentById('confirm-modal');
+                            promptModal.hide();
                             confirmModal.title = '💾 덮어쓰기';
                             confirmModal.content = PHRASES.ALREADY_NAME;
                             confirmModal.confirmHandler = () => {
@@ -73,13 +72,13 @@ export default class PageMenubar extends CustomElement{
                             return;
                         }
                         HistoryManager.storeCurrentPage(name);
-                        modal.hide();
+                        promptModal.hide();
                     }
-                    modal.cancelHandler = () => {
-                        modal.hide();
+                    promptModal.cancelHandler = () => {
+                        promptModal.hide();
                     }
-                    modal.input.elem.value = '';
-                    modal.show();
+                    promptModal.input.elem.value = '';
+                    promptModal.show();
                 }
             }});
 
@@ -90,8 +89,7 @@ export default class PageMenubar extends CustomElement{
             content: '🔎',
             classList:['page-btn','page-load-btn'],
             handlers:{
-                clickHandler: function(e){
-                    const modal = ComponentRepository.getComponentById('select-modal');
+                clickHandler: function(e, modal = ComponentRepository.getComponentById(MODAL.SELECT_MODAL_ID)){
                     modal.title = '🔎 복구 및 삭제';
                     modal.confirmBtn.elem.innerText = '복구';
                     modal.select.options = {
