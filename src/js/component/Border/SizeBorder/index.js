@@ -6,7 +6,6 @@ import {
     getOverflowWidth,
     isOverflowHeight,
     isOverflowWidth,
-    setDisablePointerEvent,
     tinyGUID
 } from '../../../service/util';
 import EventController from '../../../service/EventController';
@@ -160,12 +159,11 @@ export default class SizeBorder extends Border {
     }
 
     createEdge(){
-        const tempGroup = ComponentRepository.getComponentById(GROUP.TEMP_GROUP_ID);
         for(const i in this.ratios){
             for(const j in this.ratios){
                 if(i == 1 && j == 1) continue;
                 const point = new GraphicElement({
-                    parentId: tempGroup.id,
+                    parentId: GROUP.TEMP_GROUP_ID,
                     id: tinyGUID(),
                     tagName: 'circle',
                     handlers: {
