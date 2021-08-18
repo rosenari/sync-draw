@@ -6,13 +6,16 @@ import {
     getOverflowWidth,
     isOverflowHeight,
     isOverflowWidth,
-    IterableWeakMap, setDisablePointerEvent
+    IterableWeakMap
 } from '../../service/util';
 import InnerText from './InnerText';
 import SizeBorder from '../Border/SizeBorder';
 import GroupBorder from '../Border/GroupBorder';
 
 export default class Shape extends GraphicElement {
+    board = null;
+    itemMenubar = null;
+    styleMenubar = null;
     _x = 0;
     _y = 0;
     _width = 0;
@@ -20,18 +23,22 @@ export default class Shape extends GraphicElement {
     _linkedLine = new IterableWeakMap();
     _innerText = null;
 
-    constructor({ parentId, id, tagName, x = 0, y = 0, width = 0, height = 0, classList, handlers }) {
+    constructor({ parentId, id, tagName, x = 0, y = 0, width = 0, height = 0, classList, handlers,
+                board = ComponentRepository.getComponentById(BOARD_ID),
+                itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID),
+                styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}) {
         super({ parentId, id, tagName, classList, handlers });
+        this.board = board;
+        this.itemMenubar = itemMenubar;
+        this.styleMenubar = styleMenubar;
         this.fill = COLOR.WHITE;
         this.strokeColor = COLOR.BLACK;
         this.elem.setAttribute('stroke-width', '3');
     }
 
     renderLinkedLine() {
-        const board = ComponentRepository.getComponentById(BOARD_ID);
-
         for(const line of this.linkedLine.keys()) {
-            if(board.border?.shapes?.includes?.(line)){
+            if(this.board.border?.shapes?.includes?.(line)){
                 continue;
             }
 
@@ -223,29 +230,25 @@ export default class Shape extends GraphicElement {
     }
 
     clickHandler(e) {
-        const board = ComponentRepository.getComponentById(BOARD_ID);
-        const itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID);
-        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
-        if(ComponentRepository.getComponentById(itemMenubar.selectMenu).name !== 'mouse'){
+        if(ComponentRepository.getComponentById(this.itemMenubar.selectMenu).name !== 'mouse'){
             return;
         }
 
-        if(e?.shiftKey && board.border) {
-            if(!(board.border instanceof SizeBorder) && !(board.border instanceof GroupBorder)) return;
+        if(e?.shiftKey && this.board.border) {
+            if(!(this.board.border instanceof SizeBorder) && !(this.board.border instanceof GroupBorder)) return;
             let shapes = [];
             const target = this;
-            if(board.border instanceof SizeBorder) {
-                const sizeBorderTarget = board.border.target;
+            if(this.board.border instanceof SizeBorder) {
+                const sizeBorderTarget = this.board.border.target;
                 shapes.push(sizeBorderTarget);
                 if(sizeBorderTarget !== target) shapes.push(target);
-            }else if(board.border instanceof GroupBorder) {
-                shapes = board.border.shapes;
-                //shapes = shapes.filter(shape => shape !== target);
+            }else if(this.board.border instanceof GroupBorder) {
+                shapes = this.board.border.shapes;
                 shapes.push(target);
             }
             const { x, y, width, height} = createGroupInfo(shapes);
-            board.destroyBorder();
-            board.createGroupBorder({
+            this.board.destroyBorder();
+            this.board.createGroupBorder({
                 x, y, width, height, shapes
             });
             return;
@@ -254,14 +257,14 @@ export default class Shape extends GraphicElement {
         this.elem.parentNode?.appendChild?.(this.elem);
         this.innerText.elem.parentNode?.appendChild?.(this.innerText.elem);
 
-        board.destroyBorder();
-        board.createSizeBorder(this);
+        this.board.destroyBorder();
+        this.board.createSizeBorder(this);
 
-        styleMenubar.show();
-        styleMenubar.fontSizeSelect.elem.value = this.innerText.fontSize;
-        styleMenubar.fontColorInput.elem.value = this.innerText.fontColor;
-        styleMenubar.fillInput.elem.value = this.fill;
-        styleMenubar.strokeInput.elem.value = this.strokeColor;
+        this.styleMenubar.show();
+        this.styleMenubar.fontSizeSelect.elem.value = this.innerText.fontSize;
+        this.styleMenubar.fontColorInput.elem.value = this.innerText.fontColor;
+        this.styleMenubar.fillInput.elem.value = this.fill;
+        this.styleMenubar.strokeInput.elem.value = this.strokeColor;
     }
 }
 
