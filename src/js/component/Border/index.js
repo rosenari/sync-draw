@@ -4,18 +4,20 @@ import ComponentRepository from '../../service/ComponentRepository';
 import {setDisablePointerEvent} from '../../service/util';
 
 export default class Border extends GraphicElement{
+    board = null;
     _shape = null;
     _x = 0;
     _y = 0;
     _width = 0;
     _height = 0;
 
-    constructor({ parentId, id, shape = null }) {
+    constructor({ parentId, id, shape = null, board = ComponentRepository.getComponentById(BOARD_ID) }) {
         super({
             parentId,
             id,
             tagName: 'polyline'
         });
+        this.board = board;
         this.shape = shape;
         this.elem.setAttribute('style','pointer-events: none;');
         this.elem.setAttribute('stroke', COLOR.BLACK);
@@ -95,8 +97,7 @@ export default class Border extends GraphicElement{
 
     refocusThisBorder(){
         setDisablePointerEvent(false);
-        const board = ComponentRepository.getComponentById(BOARD_ID);
-        board.destroySpecificBorder([BORDER.DRAG_BORDER_ID]);
-        board.border = this;
+        this.board.destroySpecificBorder([BORDER.DRAG_BORDER_ID]);
+        this.board.border = this;
     }
 }
