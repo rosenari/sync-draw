@@ -16,12 +16,8 @@ class TransformManager {
         return Instance;
     }
 
-    get shapeGroup(){
-        return ComponentRepository.getComponentById(GROUP.SHAPE_GROUP_ID);
-    }
-
-    adjustTransformToShapeGroup() {
-        this.shapeGroup.elem.setAttribute('transform',`translate(${this.translateX},${this.translateY}) scale(${this.scale})`);
+    adjustTransformToShapeGroup(shapeGroup = ComponentRepository.getComponentById(GROUP.SHAPE_GROUP_ID)) {
+        shapeGroup.elem.setAttribute('transform',`translate(${this.translateX},${this.translateY}) scale(${this.scale})`);
     }
 
     get moveX(){
