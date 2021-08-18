@@ -5,11 +5,14 @@ import TransformManager from '../../../service/TransformManager';
 import { Shape, GText} from '../../../component';
 
 export default class DragBorder extends Border{
-    constructor({ parentId }) {
+    board = null;
+
+    constructor({ parentId, board = ComponentRepository.getComponentById(BOARD_ID) }) {
         super({
             parentId,
             id: BORDER.DRAG_BORDER_ID
         });
+        this.board = board;
         this.elem.setAttribute('stroke-dasharray','5');
         this.elem.setAttribute('fill',COLOR.GRAY);
         this.elem.setAttribute('fill-opacity', RATIO.PERCENT_20);
@@ -48,9 +51,8 @@ export default class DragBorder extends Border{
             grouping[0].clickHandler();
             return true;
         }else if(grouping.length > 1){
-            const board = ComponentRepository.getComponentById(BOARD_ID);
-            board.destroyBorder();
-            board.createGroupBorder({
+            this.board.destroyBorder();
+            this.board.createGroupBorder({
                 x: borderStartX,
                 y: borderStartY,
                 width: borderEndX - borderStartX,
