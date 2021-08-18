@@ -78,13 +78,12 @@ export default class Board extends GraphicElement {
         this._border = value;
     }
 
-    _mouseDownHandler(e) {
+    _mouseDownHandler(e, itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID)) {
         setDisablePointerEvent(true);
         Board.startPoint.x = e.pageX;
         Board.startPoint.y = e.pageY;
-        const itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID);
         let selected = null;
-        if(itemMenubar.selectMenu){
+        if(itemMenubar.selectMenu) {
             selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
 
             if(selected.id === itemMenubar.handBtn.id){
@@ -249,14 +248,14 @@ export default class Board extends GraphicElement {
         });
     }
 
-    createGroupBorder({ x, y, width, height, shapes}){
+    createGroupBorder({ x, y, width, height, shapes,
+                          styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}){
         this.border = new GroupBorder({
             parentId: this.tempGroup.id,
             id: BORDER.GROUP_BORDER_ID,
             x, y, width, height, shapes
         });
 
-        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
         styleMenubar.show();
     }
 
@@ -284,9 +283,8 @@ export default class Board extends GraphicElement {
         this.border.height = Math.abs(height);
     }
 
-    destroyBorder() {
+    destroyBorder(e, styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)) {
         const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
-        const styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID);
         if(placeholder){
             ComponentRepository.removeComponentById(placeholder.id);
         }
