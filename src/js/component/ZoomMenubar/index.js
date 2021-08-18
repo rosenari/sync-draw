@@ -6,18 +6,19 @@ import './index.css';
 import {BOARD_ID, RATIO_TEXT_ID, BUTTON, MENU_BAR} from '../../service/constant';
 
 export default class ZoomMenubar extends CustomElement{
+    board = null;
     _ratioText = null;
     _zoomInBtn = null;
     _zoomOutBtn = null;
 
-    constructor({parentId}) {
+    constructor({parentId, board = ComponentRepository.getComponentById(BOARD_ID)}) {
         super({
             parentId,
             id: MENU_BAR.ZOOM_MENU_BAR_ID,
             tagName: 'div',
             classList:['zoom-menu-bar']
         });
-
+        this.board = board;
 
         this.ratioText = new CustomElement({
            parentId: this.id,
@@ -59,14 +60,13 @@ export default class ZoomMenubar extends CustomElement{
     }
 
     zoom(scale){
-        const board = ComponentRepository.getComponentById(BOARD_ID);
         const centerX = (document.body.clientWidth) / 2;
         const centerY = (document.body.clientHeight) / 2;
         const translateX = (1-scale) * centerX + TransformManager.moveX * scale;
         const translateY = (1-scale) * centerY + TransformManager.moveY * scale;
 
         this.ratioText.elem.innerText = `${scale * 100}%`;
-        board.destroyBorder();
+        this.board.destroyBorder();
 
         TransformManager.translateX = translateX;
         TransformManager.translateY = translateY;
