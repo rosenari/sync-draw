@@ -5,11 +5,12 @@ import {
     BOARD_ID,
     FONT, MENU_BAR, STYLE_ELEM
 } from '../../service/constant';
-import ComponentRepository from "../../service/ComponentRepository";
+import ComponentRepository from '../../service/ComponentRepository';
 import './index.css';
-import {debounce} from "../../service/util";
+import {debounce} from '../../service/util';
 
 export default class StyleMenubar extends CustomElement{
+    board = null;
     _fontSizeText = null;
     _fontSizeSelect = null;
     _fontColorText = null;
@@ -19,13 +20,14 @@ export default class StyleMenubar extends CustomElement{
     _strokeText = null;
     _strokeInput = null;
 
-    constructor({parentId}) {
+    constructor({parentId, board = ComponentRepository.getComponentById(BOARD_ID)}) {
         super({
             parentId,
             id: MENU_BAR.STYLE_MENU_BAR_ID,
             tagName: 'div',
             classList:['style-menu-bar']
         });
+        this.board = board;
 
         this.fontSizeText = new CustomElement({
             parentId: this.id,
@@ -48,9 +50,8 @@ export default class StyleMenubar extends CustomElement{
                 'size 6' : FONT.SIZE_6,
             },
             handlers:{
-                changeHandler: function(e){
-                    const board = ComponentRepository.getComponentById(BOARD_ID);
-                    if(board.border?.fontSize) board.border.fontSize = e.target.value;
+                changeHandler: (e) => {
+                    if(this.board.border?.fontSize) this.board.border.fontSize = e.target.value;
                 }
             }
         });
@@ -69,9 +70,8 @@ export default class StyleMenubar extends CustomElement{
             type: 'color',
             classList: ['style-input'],
             handlers: {
-                inputHandler: debounce(function(e){
-                    const board = ComponentRepository.getComponentById(BOARD_ID);
-                    if(board.border?.fontColor) board.border.fontColor = e.target.value;
+                inputHandler: debounce((e) => {
+                    if(this.board.border?.fontColor) this.board.border.fontColor = e.target.value;
                 },300)
             }
         });
@@ -90,9 +90,8 @@ export default class StyleMenubar extends CustomElement{
             type: 'color',
             classList: ['style-input'],
             handlers: {
-                inputHandler: debounce(function(e){
-                    const board = ComponentRepository.getComponentById(BOARD_ID);
-                    if(board.border?.fill) board.border.fill = e.target.value;
+                inputHandler: debounce((e) => {
+                    if(this.board.border?.fill) this.board.border.fill = e.target.value;
                 },300)
             }
         });
@@ -111,9 +110,8 @@ export default class StyleMenubar extends CustomElement{
             type: 'color',
             classList: ['style-input'],
             handlers: {
-                inputHandler: debounce(function(e){
-                    const board = ComponentRepository.getComponentById(BOARD_ID);
-                    if(board.border?.strokeColor) board.border.strokeColor = e.target.value;
+                inputHandler: debounce((e) => {
+                    if(this.board.border?.strokeColor) this.board.border.strokeColor = e.target.value;
                 },300)
             }
         });
