@@ -324,8 +324,8 @@ export default class ItemMenubar extends CustomElement{
     mouseUpHandlerForMouseBtn = (e) => {
         if(this.board.border instanceof SizeBorder) return;
 
-        if(this.border instanceof DragBorder && this.border.groupingShape()) {
-            this.destroySpecificBorder([BORDER.DRAG_BORDER_ID]);
+        if(this.board.border instanceof DragBorder && this.board.border.groupingShape()) {
+            this.board.destroySpecificBorder([BORDER.DRAG_BORDER_ID]);
             this.finishForMouseUpHandler();
             return;
         }
