@@ -1,9 +1,8 @@
 import ComponentRepository from '../../service/ComponentRepository';
 import {tinyGUID, setDisablePointerEvent} from '../../service/util';
 import EventController from '../../service/EventController';
-import TransformManager from '../../service/TransformManager';
 import HistoryManager from '../../service/HistoryManager';
-import { GraphicElement, Group, GText, Line, GLine, GPolyline } from '../../component';
+import { GraphicElement, Group, GText } from '../../component';
 import {
     BOARD_ID,
     BORDER,
@@ -13,7 +12,6 @@ import {
     GROUP, BEHAVIOR
 } from '../../service/constant';
 import SizeBorder from '../Border/SizeBorder';
-import DragBorder from '../Border/DragBorder';
 import GroupBorder from '../Border/GroupBorder';
 import LineBorder from '../Border/LineBorder';
 import './index.css';

@@ -13,11 +13,11 @@ import {BEHAVIOR, BOARD_ID, BORDER, COLOR, COMPONENT_TYPE, CURSOR_TYPE, MENU_BAR
 import TransformManager from '../../service/TransformManager';
 import Board from '../Board';
 import GroupBorder from '../Border/GroupBorder';
+import SizeBorder from '../Border/SizeBorder';
 import HistoryManager from '../../service/HistoryManager';
 import {setDisablePointerEvent} from '../../service/util';
 import EventController from '../../service/EventController';
 import './index.css';
-import SizeBorder from "../Border/SizeBorder";
 
 export default class ItemMenubar extends CustomElement{
     board = null;
