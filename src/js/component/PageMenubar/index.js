@@ -6,17 +6,26 @@ import HistoryManager from '../../service/HistoryManager';
 import './index.css';
 
 export default class PageMenubar extends CustomElement{
+    promptModal = null;
+    confirmModal = null;
+    selectModal = null;
     _newBtn = null;
     _saveBtn = null;
     _loadBtn = null;
 
-    constructor({parentId}){
+    constructor({parentId,
+                    confirmModal = ComponentRepository.getComponentById(MODAL.CONFIRM_MODAL_ID),
+                    promptModal = ComponentRepository.getComponentById(MODAL.PROMPT_MODAL_ID),
+                    selectModal = ComponentRepository.getComponentById(MODAL.SELECT_MODAL_ID)}){
         super({
             parentId,
             id: MENU_BAR.PAGE_MENU_BAR_ID,
             tagName: 'div',
             classList:['page-menu-bar']
         });
+        this.confirmModal = confirmModal;
+        this.promptModal = promptModal;
+        this.selectModal = selectModal;
 
         //새 페이지 버튼
         this.newBtn = new CustomButton({
@@ -25,18 +34,17 @@ export default class PageMenubar extends CustomElement{
             content: '📄',
             classList:['page-btn','page-new-btn'],
             handlers:{
-                clickHandler: function(e,
-                                       modal = ComponentRepository.getComponentById(MODAL.CONFIRM_MODAL_ID)){
-                    modal.title = '📄 새페이지';
-                    modal.content = PHRASES.INIT;
-                    modal.confirmHandler = () => {
+                clickHandler: (e) => {
+                    this.confirmModal.title = '📄 새페이지';
+                    this.confirmModal.content = PHRASES.INIT;
+                    this.confirmModal.confirmHandler = () => {
                         HistoryManager.clear();
-                        modal.hide();
+                        this.confirmModal.hide();
                     }
-                    modal.cancelHandler = () => {
-                        modal.hide();
+                    this.confirmModal.cancelHandler = () => {
+                        this.confirmModal.hide();
                     }
-                    modal.show();
+                    this.confirmModal.show();
                 }
             }});
 
@@ -47,38 +55,37 @@ export default class PageMenubar extends CustomElement{
             content: '💾',
             classList:['page-btn','page-save-btn'],
             handlers:{
-                clickHandler: function(e, promptModal = ComponentRepository.getComponentById(MODAL.PROMPT_MODAL_ID),
-                                       confirmModal = ComponentRepository.getComponentById(MODAL.CONFIRM_MODAL_ID)){
-                    promptModal.title = '💾 저장하기';
-                    promptModal.content = PHRASES.STORE_NAME_INPUT;
-                    promptModal.confirmHandler = () => {
-                        const name = promptModal.input.elem.value;
+                clickHandler: (e) => {
+                    this.promptModal.title = '💾 저장하기';
+                    this.promptModal.content = PHRASES.STORE_NAME_INPUT;
+                    this.promptModal.confirmHandler = () => {
+                        const name = this.promptModal.input.elem.value;
                         if(!name){
-                            promptModal.hide();
+                            this.promptModal.hide();
                             return;
                         }
                         if(HistoryManager.isStoreName(name)){
-                            promptModal.hide();
-                            confirmModal.title = '💾 덮어쓰기';
-                            confirmModal.content = PHRASES.ALREADY_NAME;
-                            confirmModal.confirmHandler = () => {
+                            this.promptModal.hide();
+                            this.confirmModal.title = '💾 덮어쓰기';
+                            this.confirmModal.content = PHRASES.ALREADY_NAME;
+                            this.confirmModal.confirmHandler = () => {
                                 HistoryManager.storeCurrentPage(name);
-                                confirmModal.hide();
+                                this.confirmModal.hide();
                             }
-                            confirmModal.cancelHandler = () => {
-                                confirmModal.hide();
+                            this.confirmModal.cancelHandler = () => {
+                                this.confirmModal.hide();
                             }
-                            confirmModal.show();
+                            this.confirmModal.show();
                             return;
                         }
                         HistoryManager.storeCurrentPage(name);
-                        promptModal.hide();
+                        this.promptModal.hide();
                     }
-                    promptModal.cancelHandler = () => {
-                        promptModal.hide();
+                    this.promptModal.cancelHandler = () => {
+                        this.promptModal.hide();
                     }
-                    promptModal.input.elem.value = '';
-                    promptModal.show();
+                    this.promptModal.input.elem.value = '';
+                    this.promptModal.show();
                 }
             }});
 
@@ -89,28 +96,28 @@ export default class PageMenubar extends CustomElement{
             content: '🔎',
             classList:['page-btn','page-load-btn'],
             handlers:{
-                clickHandler: function(e, modal = ComponentRepository.getComponentById(MODAL.SELECT_MODAL_ID)){
-                    modal.title = '🔎 복구 및 삭제';
-                    modal.confirmBtn.elem.innerText = '복구';
-                    modal.select.options = {
+                clickHandler: (e) => {
+                    this.selectModal.title = '🔎 복구 및 삭제';
+                    this.selectModal.confirmBtn.elem.innerText = '복구';
+                    this.selectModal.select.options = {
                         [PHRASES.NAME_SELECT]: '',
                         ...HistoryManager.getStoreNames()
                     };
-                    modal.confirmHandler = () => {
-                        const name = modal.select.elem.value;
+                    this.selectModal.confirmHandler = () => {
+                        const name = this.selectModal.select.elem.value;
                         if(name) HistoryManager.restorePage(name);
 
-                        modal.hide();
+                        this.selectModal.hide();
                     }
-                    modal.deleteHandler = () => {
-                        const name = modal.select.elem.value;
+                    this.selectModal.deleteHandler = () => {
+                        const name = this.selectModal.select.elem.value;
                         if(name) HistoryManager.deletePage(name);
-                        modal.hide();
+                        this.selectModal.hide();
                     }
-                    modal.cancelHandler = () => {
-                        modal.hide();
+                    this.selectModal.cancelHandler = () => {
+                        this.selectModal.hide();
                     }
-                    modal.show();
+                    this.selectModal.show();
                 }
             }});
     }
