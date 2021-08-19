@@ -85,141 +85,20 @@ export default class Board extends GraphicElement {
         let selected = null;
         if(itemMenubar.selectMenu) {
             selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
-
-            if(selected.id === itemMenubar.handBtn.id){
-                this.mouseDownHandlerForHand(e);
-            }
-
-            //드래그하여 테두리 생성하는 경우
-            if(selected.relatedBorder && !(this.border instanceof GroupBorder)){
-                this.createBorder(e, selected.relatedBorder, this.createShapePlaceHolder(selected.relatedClass));
-            }
-
-            if(selected?.relatedClass?.prototype instanceof Line){
-                this.mouseDownHandlerForLine({ e, selected, itemMenubar });
-            }
+            selected.relatedMouseDownHandler(e);
         }
 
         //line생성이 종료된 경우 mouseBtn메뉴가 선택되기 떄문에 selected를 갱신할 필요가 있음.
         selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
 
         EventController.mouseMoveHandler = (e) => {
-            if(selected?.id === itemMenubar.handBtn.id){
-                this.mouseMoveHandlerForHand(e);
-            }
-
-            if(this.border) {
-                this.renderBorder(e);
-            }
-
-            if(selected?.relatedClass?.prototype instanceof Line){
-                this.mouseMoveHandlerForLine(e);
-            }
-        }
-
-        if(selected?.relatedClass?.prototype instanceof Line){
-            return;
+            this.renderBorder(e);
+            selected.relatedMouseMoveHandler?.(e);
         }
 
         EventController.mouseUpHandler = (e) => {
-            let shape = null;
-            const finish = () => {
-                setDisablePointerEvent(false);
-                Board.startPoint = {};
-                EventController.mouseMoveHandler = null;
-                EventController.mouseUpHandler = null;
-            }
-
-            if(itemMenubar.selectMenu === itemMenubar.mouseBtn.id) {
-                if(this.border instanceof SizeBorder){
-                    return;
-                }
-                if(this.border instanceof DragBorder && this.border.groupingShape()) {
-                    this.destroySpecificBorder([BORDER.DRAG_BORDER_ID]);
-                    finish();
-                    return;
-                }
-            }
-            if(selected?.relatedClass) {
-                shape = this.createShape(selected.relatedClass);
-
-                itemMenubar.selectMenu = itemMenubar.mouseBtn;
-            }
-            this.destroyBorder(e);
-            shape?.clickHandler?.();
-            finish();
+            selected.relatedMouseUpHandler?.(e);
         }
-    }
-
-    mouseDownHandlerForHand(e) {
-        this.destroyBorder();
-        Board.startPoint.x = e.pageX;
-        Board.startPoint.y = e.pageY;
-        Board.startPoint.translateX = TransformManager.translateX;
-        Board.startPoint.translateY = TransformManager.translateY;
-        Board.startPoint.moveX = TransformManager.moveX;
-        Board.startPoint.moveY = TransformManager.moveY;
-    }
-
-    mouseDownHandlerForLine({ e, selected, itemMenubar }) {
-        const x = e.pageX;
-        const y = e.pageY;
-        const finish = () => {
-            if(selected.relatedClass === GPolyline) {
-                const lastIndex = Board.startPoint.line.points.length - 1;
-                Board.startPoint.line.removePoint(lastIndex);
-            }
-            HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.CREATE, type:`${Board.startPoint.line.type}` });
-
-            itemMenubar.selectMenu = itemMenubar.mouseBtn;
-
-            Board.startPoint = {};
-            this.destroyBorder();
-            setDisablePointerEvent(false);
-            EventController.dbClickHandler = null;
-            EventController.mouseMoveHandler = null;
-        }
-
-        if(!Board.startPoint.line) {
-            Board.startPoint.lineplaceholder = this.createLinePlaceHolder(selected.relatedClass);
-            Board.startPoint.lineplaceholder.addPoint({ x, y });
-            Board.startPoint.line = this.createLine(selected.relatedClass);
-
-            if(selected.relatedClass === GLine){
-                Board.startPoint.line.arrow.elem.setAttribute('stroke','transparent');
-            }
-
-            if(selected.relatedClass === GPolyline) {
-                EventController.dbClickHandler = finish;
-            }
-        }else {
-            Board.startPoint.lineplaceholder.addPoint({ x, y });
-            Board.startPoint.line.addPoint({ x, y });
-
-            if(selected.relatedClass === GLine){
-                Board.startPoint.line.arrow.elem.setAttribute('fill',COLOR.BLACK);
-                finish();
-            }
-        }
-    }
-
-    mouseMoveHandlerForHand(e){
-        const dx = Board.startPoint.x - e.pageX;
-        const dy = Board.startPoint.y - e.pageY;
-
-        TransformManager.moveX = Board.startPoint.moveX + dx;
-        TransformManager.moveY = Board.startPoint.moveY + dy;
-        TransformManager.translateX = Board.startPoint.translateX + dx;
-        TransformManager.translateY = Board.startPoint.translateY + dy;
-    }
-
-    mouseMoveHandlerForLine(e){
-        const linePlaceHolder = Board.startPoint.lineplaceholder;
-        linePlaceHolder.points[linePlaceHolder.points.length - 1] = {
-            x: TransformManager.changeDocXToSvgX(e.pageX),
-            y: TransformManager.changeDocYToSvgY(e.pageY)
-        };
-        linePlaceHolder.render();
     }
 
     createBorder(e ,type, shape = null) {
@@ -257,48 +136,6 @@ export default class Board extends GraphicElement {
         });
 
         styleMenubar.show();
-    }
-
-    renderBorder(e) {
-        if(!Board.startPoint.x || !Board.startPoint.y) return;
-        //이동한 변위
-        const dx = e.pageX - Board.startPoint.x;
-        const dy = e.pageY - Board.startPoint.y;
-        //변화된 너비와와 높이
-        let width = dx;
-        let height = dy;
-        let x = Board.startPoint.x;
-        let y = Board.startPoint.y;
-
-        if(width < 0){
-            x += dx;
-        }
-        if(height < 0){
-            y += dy;
-        }
-
-        this.border.x = x;
-        this.border.y = y;
-        this.border.width = Math.abs(width);
-        this.border.height = Math.abs(height);
-    }
-
-    destroyBorder(e, styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)) {
-        const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
-        if(placeholder){
-            ComponentRepository.removeComponentById(placeholder.id);
-        }
-        this.tempGroup.elem.childNodes.forEach(childNode => ComponentRepository.removeComponentById(childNode.id));
-        this.tempGroup.elem.innerHTML = '';
-
-        this.border = null;
-        styleMenubar.hide();
-    }
-
-    destroySpecificBorder(borderIds){
-        borderIds.forEach((borderId) => {
-            ComponentRepository.removeComponentById(borderId);
-        });
     }
 
     createShapePlaceHolder(type) {
@@ -344,10 +181,54 @@ export default class Board extends GraphicElement {
 
     createLine(type) {
         return new type({
-           parentId: this.shapeGroup.id,
-           id: tinyGUID(),
-           startX: Board.startPoint.x,
-           startY: Board.startPoint.y,
+            parentId: this.shapeGroup.id,
+            id: tinyGUID(),
+            startX: Board.startPoint.x,
+            startY: Board.startPoint.y,
+        });
+    }
+
+    renderBorder(e) {
+        if(!this.border) return;
+
+        if(!Board.startPoint.x || !Board.startPoint.y) return;
+        //이동한 변위
+        const dx = e.pageX - Board.startPoint.x;
+        const dy = e.pageY - Board.startPoint.y;
+        //변화된 너비와와 높이
+        let width = dx;
+        let height = dy;
+        let x = Board.startPoint.x;
+        let y = Board.startPoint.y;
+
+        if(width < 0){
+            x += dx;
+        }
+        if(height < 0){
+            y += dy;
+        }
+
+        this.border.x = x;
+        this.border.y = y;
+        this.border.width = Math.abs(width);
+        this.border.height = Math.abs(height);
+    }
+
+    destroyBorder(e, styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)) {
+        const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
+        if(placeholder){
+            ComponentRepository.removeComponentById(placeholder.id);
+        }
+        this.tempGroup.elem.childNodes.forEach(childNode => ComponentRepository.removeComponentById(childNode.id));
+        this.tempGroup.elem.innerHTML = '';
+
+        this.border = null;
+        styleMenubar.hide();
+    }
+
+    destroySpecificBorder(borderIds){
+        borderIds.forEach((borderId) => {
+            ComponentRepository.removeComponentById(borderId);
         });
     }
 
