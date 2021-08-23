@@ -247,16 +247,16 @@ export default class Shape extends GraphicElement {
         }
 
         this.elem.parentNode?.appendChild?.(this.elem);
-        this.innerText.elem.parentNode?.appendChild?.(this.innerText.elem);
+        this.innerText?.elem.parentNode?.appendChild?.(this.innerText?.elem);
 
         this.board.destroyBorder();
         this.board.createSizeBorder(this);
 
         this.styleMenubar.show();
-        this.styleMenubar.fontSizeSelect.elem.value = this.innerText.fontSize;
-        this.styleMenubar.fontColorInput.elem.value = this.innerText.fontColor;
-        this.styleMenubar.fillInput.elem.value = this.fill;
-        this.styleMenubar.strokeInput.elem.value = this.strokeColor;
+        this.styleMenubar.fontSizeSelect.elem.value = this.innerText?.fontSize || this.fontSize;
+        this.styleMenubar.fontColorInput.elem.value = this.innerText?.fontColor || this.fontColor;
+        this.styleMenubar.fillInput.elem.value = this.fill || this.fill;
+        this.styleMenubar.strokeInput.elem.value = this.strokeColor || this.strokeColor;
     }
 }
 

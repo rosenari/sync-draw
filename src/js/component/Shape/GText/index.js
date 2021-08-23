@@ -157,14 +157,6 @@ class GText extends Shape {
     dbClickHandler(e){
         this.textBox.dbClickHandler(e);
     }
-
-    clickHandler(e) {
-        this.board.destroyBorder();
-        this.board.createSizeBorder(this);
-        this.styleMenubar.fontSizeSelect.elem.value = this.fontSize;
-        this.styleMenubar.fontColorInput.elem.value = this.fontColor;
-        this.styleMenubar.show();
-    }
 }
 
 export default Service.TransformManager.wrapShape(GText);

@@ -96,7 +96,9 @@ export default class SizeBorder extends Border {
 
     set fontSize(value){
         this.target.fontSize = value;
-        const target = this.target.innerText.textBox;
+        const target = this.target.innerText?.textBox;
+
+        if(!target) return;
 
         while(isOverflowWidth(target.elem)){
             this.width += getOverflowWidth(target.elem);
