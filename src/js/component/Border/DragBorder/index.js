@@ -30,7 +30,7 @@ export default class DragBorder extends Border{
         let borderEndY = -Infinity;
         for(const key in Service.ComponentRepository) {
             const shape = Service.ComponentRepository.getComponentById(key);
-            if (!(shape instanceof Shapes.Shape) && !(shape instanceof Shapes.GText)) continue;
+            if (!(shape instanceof Shapes.Shape)) continue;
 
             const startX = shape.x;
             const startY = shape.y;

@@ -1,10 +1,10 @@
-import CustomElement from '../../CommonElement/CustomElement';
-import GraphicElement from '../../CommonElement/GraphicElement';
+import Shape from '../index';
+import { CommonElements } from '../../index';
 import { Service } from '../../../service';
-import {BOARD_ID, COLOR, MENU_BAR, FONT, COMPONENT_TYPE, BEHAVIOR} from '../../../service/constant';
-import {getOverflowHeight, isOverflowHeight, rgbToHex} from '../../../service/util';
+import { BOARD_ID, COLOR, MENU_BAR, FONT, COMPONENT_TYPE, BEHAVIOR } from '../../../service/constant';
+import { getOverflowHeight, isOverflowHeight, rgbToHex } from '../../../service/util';
 
-class GText extends GraphicElement {
+class GText extends Shape {
     static type = COMPONENT_TYPE.GText;
     board = null;
     styleMenubar = null;
@@ -19,13 +19,13 @@ class GText extends GraphicElement {
         this.board = board;
         this.styleMenubar = styleMenubar;
 
-        this.foreignObj = new GraphicElement({
+        this.foreignObj = new CommonElements.GraphicElement({
             parentId:this.id,
             id:id + '-foreignobj',
             tagName:'foreignObject'
         });
 
-        this.textBox = new CustomElement({
+        this.textBox = new CommonElements.CustomElement({
             parentId: this.foreignObj.id,
             id: id + '-textbox',
             tagName: 'div',

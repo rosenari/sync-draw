@@ -167,7 +167,7 @@ export default class GroupBorder extends Border {
         const y = Service.TransformManager.changeDocYToSvgY(e.pageY);
         for(const key in Service.ComponentRepository) {
             const shape = Service.ComponentRepository.getComponentById(key);
-            if (!(shape instanceof Shapes.Shape) && !(shape instanceof Shapes.GText)) continue;
+            if (!(shape instanceof Shapes.Shape)) continue;
 
             const startX = shape.x;
             const startY = shape.y;
