@@ -1,18 +1,9 @@
-import ComponentRepository from './service/ComponentRepository';
-import EventController from './service/EventController';
-import Board from './component/Board';
-import PageMenubar from './component/Toolbar/PageMenubar';
-import ItemMenubar from './component/Toolbar/ItemMenubar';
-import ZoomMenubar from './component/Toolbar/ZoomMenubar';
-import StyleMenubar from './component/Toolbar/StyleMenubar';
-import HistoryMenubar from './component/Toolbar/HistoryMenubar';
-import CustomModal from './component/CommonElement/CustomModal';
-import Toast from './component/CommonElement/Toast';
-import HistoryView from './component/Toolbar/HistoryView';
-import {HISTORY_VIEW_ID, MODAL, TOAST_ID} from './service/constant';
+import { Board, CommonElements, Toolbars } from './component';
+import { Service } from './service';
+import { APP_ID, HISTORY_VIEW_ID, MODAL, TOAST_ID } from './service/constant';
 
 export default class App {
-    _id = 'app';
+    _id = APP_ID;
     _elem = null;
     _board = null;
     _pageMenubar = null;
@@ -29,69 +20,80 @@ export default class App {
 
     constructor({ elem }) {
         this.elem = elem;
-        ComponentRepository.setComponentById(this.id,this);
+        Service.ComponentRepository.setComponentById(this.id,this);
 
         this.board = new Board({
             parentId: this.id,
             classList: []
         });
 
-        this.promptModal = new CustomModal({
-            parentId: this.id,
-            id: MODAL.PROMPT_MODAL_ID,
-            type: 'prompt',
-            content: '입력 모달'
-        });
+        const modals = [
+            {
+                id : MODAL.PROMPT_MODAL_ID,
+                type : 'prompt',
+                content : '입력 모달'
+            },
+            {
+                id: MODAL.CONFIRM_MODAL_ID,
+                type: 'confirm',
+                content: '확인 모달'
+            },
+            {
+                id: MODAL.SELECT_MODAL_ID,
+                type: 'select',
+                content: '선택 모달'
+            }
+        ];
 
-        this.confirmModal = new CustomModal({
-            parentId: this.id,
-            id: MODAL.CONFIRM_MODAL_ID,
-            type: 'confirm',
-            content: '확인 모달'
-        });
+        modals.map(modal => this.createModal(modal)).forEach(modal => this.registerModal(modal));
 
-        this.selectModal = new CustomModal({
-            parentId: this.id,
-            id: MODAL.SELECT_MODAL_ID,
-            type: 'select',
-            content: '선택 모달'
-        });
-
-        this.toast = new Toast({
+        this.toast = new CommonElements.Toast({
             parentId: this.id,
             id: TOAST_ID
         });
 
-        this.pageMenubar = new PageMenubar({
+        this.pageMenubar = new Toolbars.PageMenubar({
             parentId: this.id
         });
 
-        this.itemMenubar = new ItemMenubar({
+        this.itemMenubar = new Toolbars.ItemMenubar({
             parentId: this.id
         });
 
-        this.zoomMenubar = new ZoomMenubar({
+        this.zoomMenubar = new Toolbars.ZoomMenubar({
             parentId: this.id
         });
 
-        this.styleMenubar = new StyleMenubar({
+        this.styleMenubar = new Toolbars.StyleMenubar({
+            parentId: this.id
+        });
+
+        this.historyMenubar = new Toolbars.HistoryMenubar({
             parentId: this.id
         });
 
         this.styleMenubar.hide();
 
-        this.historyMenubar = new HistoryMenubar({
-            parentId: this.id
-        });
-
-        this.historyView = new HistoryView({
+        this.historyView = new Toolbars.HistoryView({
             parentId: this.id,
             id: HISTORY_VIEW_ID
         });
 
-        this.controller = new EventController(this.elem);
+        this.controller = new Service.EventController(this.elem);
     }
 
+    createModal({ id, type, content}){
+        return new CommonElements.CustomModal({
+            parentId: this.id,
+            id,
+            type,
+            content
+        })
+    }
+
+    registerModal(modal){
+        this[`${modal.type}Modal`] = modal;
+    }
 
     get id() {
         return this._id;

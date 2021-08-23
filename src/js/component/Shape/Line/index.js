@@ -1,8 +1,7 @@
-import Shape from '../index';
 import GraphicElement from '../../CommonElement/GraphicElement';
+import Shape from '../index';
+import { Service } from '../../../service';
 import {BOARD_ID, COLOR, MENU_BAR} from '../../../service/constant';
-import ComponentRepository from '../../../service/ComponentRepository';
-import TransformManager from '../../../service/TransformManager';
 
 class Line extends Shape {
     _points = [];
@@ -13,9 +12,9 @@ class Line extends Shape {
 
 
     constructor({ parentId, id, startX, startY, classList, handlers,
-        board = ComponentRepository.getComponentById(BOARD_ID),
-        itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID),
-        styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}) {
+        board = Service.ComponentRepository.getComponentById(BOARD_ID),
+        itemMenubar = Service.ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID),
+        styleMenubar = Service.ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}) {
         super({
             parentId,
             id,
@@ -159,7 +158,7 @@ class Line extends Shape {
     }
 
     clickHandler(e) {
-        if(ComponentRepository.getComponentById(this.itemMenubar.selectMenu).name !== 'mouse'){
+        if(Service.ComponentRepository.getComponentById(this.itemMenubar.selectMenu).name !== 'mouse'){
             return;
         }
 
@@ -178,4 +177,4 @@ class Line extends Shape {
     }
 }
 
-export default TransformManager.wrapLine(TransformManager.wrapShape(Line));
+export default Service.TransformManager.wrapLine(Service.TransformManager.wrapShape(Line));

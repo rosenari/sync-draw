@@ -1,17 +1,15 @@
 import Border from '../index';
-import TransformManager from '../../../service/TransformManager';
-import EventController from '../../../service/EventController';
+import { Shapes } from '../../index';
+import { Service } from '../../../service';
 import {BEHAVIOR, BOARD_ID, COLOR, FONT} from '../../../service/constant';
-import HistoryManager from '../../../service/HistoryManager';
-import ComponentRepository from '../../../service/ComponentRepository';
-import { Components } from '../../index';
+
 
 export default class GroupBorder extends Border {
     static startPoint = {};
     board = null;
     _shapes = [];
 
-    constructor({ parentId, id, x, y, width, height, shapes, board = ComponentRepository.getComponentById(BOARD_ID) }) {
+    constructor({ parentId, id, x, y, width, height, shapes, board = Service.ComponentRepository.getComponentById(BOARD_ID) }) {
         super({ parentId, id });
 
         this.board = board;
@@ -29,7 +27,7 @@ export default class GroupBorder extends Border {
     }
 
     set x(value){
-        super.x = TransformManager.changeSvgXToDocX(+value);
+        super.x = Service.TransformManager.changeSvgXToDocX(+value);
     }
 
     get y(){
@@ -37,7 +35,7 @@ export default class GroupBorder extends Border {
     }
 
     set y(value){
-        super.y = TransformManager.changeSvgYToDocY(+value);
+        super.y = Service.TransformManager.changeSvgYToDocY(+value);
     }
 
     get width(){
@@ -45,7 +43,7 @@ export default class GroupBorder extends Border {
     }
 
     set width(value){
-        super.width = TransformManager.changeSvgWidthToDocWidth(+value);
+        super.width = Service.TransformManager.changeSvgWidthToDocWidth(+value);
     }
 
     get height(){
@@ -53,7 +51,7 @@ export default class GroupBorder extends Border {
     }
 
     set height(value){
-        super.height = TransformManager.changeSvgHeightToDocHeight(+value);
+        super.height = Service.TransformManager.changeSvgHeightToDocHeight(+value);
     }
 
     get shapes() {
@@ -70,7 +68,7 @@ export default class GroupBorder extends Border {
 
     set fontSize(value){
         this.shapes.forEach(shape => shape.fontSize = value);
-        if(this.shapes.length > 1) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+        if(this.shapes.length > 1) Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
             type:'Group' });
     }
 
@@ -80,7 +78,7 @@ export default class GroupBorder extends Border {
 
     set fontColor(value){
         this.shapes.forEach(shape => shape.fontColor = value);
-        if(this.shapes.length > 1) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+        if(this.shapes.length > 1) Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
             type:'Group' });
     }
 
@@ -90,7 +88,7 @@ export default class GroupBorder extends Border {
 
     set fill(value){
         this.shapes.forEach(shape => shape.fill = value);
-        if(this.shapes.length > 1) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+        if(this.shapes.length > 1) Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
             type:'Group' });
     }
 
@@ -100,50 +98,50 @@ export default class GroupBorder extends Border {
 
     set strokeColor(value){
         this.shapes.forEach(shape => shape.strokeColor = value);
-        if(this.shapes.length > 1) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+        if(this.shapes.length > 1) Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
             type:'Group' });
     }
 
     mouseDownHandler(e){
         e.stopPropagation();
         if(e.shiftKey) this.clickShapeInRange(e);
-        GroupBorder.startPoint.x = TransformManager.changeDocXToSvgX(e.pageX);
-        GroupBorder.startPoint.y = TransformManager.changeDocYToSvgY(e.pageY);
+        GroupBorder.startPoint.x = Service.TransformManager.changeDocXToSvgX(e.pageX);
+        GroupBorder.startPoint.y = Service.TransformManager.changeDocYToSvgY(e.pageY);
         this.startPointInit();
 
-        EventController.mouseMoveHandler = (e) => {
+        Service.EventController.mouseMoveHandler = (e) => {
             e.stopPropagation();
-            const dx = TransformManager.changeDocXToSvgX(e.pageX) - GroupBorder.startPoint.x;
-            const dy = TransformManager.changeDocYToSvgY(e.pageY) - GroupBorder.startPoint.y;
+            const dx = Service.TransformManager.changeDocXToSvgX(e.pageX) - GroupBorder.startPoint.x;
+            const dy = Service.TransformManager.changeDocYToSvgY(e.pageY) - GroupBorder.startPoint.y;
             this.moveHandler({ dx, dy });
         }
 
-        EventController.mouseUpHandler = (e) => {
+        Service.EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.moveCompleteHandler();
             this.refocusThisBorder();
-            EventController.mouseMoveHandler = null;
-            EventController.mouseUpHandler = null;
+            Service.EventController.mouseMoveHandler = null;
+            Service.EventController.mouseUpHandler = null;
         }
     }
 
     renderShapes({ dx, dy }){
         for(const index in this.shapes){
             const shape = this.shapes[index];
-            shape.x = TransformManager.changeSvgXToDocX(GroupBorder.startPoint.shapes[index].x + dx);
-            shape.y = TransformManager.changeSvgYToDocY(GroupBorder.startPoint.shapes[index].y + dy);
+            shape.x = Service.TransformManager.changeSvgXToDocX(GroupBorder.startPoint.shapes[index].x + dx);
+            shape.y = Service.TransformManager.changeSvgYToDocY(GroupBorder.startPoint.shapes[index].y + dy);
         }
     }
 
     deleteHandler() {
-        this.shapes.forEach(shape => ComponentRepository.removeComponentById(shape.id));
-        HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.DELETE, type: 'Group' });
-        ComponentRepository.getComponentById(BOARD_ID).destroyBorder();
+        this.shapes.forEach(shape => Service.ComponentRepository.removeComponentById(shape.id));
+        Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.DELETE, type: 'Group' });
+        Service.ComponentRepository.getComponentById(BOARD_ID).destroyBorder();
     }
 
     startPointInit(){
-        GroupBorder.startPoint.borderX = TransformManager.changeDocXToSvgX(this.x);
-        GroupBorder.startPoint.borderY = TransformManager.changeDocYToSvgY(this.y);
+        GroupBorder.startPoint.borderX = Service.TransformManager.changeDocXToSvgX(this.x);
+        GroupBorder.startPoint.borderY = Service.TransformManager.changeDocYToSvgY(this.y);
         GroupBorder.startPoint.shapes = this.shapes.map(({ x, y }) => {
             return { x, y }
         });
@@ -161,15 +159,15 @@ export default class GroupBorder extends Border {
 
     moveCompleteHandler(){
         GroupBorder.startPoint = {};
-        HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MOVE, type:`Group` });
+        Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MOVE, type:`Group` });
     }
 
     clickShapeInRange(e){
-        const x = TransformManager.changeDocXToSvgX(e.pageX);
-        const y = TransformManager.changeDocYToSvgY(e.pageY);
-        for(const key in ComponentRepository) {
-            const shape = ComponentRepository.getComponentById(key);
-            if (!(shape instanceof Components.Shape) && !(shape instanceof Components.GText)) continue;
+        const x = Service.TransformManager.changeDocXToSvgX(e.pageX);
+        const y = Service.TransformManager.changeDocYToSvgY(e.pageY);
+        for(const key in Service.ComponentRepository) {
+            const shape = Service.ComponentRepository.getComponentById(key);
+            if (!(shape instanceof Shapes.Shape) && !(shape instanceof Shapes.GText)) continue;
 
             const startX = shape.x;
             const startY = shape.y;

@@ -1,5 +1,5 @@
 import Polygon from '../index';
-import TransformManager from '../../../../service/TransformManager';
+import { Service } from '../../../../service';
 import {COMPONENT_TYPE, RATIO} from '../../../../service/constant';
 
 class GInputoutput extends Polygon{
@@ -25,4 +25,4 @@ class GInputoutput extends Polygon{
     }
 }
 
-export default TransformManager.wrapShape(GInputoutput);
+export default Service.TransformManager.wrapShape(GInputoutput);

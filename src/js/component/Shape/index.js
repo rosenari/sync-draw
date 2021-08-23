@@ -1,16 +1,8 @@
 import GraphicElement from '../CommonElement/GraphicElement';
-import ComponentRepository from '../../service/ComponentRepository';
-import {BOARD_ID, COLOR, MENU_BAR, FONT, PLACE_HOLDER_ID} from '../../service/constant';
-import {
-    getOverflowHeight,
-    getOverflowWidth,
-    isOverflowHeight,
-    isOverflowWidth,
-    IterableWeakMap
-} from '../../service/util';
-import InnerText from './InnerText';
-import SizeBorder from '../Border/SizeBorder';
-import GroupBorder from '../Border/GroupBorder';
+import { Shapes, Borders } from '../index';
+import { Service } from '../../service';
+import { BOARD_ID, COLOR, MENU_BAR, FONT, PLACE_HOLDER_ID } from '../../service/constant';
+import { getOverflowHeight, getOverflowWidth, isOverflowHeight, isOverflowWidth, IterableWeakMap } from '../../service/util';
 
 export default class Shape extends GraphicElement {
     board = null;
@@ -24,9 +16,9 @@ export default class Shape extends GraphicElement {
     _innerText = null;
 
     constructor({ parentId, id, tagName, x = 0, y = 0, width = 0, height = 0, classList, handlers,
-                board = ComponentRepository.getComponentById(BOARD_ID),
-                itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID),
-                styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}) {
+                board = Service.ComponentRepository.getComponentById(BOARD_ID),
+                itemMenubar = Service.ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID),
+                styleMenubar = Service.ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}) {
         super({ parentId, id, tagName, classList, handlers });
         this.board = board;
         this.itemMenubar = itemMenubar;
@@ -165,7 +157,7 @@ export default class Shape extends GraphicElement {
     createInnerText(defaultText = 'shape') {
         if(this.id === PLACE_HOLDER_ID) return;
 
-        this.innerText = new InnerText({
+        this.innerText = new Shapes.InnerText({
             parentId: this.parentId,
             id: this.id + '-innerText',
             x: this.x,
@@ -179,11 +171,11 @@ export default class Shape extends GraphicElement {
         this.innerText.fontColor = COLOR.BLACK;
 
         if(isOverflowWidth(this.innerText.textBox.elem)){
-            this.width += getOverflowWidth(this.innerText.textBox.elem) + InnerText.padding * 2;
+            this.width += getOverflowWidth(this.innerText.textBox.elem) + Shapes.InnerText.padding * 2;
         }
 
         if(isOverflowHeight(this.innerText.textBox.elem)){
-            this.height += getOverflowHeight(this.innerText.textBox.elem) + InnerText.padding * 2;
+            this.height += getOverflowHeight(this.innerText.textBox.elem) + Shapes.InnerText.padding * 2;
         }
     }
 
@@ -217,7 +209,7 @@ export default class Shape extends GraphicElement {
     }
 
     setProperty({ linkedLineIds, text, fontSize, fontColor, fill, strokeColor }){
-        linkedLineIds.forEach(({id, pointInfo}) => this.addLinkedLine({ line: ComponentRepository.getComponentById(id), pointInfo }));
+        linkedLineIds.forEach(({id, pointInfo}) => this.addLinkedLine({ line: Service.ComponentRepository.getComponentById(id), pointInfo }));
         this.innerText.textBox.elem.innerText = text;
         this.fontSize = fontSize;
         this.fontColor = fontColor;
@@ -230,19 +222,19 @@ export default class Shape extends GraphicElement {
     }
 
     clickHandler(e) {
-        if(ComponentRepository.getComponentById(this.itemMenubar.selectMenu).name !== 'mouse'){
+        if(Service.ComponentRepository.getComponentById(this.itemMenubar.selectMenu).name !== 'mouse'){
             return;
         }
 
         if(e?.shiftKey && this.board.border) {
-            if(!(this.board.border instanceof SizeBorder) && !(this.board.border instanceof GroupBorder)) return;
+            if(!(this.board.border instanceof Borders.SizeBorder) && !(this.board.border instanceof Borders.GroupBorder)) return;
             let shapes = [];
             const target = this;
-            if(this.board.border instanceof SizeBorder) {
+            if(this.board.border instanceof Borders.SizeBorder) {
                 const sizeBorderTarget = this.board.border.target;
                 shapes.push(sizeBorderTarget);
                 if(sizeBorderTarget !== target) shapes.push(target);
-            }else if(this.board.border instanceof GroupBorder) {
+            }else if(this.board.border instanceof Borders.GroupBorder) {
                 shapes = this.board.border.shapes;
                 shapes.push(target);
             }

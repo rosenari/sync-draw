@@ -1,13 +1,12 @@
 import Border from '../index';
+import { Shapes } from '../../index';
+import { Service } from '../../../service';
 import {BOARD_ID, BORDER, COLOR, RATIO} from '../../../service/constant';
-import ComponentRepository from '../../../service/ComponentRepository';
-import TransformManager from '../../../service/TransformManager';
-import { Components } from '../../index';
 
 export default class DragBorder extends Border{
     board = null;
 
-    constructor({ parentId, board = ComponentRepository.getComponentById(BOARD_ID) }) {
+    constructor({ parentId, board = Service.ComponentRepository.getComponentById(BOARD_ID) }) {
         super({
             parentId,
             id: BORDER.DRAG_BORDER_ID
@@ -21,17 +20,17 @@ export default class DragBorder extends Border{
     groupingShape(){
         const grouping = [];
         //테두리 내 모든 도형을 수집한다.
-        const lineStartX = TransformManager.changeDocXToSvgX(this.x);
-        const lineStartY = TransformManager.changeDocYToSvgY(this.y);
-        const lineEndX = lineStartX + TransformManager.changeDocWidthToSvgWidth(this.width);
-        const lineEndY = lineStartY + TransformManager.changeDocHeightToSvgHeight(this.height);
+        const lineStartX = Service.TransformManager.changeDocXToSvgX(this.x);
+        const lineStartY = Service.TransformManager.changeDocYToSvgY(this.y);
+        const lineEndX = lineStartX + Service.TransformManager.changeDocWidthToSvgWidth(this.width);
+        const lineEndY = lineStartY + Service.TransformManager.changeDocHeightToSvgHeight(this.height);
         let borderStartX = Infinity;
         let borderStartY = Infinity;
         let borderEndX = -Infinity;
         let borderEndY = -Infinity;
-        for(const key in ComponentRepository) {
-            const shape = ComponentRepository.getComponentById(key);
-            if (!(shape instanceof Components.Shape) && !(shape instanceof Components.GText)) continue;
+        for(const key in Service.ComponentRepository) {
+            const shape = Service.ComponentRepository.getComponentById(key);
+            if (!(shape instanceof Shapes.Shape) && !(shape instanceof Shapes.GText)) continue;
 
             const startX = shape.x;
             const startY = shape.y;

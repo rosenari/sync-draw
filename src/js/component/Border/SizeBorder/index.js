@@ -1,6 +1,7 @@
 import Border from '../index';
-import GraphicElement from '../../CommonElement/GraphicElement';
-import ComponentRepository from '../../../service/ComponentRepository';
+import { CommonElements } from '../../index';
+import { Service } from '../../../service';
+import {COLOR, BORDER, GROUP, BEHAVIOR, BOARD_ID} from '../../../service/constant';
 import {
     getOverflowHeight,
     getOverflowWidth,
@@ -8,10 +9,6 @@ import {
     isOverflowWidth,
     tinyGUID
 } from '../../../service/util';
-import EventController from '../../../service/EventController';
-import TransformManager from '../../../service/TransformManager';
-import {COLOR, BORDER, GROUP, BEHAVIOR, BOARD_ID} from '../../../service/constant';
-import HistoryManager from '../../../service/HistoryManager';
 
 export default class SizeBorder extends Border {
     static startPoint = {};
@@ -42,7 +39,7 @@ export default class SizeBorder extends Border {
     }
 
     set x(value){
-        super.x = TransformManager.changeSvgXToDocX(+value);
+        super.x = Service.TransformManager.changeSvgXToDocX(+value);
     }
 
     get y(){
@@ -50,7 +47,7 @@ export default class SizeBorder extends Border {
     }
 
     set y(value){
-        super.y = TransformManager.changeSvgYToDocY(+value);
+        super.y = Service.TransformManager.changeSvgYToDocY(+value);
     }
 
     get width(){
@@ -58,7 +55,7 @@ export default class SizeBorder extends Border {
     }
 
     set width(value){
-        super.width = TransformManager.changeSvgWidthToDocWidth(+value);
+        super.width = Service.TransformManager.changeSvgWidthToDocWidth(+value);
     }
 
     get height(){
@@ -66,7 +63,7 @@ export default class SizeBorder extends Border {
     }
 
     set height(value){
-        super.height = TransformManager.changeSvgHeightToDocHeight(+value);
+        super.height = Service.TransformManager.changeSvgHeightToDocHeight(+value);
     }
 
     get ratios() {
@@ -113,7 +110,7 @@ export default class SizeBorder extends Border {
         }
 
         if(this.target.fontSize){
-            HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+            Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
                 type:`${this.target.type}` });
         }
     }
@@ -125,7 +122,7 @@ export default class SizeBorder extends Border {
     set fontColor(value){
         this.target.fontColor = value;
         if(this.target.fontColor){
-            HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+            Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
                 type:`${this.target.type}` });
         }
     }
@@ -136,7 +133,7 @@ export default class SizeBorder extends Border {
 
     set fill(value){
         this.target.fill = value;
-        if(this.target.fill) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+        if(this.target.fill) Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
             type:`${this.target.type}` });
     }
 
@@ -146,7 +143,7 @@ export default class SizeBorder extends Border {
 
     set strokeColor(value){
         this.target.strokeColor = value;
-        if(this.target.strokeColor) HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
+        if(this.target.strokeColor) Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY,
             type:`${this.target.type}` });
     }
 
@@ -162,7 +159,7 @@ export default class SizeBorder extends Border {
         for(const i in this.ratios){
             for(const j in this.ratios){
                 if(i == 1 && j == 1) continue;
-                const point = new GraphicElement({
+                const point = new CommonElements.GraphicElement({
                     parentId: GROUP.TEMP_GROUP_ID,
                     id: tinyGUID(),
                     tagName: 'circle',
@@ -173,10 +170,10 @@ export default class SizeBorder extends Border {
                                 maxIndex: this.points.length-1,
                                 index: e.target.dataset.index
                             };
-                            SizeBorder.startPoint.x = TransformManager.changeDocXToSvgX(+e.target.getAttribute('cx'));
-                            SizeBorder.startPoint.oppX = TransformManager.changeDocXToSvgX(this.points[this.getOppositionIndex(currentPointIndexInfo)].getAttribute('cx'));
-                            SizeBorder.startPoint.y = TransformManager.changeDocYToSvgY(+e.target.getAttribute('cy'));
-                            SizeBorder.startPoint.oppY = TransformManager.changeDocYToSvgY(this.points[this.getOppositionIndex(currentPointIndexInfo)].getAttribute('cy'));
+                            SizeBorder.startPoint.x = Service.TransformManager.changeDocXToSvgX(+e.target.getAttribute('cx'));
+                            SizeBorder.startPoint.oppX = Service.TransformManager.changeDocXToSvgX(this.points[this.getOppositionIndex(currentPointIndexInfo)].getAttribute('cx'));
+                            SizeBorder.startPoint.y = Service.TransformManager.changeDocYToSvgY(+e.target.getAttribute('cy'));
+                            SizeBorder.startPoint.oppY = Service.TransformManager.changeDocYToSvgY(this.points[this.getOppositionIndex(currentPointIndexInfo)].getAttribute('cy'));
                             SizeBorder.startPoint.id = e.target.id;
                             SizeBorder.startPoint.target = {
                                 x: this.target.x,
@@ -185,11 +182,11 @@ export default class SizeBorder extends Border {
                                 height: this.target.height
                             }
 
-                            EventController.mouseMoveHandler = (e) => {
+                            Service.EventController.mouseMoveHandler = (e) => {
                                 e.stopPropagation();
                                 const id = SizeBorder.startPoint.id;
-                                let dx = TransformManager.changeDocXToSvgX(e.pageX) - SizeBorder.startPoint.x;
-                                let dy = TransformManager.changeDocYToSvgY(e.pageY) - SizeBorder.startPoint.y;
+                                let dx = Service.TransformManager.changeDocXToSvgX(e.pageX) - SizeBorder.startPoint.x;
+                                let dy = Service.TransformManager.changeDocYToSvgY(e.pageY) - SizeBorder.startPoint.y;
                                 let width = SizeBorder.startPoint.target.width + dx;
                                 let height = SizeBorder.startPoint.target.height + dy;
                                 let x = SizeBorder.startPoint.target.x;
@@ -226,19 +223,19 @@ export default class SizeBorder extends Border {
                                 this.detectOverflow();
                             }
 
-                            EventController.mouseUpHandler = (e) => {
+                            Service.EventController.mouseUpHandler = (e) => {
                                 e.stopPropagation();
                                 this.adjustOverflowInfo();
 
                                 this.renderEdge({x: this.x, y:this.y, width:this.width, height: this.height});
                                 this.renderTarget();
                                 if(!this.isEqualTarget(SizeBorder.startPoint.target)) {
-                                    HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
+                                    Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
                                 }
                                 this.refocusThisBorder();
                                 SizeBorder.startPoint = {};
-                                EventController.mouseMoveHandler = null;
-                                EventController.mouseUpHandler = null;
+                                Service.EventController.mouseMoveHandler = null;
+                                Service.EventController.mouseUpHandler = null;
                             }
                         }
                     }
@@ -271,23 +268,23 @@ export default class SizeBorder extends Border {
 
     mouseDownHandler(e){
         e.stopPropagation();
-        SizeBorder.startPoint.x = TransformManager.changeDocXToSvgX(e.pageX);
-        SizeBorder.startPoint.y = TransformManager.changeDocYToSvgY(e.pageY);
+        SizeBorder.startPoint.x = Service.TransformManager.changeDocXToSvgX(e.pageX);
+        SizeBorder.startPoint.y = Service.TransformManager.changeDocYToSvgY(e.pageY);
         this.startPointInit();
 
-        EventController.mouseMoveHandler = (e) => {
+        Service.EventController.mouseMoveHandler = (e) => {
             e.stopPropagation();
-            const dx = TransformManager.changeDocXToSvgX(e.pageX) - SizeBorder.startPoint.x;
-            const dy = TransformManager.changeDocYToSvgY(e.pageY) - SizeBorder.startPoint.y;
+            const dx = Service.TransformManager.changeDocXToSvgX(e.pageX) - SizeBorder.startPoint.x;
+            const dy = Service.TransformManager.changeDocYToSvgY(e.pageY) - SizeBorder.startPoint.y;
             this.moveHandler({ dx, dy });
         }
 
-        EventController.mouseUpHandler = (e) => {
+        Service.EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.moveCompleteHandler();
             this.refocusThisBorder();
-            EventController.mouseMoveHandler = null;
-            EventController.mouseUpHandler = null;
+            Service.EventController.mouseMoveHandler = null;
+            Service.EventController.mouseUpHandler = null;
         }
     }
 
@@ -325,10 +322,10 @@ export default class SizeBorder extends Border {
         this.target?.dbClickHandler?.(e);
     }
 
-    deleteHandler() {
-        ComponentRepository.removeComponentById(this.target.id);
-        HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.DELETE, type: this.target.type });
-        ComponentRepository.getComponentById(BOARD_ID).destroyBorder();
+    deleteHandler(board = Service.ComponentRepository.getComponentById(BOARD_ID)) {
+        Service.ComponentRepository.removeComponentById(this.target.id);
+        Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.DELETE, type: this.target.type });
+        board.destroyBorder();
     }
 
     startPointInit(){
@@ -364,7 +361,7 @@ export default class SizeBorder extends Border {
 
     moveCompleteHandler(){
         if(!this.isEqualTarget(SizeBorder.startPoint.target)) {
-            HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MOVE, type: `${this.target.type}`});
+            Service.HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MOVE, type: `${this.target.type}`});
         }
 
         SizeBorder.startPoint = {};

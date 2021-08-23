@@ -1,8 +1,8 @@
 import Polygon from '../index';
-import TransformManager from '../../../../service/TransformManager';
+import { Service } from '../../../../service';
 import {COMPONENT_TYPE, RATIO} from '../../../../service/constant';
 
-class GPinput extends Polygon{
+class GPinput extends Polygon {
     static type = COMPONENT_TYPE.GPinput;
     type = GPinput.type;
 
@@ -25,4 +25,4 @@ class GPinput extends Polygon{
     }
 }
 
-export default TransformManager.wrapShape(GPinput);
+export default Service.TransformManager.wrapShape(GPinput);

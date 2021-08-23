@@ -1,5 +1,4 @@
-import HistoryManager from '../HistoryManager';
-import ComponentRepository from '../ComponentRepository';
+import { Service } from '../index';
 import {BOARD_ID, KEYEVENT, MENU_BAR} from "../constant";
 
 let instance = null;
@@ -12,15 +11,15 @@ class KeyboardManager {
         return instance;
     }
 
-    eventInit({ board = ComponentRepository.getComponentById(BOARD_ID),
-              pageMenuBar = ComponentRepository.getComponentById(MENU_BAR.PAGE_MENU_BAR_ID),
-              zoomMenuBar = ComponentRepository.getComponentById(MENU_BAR.ZOOM_MENU_BAR_ID) }){
+    eventInit({ board = Service.ComponentRepository.getComponentById(BOARD_ID),
+              pageMenuBar = Service.ComponentRepository.getComponentById(MENU_BAR.PAGE_MENU_BAR_ID),
+              zoomMenuBar = Service.ComponentRepository.getComponentById(MENU_BAR.ZOOM_MENU_BAR_ID) }){
         const moveOffset = 10;
         window.addEventListener('keydown', (e) => {
             if(e.ctrlKey && e.key === 'z'){
-                HistoryManager.undo();
+                Service.HistoryManager.undo();
             }else if(e.ctrlKey && e.key === 'x'){
-                HistoryManager.redo();
+                Service.HistoryManager.redo();
             }else if(e.ctrlKey && e.key === 'n'){
                 pageMenuBar.newBtn.clickHandler();
             }else if(e.ctrlKey && e.key === 's'){

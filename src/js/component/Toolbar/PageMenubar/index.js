@@ -1,8 +1,7 @@
 import CustomElement from '../../CommonElement/CustomElement';
-import CustomButton from '../../CommonElement/CustomButton';
+import { CommonElements } from '../../index';
+import { Service } from '../../../service';
 import {BUTTON, MENU_BAR, MODAL, PHRASES} from '../../../service/constant';
-import ComponentRepository from '../../../service/ComponentRepository';
-import HistoryManager from '../../../service/HistoryManager';
 import './index.css';
 
 export default class PageMenubar extends CustomElement{
@@ -14,9 +13,9 @@ export default class PageMenubar extends CustomElement{
     _loadBtn = null;
 
     constructor({parentId,
-                    confirmModal = ComponentRepository.getComponentById(MODAL.CONFIRM_MODAL_ID),
-                    promptModal = ComponentRepository.getComponentById(MODAL.PROMPT_MODAL_ID),
-                    selectModal = ComponentRepository.getComponentById(MODAL.SELECT_MODAL_ID)}){
+                    confirmModal = Service.ComponentRepository.getComponentById(MODAL.CONFIRM_MODAL_ID),
+                    promptModal = Service.ComponentRepository.getComponentById(MODAL.PROMPT_MODAL_ID),
+                    selectModal = Service.ComponentRepository.getComponentById(MODAL.SELECT_MODAL_ID)}){
         super({
             parentId,
             id: MENU_BAR.PAGE_MENU_BAR_ID,
@@ -28,7 +27,7 @@ export default class PageMenubar extends CustomElement{
         this.selectModal = selectModal;
 
         //새 페이지 버튼
-        this.newBtn = new CustomButton({
+        this.newBtn = new CommonElements.CustomButton({
             parentId: this.id,
             id: BUTTON.PAGE_NEW_BTN_ID,
             content: '📄',
@@ -38,7 +37,7 @@ export default class PageMenubar extends CustomElement{
                     this.confirmModal.title = '📄 새페이지';
                     this.confirmModal.content = PHRASES.INIT;
                     this.confirmModal.confirmHandler = () => {
-                        HistoryManager.clear();
+                        Service.HistoryManager.clear();
                         this.confirmModal.hide();
                     }
                     this.confirmModal.cancelHandler = () => {
@@ -49,7 +48,7 @@ export default class PageMenubar extends CustomElement{
             }});
 
         //저장하기 버튼
-        this.saveBtn = new CustomButton({
+        this.saveBtn = new CommonElements.CustomButton({
             parentId: this.id,
             id: BUTTON.PAGE_SAVE_BTN_ID,
             content: '💾',
@@ -64,12 +63,12 @@ export default class PageMenubar extends CustomElement{
                             this.promptModal.hide();
                             return;
                         }
-                        if(HistoryManager.isStoreName(name)){
+                        if(Service.HistoryManager.isStoreName(name)){
                             this.promptModal.hide();
                             this.confirmModal.title = '💾 덮어쓰기';
                             this.confirmModal.content = PHRASES.ALREADY_NAME;
                             this.confirmModal.confirmHandler = () => {
-                                HistoryManager.storeCurrentPage(name);
+                                Service.HistoryManager.storeCurrentPage(name);
                                 this.confirmModal.hide();
                             }
                             this.confirmModal.cancelHandler = () => {
@@ -78,7 +77,7 @@ export default class PageMenubar extends CustomElement{
                             this.confirmModal.show();
                             return;
                         }
-                        HistoryManager.storeCurrentPage(name);
+                        Service.HistoryManager.storeCurrentPage(name);
                         this.promptModal.hide();
                     }
                     this.promptModal.cancelHandler = () => {
@@ -90,7 +89,7 @@ export default class PageMenubar extends CustomElement{
             }});
 
         //불러오기 버튼
-        this.loadBtn = new CustomButton({
+        this.loadBtn = new CommonElements.CustomButton({
             parentId: this.id,
             id: BUTTON.PAGE_LOAD_BTN_ID,
             content: '🔎',
@@ -101,17 +100,17 @@ export default class PageMenubar extends CustomElement{
                     this.selectModal.confirmBtn.elem.innerText = '복구';
                     this.selectModal.select.options = {
                         [PHRASES.NAME_SELECT]: '',
-                        ...HistoryManager.getStoreNames()
+                        ...Service.HistoryManager.getStoreNames()
                     };
                     this.selectModal.confirmHandler = () => {
                         const name = this.selectModal.select.elem.value;
-                        if(name) HistoryManager.restorePage(name);
+                        if(name) Service.HistoryManager.restorePage(name);
 
                         this.selectModal.hide();
                     }
                     this.selectModal.deleteHandler = () => {
                         const name = this.selectModal.select.elem.value;
-                        if(name) HistoryManager.deletePage(name);
+                        if(name) Service.HistoryManager.deletePage(name);
                         this.selectModal.hide();
                     }
                     this.selectModal.cancelHandler = () => {

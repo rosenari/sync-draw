@@ -1,8 +1,6 @@
 import CustomElement from '../CustomElement';
-import CustomButton from '../CustomButton';
-import CustomInput from '../CustomInput';
+import { CommonElements } from '../../index';
 import './index.css';
-import CustomSelect from '../CustomSelect';
 
 export default class CustomModal extends CustomElement{
     _type = null;
@@ -25,13 +23,13 @@ export default class CustomModal extends CustomElement{
         });
 
         this.type = type;
-        this.modal = new CustomElement({
+        this.modal = new CommonElements.CustomElement({
             parentId:this.id,
             id:`${this.id}-modal`,
             tagName:'div',
             classList:['modal']
         });
-        this.header = new CustomElement({
+        this.header = new CommonElements.CustomElement({
             parentId: this.modal.id,
             id: `${this.id}-title`,
             tagName: 'div',
@@ -41,28 +39,28 @@ export default class CustomModal extends CustomElement{
 
         this.createBody(content);
 
-        this.btnBody = new CustomElement({
+        this.btnBody = new CommonElements.CustomElement({
             parentId:this.modal.id,
             id:`${this.id}-modal-btn-body`,
             tagName:'div',
             classList:['modal-btn-body']
         });
 
-        this.confirmBtn = new CustomButton({
+        this.confirmBtn = new CommonElements.CustomButton({
             parentId: this.btnBody.id,
             id: `${this.id}-confirm-btn`,
             classList: ['modal-btn', 'modal-confirm-btn'],
             content: '확인'
         });
 
-        if(this.type === 'select') this.deleteBtn = new CustomButton({
+        if(this.type === 'select') this.deleteBtn = new CommonElements.CustomButton({
             parentId: this.btnBody.id,
             id: `${this.id}-delete-btn`,
             classList: ['modal-btn', 'modal-delete-btn'],
             content: '삭제'
         });
 
-        this.cancelBtn = new CustomButton({
+        this.cancelBtn = new CommonElements.CustomButton({
             parentId: this.btnBody.id,
             id: `${this.id}-cancel-btn`,
             classList: ['modal-btn', 'modal-cancel-btn'],
@@ -171,7 +169,7 @@ export default class CustomModal extends CustomElement{
     }
 
     createBody(content) {
-        this.body = new CustomElement({
+        this.body = new CommonElements.CustomElement({
             parentId: this.modal.id,
             id: `${this.id}-body`,
             tagName: 'div',
@@ -179,14 +177,14 @@ export default class CustomModal extends CustomElement{
         });
 
         if(this.type === 'prompt'){
-            this.input = new CustomInput({
+            this.input = new CommonElements.CustomInput({
                 parentId: this.body.id,
                 id: `${this.id}-input`,
                 classList: ['modal-input']
             });
             this.input.elem.placeholder = content;
         } else if(this.type === 'select'){
-            this.select = new CustomSelect({
+            this.select = new CommonElements.CustomSelect({
                 parentId: this.body.id,
                 id: `${this.id}-select`,
                 classList: ['modal-input'],

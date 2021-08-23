@@ -1,12 +1,8 @@
-import GraphicElement from '../../CommonElement/GraphicElement';
-import ComponentRepository from '../../../service/ComponentRepository';
-import HistoryManager from '../../../service/HistoryManager';
-import { tinyGUID } from '../../../service/util';
-import EventController from '../../../service/EventController';
-import TransformManager from '../../../service/TransformManager';
-import {BEHAVIOR, BOARD_ID, COLOR, GROUP} from '../../../service/constant';
 import SizeBorder from '../SizeBorder';
-import { Components } from '../../../component';
+import { CommonElements, Shapes } from '../../index';
+import { Service } from '../../../service';
+import { BEHAVIOR, BOARD_ID, COLOR, GROUP } from '../../../service/constant';
+import { tinyGUID } from '../../../service/util';
 import './index.css';
 
 export default class LineBorder extends SizeBorder {
@@ -30,15 +26,15 @@ export default class LineBorder extends SizeBorder {
     createEdge(){
         const points = this.target.points;
         for(const i in points){
-            const point = new GraphicElement({
+            const point = new CommonElements.GraphicElement({
                 parentId: GROUP.TEMP_GROUP_ID,
                 id: tinyGUID(),
                 tagName: 'circle',
                 handlers: {
                     mouseDownHandler: (e) => {
                         e.stopPropagation();
-                        LineBorder.startPoint.x = TransformManager.changeDocXToSvgX(+e.target.getAttribute('cx'));
-                        LineBorder.startPoint.y = TransformManager.changeDocYToSvgY(+e.target.getAttribute('cy'));
+                        LineBorder.startPoint.x = Service.TransformManager.changeDocXToSvgX(+e.target.getAttribute('cx'));
+                        LineBorder.startPoint.y = Service.TransformManager.changeDocYToSvgY(+e.target.getAttribute('cy'));
                         LineBorder.startPoint.collisionInfo = [];
                         LineBorder.startPoint.target = {
                             points: [...this.target.points].map(point => {
@@ -50,9 +46,9 @@ export default class LineBorder extends SizeBorder {
                         }
                         this.startPointInit();
 
-                        EventController.mouseMoveHandler = (e) => {
-                            const dx = TransformManager.changeDocXToSvgX(e.pageX) - LineBorder.startPoint.x;
-                            const dy = TransformManager.changeDocYToSvgY(e.pageY) - LineBorder.startPoint.y;
+                        Service.EventController.mouseMoveHandler = (e) => {
+                            const dx = Service.TransformManager.changeDocXToSvgX(e.pageX) - LineBorder.startPoint.x;
+                            const dy = Service.TransformManager.changeDocYToSvgY(e.pageY) - LineBorder.startPoint.y;
                             const x = LineBorder.startPoint.x + dx;
                             const y = LineBorder.startPoint.y + dy;
                             const index = LineBorder.startPoint.target.index;
@@ -63,25 +59,25 @@ export default class LineBorder extends SizeBorder {
                             this.render();
                         }
 
-                        EventController.mouseUpHandler = () => {
+                        Service.EventController.mouseUpHandler = () => {
                             this.adjustCollisionInfo();
                             this.renderTarget();
                             if(!this.isEqualTarget(LineBorder.startPoint.points)){
-                                HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
+                                Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.MODIFY, type:`${this.target.type}` });
                             }
                             this.refocusThisBorder();
                             LineBorder.startPoint = {};
-                            EventController.mouseMoveHandler = null;
-                            EventController.mouseOverHandler = null;
-                            EventController.mouseUpHandler = null;
+                            Service.EventController.mouseMoveHandler = null;
+                            Service.EventController.mouseOverHandler = null;
+                            Service.EventController.mouseUpHandler = null;
                         }
                     }
                 }
             });
 
             point.elem.setAttribute('r','5');
-            point.elem.setAttribute('cx', TransformManager.changeSvgXToDocX(points[+i].x));
-            point.elem.setAttribute('cy', TransformManager.changeSvgYToDocY(points[+i].y));
+            point.elem.setAttribute('cx', Service.TransformManager.changeSvgXToDocX(points[+i].x));
+            point.elem.setAttribute('cy', Service.TransformManager.changeSvgYToDocY(points[+i].y));
             point.elem.setAttribute('fill',COLOR.ORANGE);
             point.elem.setAttribute('cursor','grab');
             point.elem.setAttribute('data-index',this.points.length);
@@ -91,38 +87,38 @@ export default class LineBorder extends SizeBorder {
     }
 
     renderEdge({ x, y, index}) {
-        this.points[index].setAttribute('cx', TransformManager.changeSvgXToDocX(x));
-        this.points[index].setAttribute('cy', TransformManager.changeSvgYToDocY(y));
+        this.points[index].setAttribute('cx', Service.TransformManager.changeSvgXToDocX(x));
+        this.points[index].setAttribute('cy', Service.TransformManager.changeSvgYToDocY(y));
     }
 
     mouseDownHandler(e) {
         e.stopPropagation();
-        LineBorder.startPoint.x = TransformManager.changeDocXToSvgX(e.pageX);
-        LineBorder.startPoint.y = TransformManager.changeDocYToSvgY(e.pageY);
+        LineBorder.startPoint.x = Service.TransformManager.changeDocXToSvgX(e.pageX);
+        LineBorder.startPoint.y = Service.TransformManager.changeDocYToSvgY(e.pageY);
         this.startPointInit();
 
-        EventController.mouseMoveHandler = (e) => {
+        Service.EventController.mouseMoveHandler = (e) => {
             e.stopPropagation();
-            const dx = TransformManager.changeDocXToSvgX(e.pageX) - LineBorder.startPoint.x;
-            const dy = TransformManager.changeDocYToSvgY(e.pageY) - LineBorder.startPoint.y;
+            const dx = Service.TransformManager.changeDocXToSvgX(e.pageX) - LineBorder.startPoint.x;
+            const dy = Service.TransformManager.changeDocYToSvgY(e.pageY) - LineBorder.startPoint.y;
 
             this.moveHandler({ dx, dy });
         }
 
-        EventController.mouseUpHandler = (e) => {
+        Service.EventController.mouseUpHandler = (e) => {
             e.stopPropagation();
             this.moveCompleteHandler();
             this.refocusThisBorder();
-            EventController.mouseMoveHandler = null;
-            EventController.mouseUpHandler = null;
+            Service.EventController.mouseMoveHandler = null;
+            Service.EventController.mouseUpHandler = null;
         }
     }
 
     renderTarget(){
         this.target.points = [...this.points].map(point => {
             return {
-                x: TransformManager.changeDocXToSvgX(point.getAttribute('cx')),
-                y: TransformManager.changeDocYToSvgY(point.getAttribute('cy'))
+                x: Service.TransformManager.changeDocXToSvgX(point.getAttribute('cx')),
+                y: Service.TransformManager.changeDocYToSvgY(point.getAttribute('cy'))
             }
         });
     }
@@ -132,10 +128,10 @@ export default class LineBorder extends SizeBorder {
         if(!this.target.arrow) return;
 
         LineBorder.startPoint.collisionInfo = [];
-        for(const key in ComponentRepository) {
-            const shape = ComponentRepository.getComponentById(key);
-            if (!(shape instanceof Components.Shape)) continue;
-            if (shape instanceof Components.Line) continue;
+        for(const key in Service.ComponentRepository) {
+            const shape = Service.ComponentRepository.getComponentById(key);
+            if (!(shape instanceof Shapes.Shape)) continue;
+            if (shape instanceof Shapes.Line) continue;
 
             const padding = 30;
             const startX = shape.x;
@@ -178,7 +174,7 @@ export default class LineBorder extends SizeBorder {
         const pointBoffsetY = pointB.y + dy;
 
         LineBorder.startPoint.collisionInfo = [];
-        for(const key in ComponentRepository) {
+        for(const key in Service.ComponentRepository) {
             const shape = this.getShape(key);
             if(!shape) continue;
 
@@ -226,9 +222,9 @@ export default class LineBorder extends SizeBorder {
     }
 
     getShape(id){
-        const shape = ComponentRepository.getComponentById(id);
-        if (!(shape instanceof Components.Shape)) return null;
-        if (shape instanceof Components.Line) return null;
+        const shape = Service.ComponentRepository.getComponentById(id);
+        if (!(shape instanceof Shapes.Shape)) return null;
+        if (shape instanceof Shapes.Line) return null;
         return shape;
     }
 
@@ -267,25 +263,25 @@ export default class LineBorder extends SizeBorder {
     isEqualTarget(points) {
         const target = [...this.points].map(point => {
             return {
-                x: TransformManager.changeDocXToSvgX(point.getAttribute('cx')),
-                y: TransformManager.changeDocYToSvgY(point.getAttribute('cy')),
+                x: Service.TransformManager.changeDocXToSvgX(point.getAttribute('cx')),
+                y: Service.TransformManager.changeDocYToSvgY(point.getAttribute('cy')),
                 index: point.dataset.index
             }
         });
         return JSON.stringify(target) === JSON.stringify(points);
     }
 
-    deleteHandler() {
-        ComponentRepository.removeComponentById(this.target.id);
-        HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.DELETE, type: this.target.type });
-        ComponentRepository.getComponentById(BOARD_ID).destroyBorder();
+    deleteHandler(board = Service.ComponentRepository.getComponentById(BOARD_ID)) {
+        Service.ComponentRepository.removeComponentById(this.target.id);
+        Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.DELETE, type: this.target.type });
+        board.destroyBorder();
     }
 
     startPointInit(){
         LineBorder.startPoint.points = [...this.points].map(point => {
             return {
-                x: TransformManager.changeDocXToSvgX(point.getAttribute('cx')),
-                y: TransformManager.changeDocYToSvgY(point.getAttribute('cy')),
+                x: Service.TransformManager.changeDocXToSvgX(point.getAttribute('cx')),
+                y: Service.TransformManager.changeDocYToSvgY(point.getAttribute('cy')),
                 index: point.dataset.index
             }
         });
@@ -306,7 +302,7 @@ export default class LineBorder extends SizeBorder {
         this.adjustCollisionInfo();
         this.renderTarget();
         if(!this.isEqualTarget(LineBorder.startPoint.points)) {
-            HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MOVE, type: `${this.target.type}`});
+            Service.HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MOVE, type: `${this.target.type}`});
         }
         LineBorder.startPoint = {};
     }

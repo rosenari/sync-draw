@@ -1,4 +1,4 @@
-import ComponentRepository from '../ComponentRepository';
+import { Service } from '../index';
 import { GROUP } from '../constant';
 
 let Instance = null;
@@ -16,7 +16,7 @@ class TransformManager {
         return Instance;
     }
 
-    adjustTransformToShapeGroup(shapeGroup = ComponentRepository.getComponentById(GROUP.SHAPE_GROUP_ID)) {
+    adjustTransformToShapeGroup(shapeGroup = Service.ComponentRepository.getComponentById(GROUP.SHAPE_GROUP_ID)) {
         shapeGroup.elem.setAttribute('transform',`translate(${this.translateX},${this.translateY}) scale(${this.scale})`);
     }
 

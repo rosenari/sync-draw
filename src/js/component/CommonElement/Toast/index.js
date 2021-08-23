@@ -1,5 +1,5 @@
 import CustomElement from '../CustomElement';
-import CustomButton from '../CustomButton';
+import { CommonElements } from '../../index';
 import './index.css';
 
 export default class Toast extends CustomElement{
@@ -15,7 +15,7 @@ export default class Toast extends CustomElement{
             classList:['toast']
         });
 
-        this.body = new CustomElement({
+        this.body = new CommonElements.CustomElement({
             parentId: this.id,
             id: `${this.id}-body`,
             tagName: 'div',
@@ -24,7 +24,7 @@ export default class Toast extends CustomElement{
 
         this.body.elem.innerText = content;
 
-        this.cancelBtn = new CustomButton({
+        this.cancelBtn = new CommonElements.CustomButton({
             parentId: this.id,
             id: `${this.id}-cancel-btn`,
             classList: ['toast-btn', 'toast-cancel-btn'],

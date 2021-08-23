@@ -1,8 +1,8 @@
 import Path from '../index';
-import TransformManager from '../../../../service/TransformManager';
+import { Service } from '../../../../service';
 import {COMPONENT_TYPE, RATIO} from '../../../../service/constant';
 
-class GDisk extends Path{
+class GDisk extends Path {
     static type = COMPONENT_TYPE.GDisk;
     type = GDisk.type;
 
@@ -29,4 +29,4 @@ class GDisk extends Path{
     }
 }
 
-export default TransformManager.wrapShape(GDisk);
+export default Service.TransformManager.wrapShape(GDisk);

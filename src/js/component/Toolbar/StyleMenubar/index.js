@@ -1,13 +1,12 @@
 import CustomElement from '../../CommonElement/CustomElement';
-import CustomSelect from '../../CommonElement/CustomSelect';
-import CustomInput from '../../CommonElement/CustomInput';
+import { CommonElements } from '../../index';
+import { Service } from '../../../service';
 import {
     BOARD_ID,
     FONT, MENU_BAR, STYLE_ELEM
 } from '../../../service/constant';
-import ComponentRepository from '../../../service/ComponentRepository';
+import { debounce } from '../../../service/util';
 import './index.css';
-import {debounce} from '../../../service/util';
 
 export default class StyleMenubar extends CustomElement{
     board = null;
@@ -20,7 +19,7 @@ export default class StyleMenubar extends CustomElement{
     _strokeText = null;
     _strokeInput = null;
 
-    constructor({parentId, board = ComponentRepository.getComponentById(BOARD_ID)}) {
+    constructor({parentId, board = Service.ComponentRepository.getComponentById(BOARD_ID)}) {
         super({
             parentId,
             id: MENU_BAR.STYLE_MENU_BAR_ID,
@@ -29,7 +28,7 @@ export default class StyleMenubar extends CustomElement{
         });
         this.board = board;
 
-        this.fontSizeText = new CustomElement({
+        this.fontSizeText = new CommonElements.CustomElement({
             parentId: this.id,
             id: STYLE_ELEM.FONT_SIZE_TEXT_ID,
             tagName: 'div',
@@ -37,7 +36,7 @@ export default class StyleMenubar extends CustomElement{
             classList:['style-text']
         });
 
-        this.fontSizeSelect = new CustomSelect({
+        this.fontSizeSelect = new CommonElements.CustomSelect({
             parentId: this.id,
             id: STYLE_ELEM.FONT_SIZE_SELECT_ID,
             classList:['style-select'],
@@ -56,7 +55,7 @@ export default class StyleMenubar extends CustomElement{
             }
         });
 
-        this.fontColorText = new CustomElement({
+        this.fontColorText = new CommonElements.CustomElement({
             parentId: this.id,
             id: STYLE_ELEM.FONT_COLOR_TEXT_ID,
             tagName: 'div',
@@ -64,7 +63,7 @@ export default class StyleMenubar extends CustomElement{
             classList:['style-text','style-font-color-text']
         });
 
-        this.fontColorInput = new CustomInput({
+        this.fontColorInput = new CommonElements.CustomInput({
             parentId: this.id,
             id: STYLE_ELEM.FONT_COLOR_TEXT_INPUT,
             type: 'color',
@@ -76,7 +75,7 @@ export default class StyleMenubar extends CustomElement{
             }
         });
 
-        this.fillText = new CustomElement({
+        this.fillText = new CommonElements.CustomElement({
             parentId: this.id,
             id: STYLE_ELEM.FILL_TEXT_ID,
             tagName: 'div',
@@ -84,7 +83,7 @@ export default class StyleMenubar extends CustomElement{
             classList:['style-text']
         });
 
-        this.fillInput = new CustomInput({
+        this.fillInput = new CommonElements.CustomInput({
             parentId: this.id,
             id: STYLE_ELEM.FILL_INPUT_ID,
             type: 'color',
@@ -96,7 +95,7 @@ export default class StyleMenubar extends CustomElement{
             }
         });
 
-        this.strokeText = new CustomElement({
+        this.strokeText = new CommonElements.CustomElement({
             parentId: this.id,
             id: STYLE_ELEM.STROKE_TEXT_ID,
             tagName: 'div',
@@ -104,7 +103,7 @@ export default class StyleMenubar extends CustomElement{
             classList:['style-text']
         });
 
-        this.strokeInput = new CustomInput({
+        this.strokeInput = new CommonElements.CustomInput({
             parentId: this.id,
             id: STYLE_ELEM.STROKE_INPUT_ID,
             type: 'color',

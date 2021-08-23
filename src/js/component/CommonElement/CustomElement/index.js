@@ -1,4 +1,4 @@
-import ComponentRepository from '../../../service/ComponentRepository';
+import { Service } from '../../../service';
 import { classFor } from '../../../service/util';
 
 export default class CustomElement {
@@ -24,7 +24,7 @@ export default class CustomElement {
             this.elem.setAttribute('class', classFor(classList));
         }
 
-        const parent = ComponentRepository.getComponentById(this.parentId);
+        const parent = Service.ComponentRepository.getComponentById(this.parentId);
         parent.elem.appendChild(this.elem);
 
         for(const name in handlers){
@@ -32,7 +32,7 @@ export default class CustomElement {
         }
 
         this.elem.setAttribute('id', this.id);
-        ComponentRepository.setComponentById(this.id, this);
+        Service.ComponentRepository.setComponentById(this.id, this);
     }
 
     get id(){

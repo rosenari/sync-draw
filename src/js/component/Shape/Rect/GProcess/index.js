@@ -1,5 +1,5 @@
 import Rect from '../index';
-import TransformManager from '../../../../service/TransformManager';
+import { Service } from '../../../../service';
 import {COMPONENT_TYPE} from '../../../../service/constant';
 
 class GProcess extends Rect {
@@ -13,4 +13,4 @@ class GProcess extends Rect {
     }
 }
 
-export default TransformManager.wrapShape(GProcess);
+export default Service.TransformManager.wrapShape(GProcess);

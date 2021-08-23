@@ -1,5 +1,5 @@
 import Line from '../index';
-import {COMPONENT_TYPE} from '../../../../service/constant';
+import { COMPONENT_TYPE } from '../../../../service/constant';
 
 class GPolyline extends Line{
     static type = COMPONENT_TYPE.GPolyline;

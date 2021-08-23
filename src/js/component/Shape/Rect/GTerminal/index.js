@@ -1,5 +1,5 @@
 import Rect from '../index';
-import TransformManager from '../../../../service/TransformManager';
+import { Service } from '../../../../service';
 import {COMPONENT_TYPE, RATIO} from '../../../../service/constant';
 
 class GTerminal extends Rect{
@@ -22,4 +22,4 @@ class GTerminal extends Rect{
     }
 }
 
-export default TransformManager.wrapShape(GTerminal);
+export default Service.TransformManager.wrapShape(GTerminal);

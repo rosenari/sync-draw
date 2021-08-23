@@ -1,6 +1,6 @@
 import GraphicElement from '../CommonElement/GraphicElement';
+import { Service } from '../../service';
 import {BOARD_ID, BORDER, COLOR} from '../../service/constant';
-import ComponentRepository from '../../service/ComponentRepository';
 import {setDisablePointerEvent} from '../../service/util';
 
 export default class Border extends GraphicElement{
@@ -11,7 +11,7 @@ export default class Border extends GraphicElement{
     _width = 0;
     _height = 0;
 
-    constructor({ parentId, id, shape = null, board = ComponentRepository.getComponentById(BOARD_ID) }) {
+    constructor({ parentId, id, shape = null, board = Service.ComponentRepository.getComponentById(BOARD_ID) }) {
         super({
             parentId,
             id,

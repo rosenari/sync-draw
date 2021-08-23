@@ -1,6 +1,6 @@
 import CustomElement from '../../CommonElement/CustomElement';
-import CustomButton from '../../CommonElement/CustomButton';
-import HistoryManager from '../../../service/HistoryManager';
+import { CommonElements } from '../../index';
+import { Service } from '../../../service';
 import { MENU_BAR, BUTTON } from '../../../service/constant';
 import './index.css';
 
@@ -16,26 +16,26 @@ export default class HistoryMenubar extends CustomElement{
             classList:['history-menu-bar']
         });
 
-        this.undoBtn = new CustomButton({
+        this.undoBtn = new CommonElements.CustomButton({
             parentId: this.id,
             id: BUTTON.HISTORY_UNDO_BTN_ID,
             content: '⟲️',
             classList:['history-btn'],
             handlers:{
                 clickHandler: function(e){
-                    HistoryManager.undo();
+                    Service.HistoryManager.undo();
                 }
             }
         });
 
-        this.redoBtn = new CustomButton({
+        this.redoBtn = new CommonElements.CustomButton({
             parentId: this.id,
             id: BUTTON.HISTORY_REDO_BTN_ID,
             content: '⟳️️',
             classList:['history-btn'],
             handlers:{
                 clickHandler: function(e){
-                    HistoryManager.redo();
+                    Service.HistoryManager.redo();
                 }
             }
         });

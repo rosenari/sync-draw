@@ -1,5 +1,4 @@
-import ComponentRepository from '../ComponentRepository';
-import KeyboardManager from '../KeyboardManager';
+import { Service } from '../index';
 
 export default class EventController {
     _rootElem = null;
@@ -16,7 +15,7 @@ export default class EventController {
         this.rootElem.addEventListener('keyup',this.keyUpHandler);
         this.rootElem.addEventListener('input',this.inputHandler);
 
-        setTimeout(() => KeyboardManager.eventInit({}));
+        setTimeout(() => Service.KeyboardManager.eventInit({}));
     }
 
     get rootElem() {
@@ -28,17 +27,17 @@ export default class EventController {
     }
 
     clickHandler(e) {
-        const target = ComponentRepository.getComponentById(e.target.id);
+        const target = Service.ComponentRepository.getComponentById(e.target.id);
         target?.clickHandler?.(e);
     }
 
     changeHandler(e) {
-        const target = ComponentRepository.getComponentById(e.target.id);
+        const target = Service.ComponentRepository.getComponentById(e.target.id);
         target?.changeHandler?.(e);
     }
 
     dbClickHandler(e) {
-        const target = ComponentRepository.getComponentById(e.target.id);
+        const target = Service.ComponentRepository.getComponentById(e.target.id);
         target?.dbClickHandler?.(e);
         EventController.dbClickHandler?.(e);
     }
@@ -46,12 +45,12 @@ export default class EventController {
     static dbClickHandler = null;
 
     mouseDownHandler(e) {
-        const target = ComponentRepository.getComponentById(e.target.id);
+        const target = Service.ComponentRepository.getComponentById(e.target.id);
         target?.mouseDownHandler?.(e);
     }
 
     mouseMoveHandler(e) {
-        const target = ComponentRepository.getComponentById(e.target.id);
+        const target = Service.ComponentRepository.getComponentById(e.target.id);
         target?.mouseMoveHandler?.(e);
         EventController.mouseMoveHandler?.(e);
     }
@@ -59,7 +58,7 @@ export default class EventController {
     static mouseMoveHandler = null;
 
     mouseUpHandler(e) {
-        const target = ComponentRepository.getComponentById(e.target.id);
+        const target = Service.ComponentRepository.getComponentById(e.target.id);
         target?.mouseUpHandler?.(e);
         EventController.mouseUpHandler?.(e);
     }
@@ -67,17 +66,17 @@ export default class EventController {
     static mouseUpHandler = null;
 
     blurHandler(e) {
-        const target = ComponentRepository.getComponentById(e.target.id);
+        const target = Service.ComponentRepository.getComponentById(e.target.id);
         target?.blurHandler?.(e);
     }
 
     keyUpHandler(e) {
-        const target = ComponentRepository.getComponentById(e.target.id);
+        const target = Service.ComponentRepository.getComponentById(e.target.id);
         target?.keyUpHandler?.(e);
     }
 
     inputHandler(e) {
-        const target = ComponentRepository.getComponentById(e.target.id);
+        const target = Service.ComponentRepository.getComponentById(e.target.id);
         target.inputHandler?.(e);
     }
 }

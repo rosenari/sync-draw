@@ -1,6 +1,6 @@
 import Polygon from '../index';
-import TransformManager from '../../../../service/TransformManager';
-import {COMPONENT_TYPE, RATIO} from '../../../../service/constant';
+import { Service } from '../../../../service';
+import { COMPONENT_TYPE, RATIO } from '../../../../service/constant';
 
 class GReady extends Polygon {
     static type = COMPONENT_TYPE.GReady;
@@ -30,4 +30,4 @@ class GReady extends Polygon {
     }
 }
 
-export default TransformManager.wrapShape(GReady);
+export default Service.TransformManager.wrapShape(GReady);

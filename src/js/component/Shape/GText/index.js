@@ -1,10 +1,8 @@
-import GraphicElement from '../GraphicElement';
-import CustomElement from '../CustomElement';
-import {getOverflowHeight, isOverflowHeight, rgbToHex} from '../../../service/util';
-import ComponentRepository from '../../../service/ComponentRepository';
-import TransformManager from '../../../service/TransformManager';
+import CustomElement from '../../CommonElement/CustomElement';
+import GraphicElement from '../../CommonElement/GraphicElement';
+import { Service } from '../../../service';
 import {BOARD_ID, COLOR, MENU_BAR, FONT, COMPONENT_TYPE, BEHAVIOR} from '../../../service/constant';
-import HistoryManager from '../../../service/HistoryManager';
+import {getOverflowHeight, isOverflowHeight, rgbToHex} from '../../../service/util';
 
 class GText extends GraphicElement {
     static type = COMPONENT_TYPE.GText;
@@ -14,8 +12,8 @@ class GText extends GraphicElement {
     _textBox = null;
 
     constructor({ parentId, id, x, y, width, height, classList, handlers,
-                board = ComponentRepository.getComponentById(BOARD_ID),
-                styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}) {
+                board = Service.ComponentRepository.getComponentById(BOARD_ID),
+                styleMenubar = Service.ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}) {
         super({ parentId, id, tagName: 'g', classList, handlers });
         this.type = GText.type;
         this.board = board;
@@ -43,7 +41,7 @@ class GText extends GraphicElement {
                     this.clickHandler(e);
                 },
                 blurHandler: (e) => {
-                    HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MODIFY, type: `${this.type}`});
+                    Service.HistoryManager.updateHistoryToLatest({behavior: BEHAVIOR.MODIFY, type: `${this.type}`});
                     this.textBox.elem.setAttribute('contenteditable','false');
                 },
                 keyUpHandler: (e) => {
@@ -169,4 +167,4 @@ class GText extends GraphicElement {
     }
 }
 
-export default TransformManager.wrapShape(GText);
+export default Service.TransformManager.wrapShape(GText);

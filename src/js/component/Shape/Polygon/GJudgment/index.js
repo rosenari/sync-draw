@@ -1,5 +1,5 @@
 import Polygon from '../index';
-import TransformManager from '../../../../service/TransformManager';
+import { Service } from '../../../../service';
 import {COMPONENT_TYPE, RATIO} from '../../../../service/constant';
 
 class GJudgment extends Polygon{
@@ -25,4 +25,4 @@ class GJudgment extends Polygon{
     }
 }
 
-export default TransformManager.wrapShape(GJudgment);
+export default Service.TransformManager.wrapShape(GJudgment);

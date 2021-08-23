@@ -1,8 +1,6 @@
-import ComponentRepository from '../../service/ComponentRepository';
-import {tinyGUID, setDisablePointerEvent} from '../../service/util';
-import EventController from '../../service/EventController';
-import HistoryManager from '../../service/HistoryManager';
-import { Components } from '../index';
+import GraphicElement from '../CommonElement/GraphicElement';
+import { Service } from '../../service';
+import { Shapes, Borders } from '../index';
 import {
     BOARD_ID,
     BORDER,
@@ -11,12 +9,10 @@ import {
     PLACE_HOLDER_ID,
     GROUP, BEHAVIOR
 } from '../../service/constant';
-import SizeBorder from '../Border/SizeBorder';
-import GroupBorder from '../Border/GroupBorder';
-import LineBorder from '../Border/LineBorder';
+import { tinyGUID, setDisablePointerEvent } from '../../service/util';
 import './index.css';
 
-export default class Board extends Components.GraphicElement {
+export default class Board extends GraphicElement {
     static startPoint = {};
     _shapeGroup = null;
     _tempGroup = null;
@@ -38,7 +34,7 @@ export default class Board extends Components.GraphicElement {
         ];
 
         const registerGroup = (group) => {
-            this[`${group.propsName}`] = new Components.Group({
+            this[`${group.propsName}`] = new Shapes.Group({
                parentId: this.id,
                id: group.id
             });
@@ -76,25 +72,25 @@ export default class Board extends Components.GraphicElement {
         this._border = value;
     }
 
-    _mouseDownHandler(e, itemMenubar = ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID)) {
+    _mouseDownHandler(e, itemMenubar = Service.ComponentRepository.getComponentById(MENU_BAR.ITEM_MENU_BAR_ID)) {
         setDisablePointerEvent(true);
         Board.startPoint.x = e.pageX;
         Board.startPoint.y = e.pageY;
         let selected = null;
         if(itemMenubar.selectMenu) {
-            selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
+            selected = Service.ComponentRepository.getComponentById(itemMenubar.selectMenu);
             selected.relatedMouseDownHandler(e);
         }
 
         //line생성이 종료된 경우 mouseBtn메뉴가 선택되기 떄문에 selected를 갱신할 필요가 있음.
-        selected = ComponentRepository.getComponentById(itemMenubar.selectMenu);
+        selected = Service.ComponentRepository.getComponentById(itemMenubar.selectMenu);
 
-        EventController.mouseMoveHandler = (e) => {
+        Service.EventController.mouseMoveHandler = (e) => {
             this.renderBorder(e);
             selected.relatedMouseMoveHandler?.(e);
         }
 
-        EventController.mouseUpHandler = (e) => {
+        Service.EventController.mouseUpHandler = (e) => {
             selected.relatedMouseUpHandler?.(e);
         }
     }
@@ -112,22 +108,22 @@ export default class Board extends Components.GraphicElement {
     }
 
     createSizeBorder(target){
-        this.border = new SizeBorder({
+        this.border = new Borders.SizeBorder({
             parentId: GROUP.TEMP_GROUP_ID,
             target
         });
     }
 
     createLineBorder(target){
-        this.border = new LineBorder({
+        this.border = new Borders.LineBorder({
             parentId: GROUP.TEMP_GROUP_ID,
             target
         });
     }
 
     createGroupBorder({ x, y, width, height, shapes,
-                          styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}){
-        this.border = new GroupBorder({
+                          styleMenubar = Service.ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)}){
+        this.border = new Borders.GroupBorder({
             parentId: this.tempGroup.id,
             id: BORDER.GROUP_BORDER_ID,
             x, y, width, height, shapes
@@ -137,7 +133,7 @@ export default class Board extends Components.GraphicElement {
     }
 
     createShapePlaceHolder(type) {
-        if(!type || type === Components.GText) return null;
+        if(!type || type === Shapes.GText) return null;
 
         const placeholder =  new type({
             parentId: this.shapeGroup.id,
@@ -172,7 +168,7 @@ export default class Board extends Components.GraphicElement {
             height: this.border.height
         });
 
-        HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.CREATE, type:`${shape.type}` });
+        Service.HistoryManager.updateHistoryToLatest({ behavior: BEHAVIOR.CREATE, type:`${shape.type}` });
 
         return shape;
     }
@@ -212,12 +208,12 @@ export default class Board extends Components.GraphicElement {
         this.border.height = Math.abs(height);
     }
 
-    destroyBorder(e, styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)) {
+    destroyBorder(e, styleMenubar = Service.ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)) {
         const placeholder = this.shapeGroup.elem.querySelector(`#${PLACE_HOLDER_ID}`);
         if(placeholder){
-            ComponentRepository.removeComponentById(placeholder.id);
+            Service.ComponentRepository.removeComponentById(placeholder.id);
         }
-        this.tempGroup.elem.childNodes.forEach(childNode => ComponentRepository.removeComponentById(childNode.id));
+        this.tempGroup.elem.childNodes.forEach(childNode => Service.ComponentRepository.removeComponentById(childNode.id));
         this.tempGroup.elem.innerHTML = '';
 
         this.border = null;
@@ -226,7 +222,7 @@ export default class Board extends Components.GraphicElement {
 
     destroySpecificBorder(borderIds){
         borderIds.forEach((borderId) => {
-            ComponentRepository.removeComponentById(borderId);
+            Service.ComponentRepository.removeComponentById(borderId);
         });
     }
 

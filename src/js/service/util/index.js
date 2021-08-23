@@ -1,6 +1,6 @@
-import ComponentRepository from '../ComponentRepository';
+import { Shapes } from '../../component';
+import { Service } from '../index';
 import {MENU_BAR, RANDOM_MAX} from '../constant';
-import { Components } from '../../component';
 
 export function add(x, y){
     return x + y;
@@ -56,7 +56,7 @@ export function IterableWeakMap(){
 
     this.keys = function(){
         for(const key of sets.keys()){
-            if(!ComponentRepository.getComponentById(key.id)) sets.delete(key);
+            if(!Service.ComponentRepository.getComponentById(key.id)) sets.delete(key);
         }
 
         return sets.keys();
@@ -68,7 +68,7 @@ export function IterableWeakMap(){
     }
 
     this.get = function(key){
-        if(!ComponentRepository.getComponentById(key.id)){
+        if(!Service.ComponentRepository.getComponentById(key.id)){
             sets.delete(key);
             return null;
         }
@@ -94,7 +94,7 @@ export function rgbToHex(rgb){
 
 export function deserialize(json){
     const obj = JSON.parse(json);
-    const classType = changeTypeStringToClass(obj.type);
+    const classType = changeTypeStringToShapeClass(obj.type);
     const shape = new classType({
         id: obj.id,
         parentId: obj.parentId,
@@ -109,15 +109,15 @@ export function deserialize(json){
     return shape;
 }
 
-function changeTypeStringToClass(type){
-    return Components[type];
+function changeTypeStringToShapeClass(type){
+    return Shapes[type];
 }
 
 export function setDisablePointerEvent(disable) {
     const menuBar = [ MENU_BAR.PAGE_MENU_BAR_ID,
         MENU_BAR.ITEM_MENU_BAR_ID,
         MENU_BAR.STYLE_MENU_BAR_ID,
-        MENU_BAR.HISTORY_MENU_BAR_ID].map(id => ComponentRepository.getComponentById(id));
+        MENU_BAR.HISTORY_MENU_BAR_ID].map(id => Service.ComponentRepository.getComponentById(id));
 
     if(disable){
         menuBar.forEach(menu => menu.elem.classList.add('disable-pointer-event'));

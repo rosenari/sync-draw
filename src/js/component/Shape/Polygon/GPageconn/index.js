@@ -1,5 +1,5 @@
 import Polygon from '../index';
-import TransformManager from '../../../../service/TransformManager';
+import { Service } from '../../../../service';
 import {COMPONENT_TYPE, RATIO} from '../../../../service/constant';
 
 class GPageconn extends Polygon{
@@ -28,4 +28,4 @@ class GPageconn extends Polygon{
     }
 }
 
-export default TransformManager.wrapShape(GPageconn);
+export default Service.TransformManager.wrapShape(GPageconn);
