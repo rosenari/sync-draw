@@ -1,14 +1,14 @@
 import ComponentRepository from './service/ComponentRepository';
 import EventController from './service/EventController';
 import Board from './component/Board';
-import PageMenubar from './component/PageMenubar';
-import ItemMenubar from './component/ItemMenubar';
-import ZoomMenubar from './component/ZoomMenubar';
-import StyleMenubar from './component/StyleMenubar';
-import HistoryMenubar from './component/HistoryMenubar';
-import CustomModal from './component/CustomModal';
-import Toast from './component/Toast';
-import HistoryView from './component/HistoryView';
+import PageMenubar from './component/Toolbar/PageMenubar';
+import ItemMenubar from './component/Toolbar/ItemMenubar';
+import ZoomMenubar from './component/Toolbar/ZoomMenubar';
+import StyleMenubar from './component/Toolbar/StyleMenubar';
+import HistoryMenubar from './component/Toolbar/HistoryMenubar';
+import CustomModal from './component/CommonElement/CustomModal';
+import Toast from './component/CommonElement/Toast';
+import HistoryView from './component/Toolbar/HistoryView';
 import {HISTORY_VIEW_ID, MODAL, TOAST_ID} from './service/constant';
 
 export default class App {

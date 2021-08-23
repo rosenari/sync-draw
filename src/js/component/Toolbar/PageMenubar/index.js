@@ -1,8 +1,8 @@
-import CustomElement from '../CustomElement';
-import CustomButton from '../CustomButton';
-import {BUTTON, MENU_BAR, MODAL, PHRASES} from '../../service/constant';
-import ComponentRepository from '../../service/ComponentRepository';
-import HistoryManager from '../../service/HistoryManager';
+import CustomElement from '../../CommonElement/CustomElement';
+import CustomButton from '../../CommonElement/CustomButton';
+import {BUTTON, MENU_BAR, MODAL, PHRASES} from '../../../service/constant';
+import ComponentRepository from '../../../service/ComponentRepository';
+import HistoryManager from '../../../service/HistoryManager';
 import './index.css';
 
 export default class PageMenubar extends CustomElement{

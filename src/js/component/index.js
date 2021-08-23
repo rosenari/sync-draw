@@ -1,7 +1,7 @@
-import CustomElement from './CustomElement';
-import GraphicElement from './GraphicElement';
-import GText from './GText';
-import Group from './Group';
+import CustomElement from './CommonElement/CustomElement';
+import GraphicElement from './CommonElement/GraphicElement';
+import GText from './CommonElement/GText';
+import Group from './CommonElement/Group';
 import Shape from './Shape';
 import InnerText from './Shape/InnerText';
 import Line from './Shape/Line';
@@ -16,11 +16,6 @@ import GPinput from './Shape/Polygon/GPinput';
 import GReady from './Shape/Polygon/GReady';
 import GProcess from './Shape/Rect/GProcess';
 import GTerminal from './Shape/Rect/GTerminal';
-
-export {
-    CustomElement, GraphicElement, GText, Group, Shape, InnerText, Line, GLine, GPolyline, GDisk, GDocument, GInputoutput,
-    GJudgment, GPageconn, GPinput, GReady, GProcess, GTerminal
-};
 
 export const Components = {
     CustomElement, GraphicElement, GText, Group, Shape, InnerText, Line, GLine, GPolyline, GDisk, GDocument, GInputoutput,

@@ -1,5 +1,5 @@
-import ComponentRepository from '../../service/ComponentRepository';
-import { classFor } from '../../service/util';
+import ComponentRepository from '../../../service/ComponentRepository';
+import { classFor } from '../../../service/util';
 
 export default class CustomElement {
     _parentId = null;

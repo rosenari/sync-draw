@@ -4,7 +4,7 @@ import EventController from '../../../service/EventController';
 import {BEHAVIOR, BOARD_ID, COLOR, FONT} from '../../../service/constant';
 import HistoryManager from '../../../service/HistoryManager';
 import ComponentRepository from '../../../service/ComponentRepository';
-import {GText, Shape} from '../../index';
+import { Components } from '../../index';
 
 export default class GroupBorder extends Border {
     static startPoint = {};
@@ -169,7 +169,7 @@ export default class GroupBorder extends Border {
         const y = TransformManager.changeDocYToSvgY(e.pageY);
         for(const key in ComponentRepository) {
             const shape = ComponentRepository.getComponentById(key);
-            if (!(shape instanceof Shape) && !(shape instanceof GText)) continue;
+            if (!(shape instanceof Components.Shape) && !(shape instanceof Components.GText)) continue;
 
             const startX = shape.x;
             const startY = shape.y;

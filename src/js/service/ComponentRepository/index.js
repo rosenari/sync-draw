@@ -1,4 +1,4 @@
-import {BOARD_ID, PLACE_HOLDER_ID} from "../constant";
+import {BOARD_ID, PLACE_HOLDER_ID} from '../constant';
 
 let Instance = null;
 

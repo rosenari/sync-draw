@@ -1,4 +1,4 @@
-import GraphicElement from '../../../GraphicElement';
+import GraphicElement from '../../../CommonElement/GraphicElement';
 import Line from '../index';
 import {COMPONENT_TYPE} from '../../../../service/constant';
 

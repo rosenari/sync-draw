@@ -2,7 +2,7 @@ import ComponentRepository from '../../service/ComponentRepository';
 import {tinyGUID, setDisablePointerEvent} from '../../service/util';
 import EventController from '../../service/EventController';
 import HistoryManager from '../../service/HistoryManager';
-import { GraphicElement, Group, GText } from '../../component';
+import { Components } from '../index';
 import {
     BOARD_ID,
     BORDER,
@@ -16,7 +16,7 @@ import GroupBorder from '../Border/GroupBorder';
 import LineBorder from '../Border/LineBorder';
 import './index.css';
 
-export default class Board extends GraphicElement {
+export default class Board extends Components.GraphicElement {
     static startPoint = {};
     _shapeGroup = null;
     _tempGroup = null;
@@ -38,7 +38,7 @@ export default class Board extends GraphicElement {
         ];
 
         const registerGroup = (group) => {
-            this[`${group.propsName}`] = new Group({
+            this[`${group.propsName}`] = new Components.Group({
                parentId: this.id,
                id: group.id
             });
@@ -137,7 +137,7 @@ export default class Board extends GraphicElement {
     }
 
     createShapePlaceHolder(type) {
-        if(!type || type === GText) return null;
+        if(!type || type === Components.GText) return null;
 
         const placeholder =  new type({
             parentId: this.shapeGroup.id,
@@ -213,7 +213,7 @@ export default class Board extends GraphicElement {
     }
 
     destroyBorder(e, styleMenubar = ComponentRepository.getComponentById(MENU_BAR.STYLE_MENU_BAR_ID)) {
-        const placeholder = this.shapeGroup.elem.querySelector('#placeholder');
+        const placeholder = this.shapeGroup.elem.querySelector(`#${PLACE_HOLDER_ID}`);
         if(placeholder){
             ComponentRepository.removeComponentById(placeholder.id);
         }

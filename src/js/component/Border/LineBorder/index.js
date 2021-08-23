@@ -1,4 +1,4 @@
-import GraphicElement from '../../GraphicElement';
+import GraphicElement from '../../CommonElement/GraphicElement';
 import ComponentRepository from '../../../service/ComponentRepository';
 import HistoryManager from '../../../service/HistoryManager';
 import { tinyGUID } from '../../../service/util';
@@ -6,7 +6,7 @@ import EventController from '../../../service/EventController';
 import TransformManager from '../../../service/TransformManager';
 import {BEHAVIOR, BOARD_ID, COLOR, GROUP} from '../../../service/constant';
 import SizeBorder from '../SizeBorder';
-import { Line, Shape } from '../../../component';
+import { Components } from '../../../component';
 import './index.css';
 
 export default class LineBorder extends SizeBorder {
@@ -134,8 +134,8 @@ export default class LineBorder extends SizeBorder {
         LineBorder.startPoint.collisionInfo = [];
         for(const key in ComponentRepository) {
             const shape = ComponentRepository.getComponentById(key);
-            if (!(shape instanceof Shape)) continue;
-            if (shape instanceof Line) continue;
+            if (!(shape instanceof Components.Shape)) continue;
+            if (shape instanceof Components.Line) continue;
 
             const padding = 30;
             const startX = shape.x;
@@ -227,8 +227,8 @@ export default class LineBorder extends SizeBorder {
 
     getShape(id){
         const shape = ComponentRepository.getComponentById(id);
-        if (!(shape instanceof Shape)) return null;
-        if (shape instanceof Line) return null;
+        if (!(shape instanceof Components.Shape)) return null;
+        if (shape instanceof Components.Line) return null;
         return shape;
     }
 

@@ -1,5 +1,5 @@
 import Border from '../index';
-import GraphicElement from '../../GraphicElement';
+import GraphicElement from '../../CommonElement/GraphicElement';
 import ComponentRepository from '../../../service/ComponentRepository';
 import {
     getOverflowHeight,

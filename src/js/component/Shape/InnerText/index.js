@@ -1,5 +1,5 @@
-import GraphicElement from '../../GraphicElement';
-import CustomElement from '../../CustomElement';
+import GraphicElement from '../../CommonElement/GraphicElement';
+import CustomElement from '../../CommonElement/CustomElement';
 import {getOverflowHeight, isOverflowHeight, rgbToHex, focusTextRange} from '../../../service/util';
 import ComponentRepository from '../../../service/ComponentRepository';
 import {BEHAVIOR, BOARD_ID, COMPONENT_TYPE, PHRASES} from '../../../service/constant';

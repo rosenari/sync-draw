@@ -1,22 +1,21 @@
-import CustomElement from '../CustomElement';
-import CustomButton from '../CustomButton';
-import ComponentRepository from '../../service/ComponentRepository';
+import CustomElement from '../../CommonElement/CustomElement';
+import CustomButton from '../../CommonElement/CustomButton';
+import ComponentRepository from '../../../service/ComponentRepository';
 import {
     DISK_ICON, DOCUMENT_ICON, HAND_GRAB, IO_ICON, JUDGMENT_ICON, LINE_ICON, MOUSE_CURSOR,
     PAGECONN_ICON, PINPUT_ICON, POLYLINE_ICON, PROCESS_ICON, READY_ICON, TERMINAL_ICON
-} from '../../images';
-import CreateBorder from '../Border/CreateBorder';
-import DragBorder from '../Border/DragBorder';
-import { GTerminal, GReady, GProcess, GJudgment, GPageconn, GDocument,
-    GInputoutput, GPinput, GText, GDisk, GLine, GPolyline} from '../../component';
-import {BEHAVIOR, BOARD_ID, BORDER, COLOR, COMPONENT_TYPE, CURSOR_TYPE, MENU_BAR} from '../../service/constant';
-import TransformManager from '../../service/TransformManager';
-import Board from '../Board';
-import GroupBorder from '../Border/GroupBorder';
-import SizeBorder from '../Border/SizeBorder';
-import HistoryManager from '../../service/HistoryManager';
-import {setDisablePointerEvent} from '../../service/util';
-import EventController from '../../service/EventController';
+} from '../../../images';
+import CreateBorder from '../../Border/CreateBorder';
+import DragBorder from '../../Border/DragBorder';
+import { Components } from '../../index';
+import {BEHAVIOR, BOARD_ID, BORDER, COLOR, COMPONENT_TYPE, CURSOR_TYPE, MENU_BAR} from '../../../service/constant';
+import TransformManager from '../../../service/TransformManager';
+import Board from '../../Board';
+import GroupBorder from '../../Border/GroupBorder';
+import SizeBorder from '../../Border/SizeBorder';
+import HistoryManager from '../../../service/HistoryManager';
+import {setDisablePointerEvent} from '../../../service/util';
+import EventController from '../../../service/EventController';
 import './index.css';
 
 export default class ItemMenubar extends CustomElement{
@@ -89,7 +88,7 @@ export default class ItemMenubar extends CustomElement{
                 content: 'Text',
                 cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
-                relatedClass: GText,
+                relatedClass: Components.GText,
                 relatedMouseDownHandler: this.mouseDownHandlerForHaveRelatedBorder,
                 relatedMouseUpHandler: (e) => {
                     this.mouseUpHandlerForShape(e);
@@ -101,7 +100,7 @@ export default class ItemMenubar extends CustomElement{
                 iconSize: { width: '34', height: '18' },
                 cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
-                relatedClass: GTerminal,
+                relatedClass: Components.GTerminal,
                 relatedMouseDownHandler: this.mouseDownHandlerForHaveRelatedBorder,
                 relatedMouseUpHandler: (e) => {
                     this.mouseUpHandlerForShape(e);
@@ -113,7 +112,7 @@ export default class ItemMenubar extends CustomElement{
                 iconSize: { width:'34', height: '18' },
                 cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
-                relatedClass: GReady,
+                relatedClass: Components.GReady,
                 relatedMouseDownHandler: this.mouseDownHandlerForHaveRelatedBorder,
                 relatedMouseUpHandler: (e) => {
                     this.mouseUpHandlerForShape(e);
@@ -125,7 +124,7 @@ export default class ItemMenubar extends CustomElement{
                 iconSize: { width: '34', height: '18'},
                 cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
-                relatedClass: GProcess,
+                relatedClass: Components.GProcess,
                 relatedMouseDownHandler: this.mouseDownHandlerForHaveRelatedBorder,
                 relatedMouseUpHandler: (e) => {
                     this.mouseUpHandlerForShape(e);
@@ -137,7 +136,7 @@ export default class ItemMenubar extends CustomElement{
                 iconSize: { width:'34', height:'18' },
                 cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
-                relatedClass: GJudgment,
+                relatedClass: Components.GJudgment,
                 relatedMouseDownHandler: this.mouseDownHandlerForHaveRelatedBorder,
                 relatedMouseUpHandler: (e) => {
                     this.mouseUpHandlerForShape(e);
@@ -149,7 +148,7 @@ export default class ItemMenubar extends CustomElement{
                 iconSize: { width: '40', height: '40' },
                 cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
-                relatedClass: GPageconn,
+                relatedClass: Components.GPageconn,
                 relatedMouseDownHandler: this.mouseDownHandlerForHaveRelatedBorder,
                 relatedMouseUpHandler: (e) => {
                     this.mouseUpHandlerForShape(e);
@@ -161,7 +160,7 @@ export default class ItemMenubar extends CustomElement{
                 iconSize: { width: '35', height: '35' },
                 cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
-                relatedClass: GDocument,
+                relatedClass: Components.GDocument,
                 relatedMouseDownHandler: this.mouseDownHandlerForHaveRelatedBorder,
                 relatedMouseUpHandler: (e) => {
                     this.mouseUpHandlerForShape(e);
@@ -173,7 +172,7 @@ export default class ItemMenubar extends CustomElement{
                 iconSize: { width: '35', height: '35' },
                 cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
-                relatedClass: GDisk,
+                relatedClass: Components.GDisk,
                 relatedMouseDownHandler: this.mouseDownHandlerForHaveRelatedBorder,
                 relatedMouseUpHandler: (e) => {
                     this.mouseUpHandlerForShape(e);
@@ -185,7 +184,7 @@ export default class ItemMenubar extends CustomElement{
                 iconSize: { width: '34', height: '18' },
                 cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
-                relatedClass: GInputoutput,
+                relatedClass: Components.GInputoutput,
                 relatedMouseDownHandler: this.mouseDownHandlerForHaveRelatedBorder,
                 relatedMouseUpHandler: (e) => {
                     this.mouseUpHandlerForShape(e);
@@ -197,7 +196,7 @@ export default class ItemMenubar extends CustomElement{
                 iconSize: { width: '34', height: '34' },
                 cursorType: CURSOR_TYPE.CROSSHAIR,
                 relatedBorder: CreateBorder,
-                relatedClass: GPinput,
+                relatedClass: Components.GPinput,
                 relatedMouseDownHandler: this.mouseDownHandlerForHaveRelatedBorder,
                 relatedMouseUpHandler: (e) => {
                     this.mouseUpHandlerForShape(e);
@@ -208,7 +207,7 @@ export default class ItemMenubar extends CustomElement{
                 icon: LINE_ICON,
                 iconSize: { width:'34', height:'10' },
                 cursorType: CURSOR_TYPE.SRESIZE,
-                relatedClass: GLine,
+                relatedClass: Components.GLine,
                 relatedMouseDownHandler: (e) => {
                     const x = e.pageX;
                     const y = e.pageY;
@@ -235,7 +234,7 @@ export default class ItemMenubar extends CustomElement{
                 icon: POLYLINE_ICON,
                 iconSize: { width:'34', height:'45' },
                 cursorType: CURSOR_TYPE.SRESIZE,
-                relatedClass: GPolyline,
+                relatedClass: Components.GPolyline,
                 relatedMouseDownHandler: (e) => {
                     const x = e.pageX;
                     const y = e.pageY;

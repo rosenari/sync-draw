@@ -1,13 +1,13 @@
-import CustomElement from '../CustomElement';
-import CustomSelect from '../CustomSelect';
-import CustomInput from '../CustomInput';
+import CustomElement from '../../CommonElement/CustomElement';
+import CustomSelect from '../../CommonElement/CustomSelect';
+import CustomInput from '../../CommonElement/CustomInput';
 import {
     BOARD_ID,
     FONT, MENU_BAR, STYLE_ELEM
-} from '../../service/constant';
-import ComponentRepository from '../../service/ComponentRepository';
+} from '../../../service/constant';
+import ComponentRepository from '../../../service/ComponentRepository';
 import './index.css';
-import {debounce} from '../../service/util';
+import {debounce} from '../../../service/util';
 
 export default class StyleMenubar extends CustomElement{
     board = null;

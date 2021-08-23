@@ -1,4 +1,4 @@
-import GraphicElement from '../GraphicElement';
+import GraphicElement from '../CommonElement/GraphicElement';
 import ComponentRepository from '../../service/ComponentRepository';
 import {BOARD_ID, COLOR, MENU_BAR, FONT, PLACE_HOLDER_ID} from '../../service/constant';
 import {

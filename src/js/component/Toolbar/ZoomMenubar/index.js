@@ -1,9 +1,9 @@
-import CustomElement from '../CustomElement';
-import CustomButton from '../CustomButton';
-import TransformManager from '../../service/TransformManager';
-import ComponentRepository from '../../service/ComponentRepository';
+import CustomElement from '../../CommonElement/CustomElement';
+import CustomButton from '../../CommonElement/CustomButton';
+import TransformManager from '../../../service/TransformManager';
+import ComponentRepository from '../../../service/ComponentRepository';
 import './index.css';
-import {BOARD_ID, RATIO_TEXT_ID, BUTTON, MENU_BAR} from '../../service/constant';
+import {BOARD_ID, RATIO_TEXT_ID, BUTTON, MENU_BAR} from '../../../service/constant';
 
 export default class ZoomMenubar extends CustomElement{
     board = null;

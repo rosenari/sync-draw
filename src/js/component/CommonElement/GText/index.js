@@ -1,10 +1,10 @@
 import GraphicElement from '../GraphicElement';
 import CustomElement from '../CustomElement';
-import {getOverflowHeight, isOverflowHeight, rgbToHex} from '../../service/util';
-import ComponentRepository from '../../service/ComponentRepository';
-import TransformManager from '../../service/TransformManager';
-import {BOARD_ID, COLOR, MENU_BAR, FONT, COMPONENT_TYPE, BEHAVIOR} from '../../service/constant';
-import HistoryManager from '../../service/HistoryManager';
+import {getOverflowHeight, isOverflowHeight, rgbToHex} from '../../../service/util';
+import ComponentRepository from '../../../service/ComponentRepository';
+import TransformManager from '../../../service/TransformManager';
+import {BOARD_ID, COLOR, MENU_BAR, FONT, COMPONENT_TYPE, BEHAVIOR} from '../../../service/constant';
+import HistoryManager from '../../../service/HistoryManager';
 
 class GText extends GraphicElement {
     static type = COMPONENT_TYPE.GText;

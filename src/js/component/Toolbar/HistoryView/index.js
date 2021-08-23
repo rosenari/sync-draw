@@ -1,5 +1,5 @@
-import CustomElement from '../CustomElement';
-import { ComponentKor } from '../../service/constant';
+import CustomElement from '../../CommonElement/CustomElement';
+import { ComponentKor } from '../../../service/constant';
 import './index.css';
 
 export default class HistoryView extends CustomElement{
@@ -56,6 +56,4 @@ export default class HistoryView extends CustomElement{
         if(currentIndexElemTop - 50 < 0) this.elem.scrollTop = 10;
         else this.elem.scrollTop = currentIndexElemTop - 50;
     }
-
-
 }

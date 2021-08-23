@@ -1,8 +1,8 @@
 import Border from '../index';
-import {BOARD_ID, BORDER, COLOR, MENU_BAR, RATIO} from '../../../service/constant';
+import {BOARD_ID, BORDER, COLOR, RATIO} from '../../../service/constant';
 import ComponentRepository from '../../../service/ComponentRepository';
 import TransformManager from '../../../service/TransformManager';
-import { Shape, GText} from '../../../component';
+import { Components } from '../../index';
 
 export default class DragBorder extends Border{
     board = null;
@@ -31,7 +31,7 @@ export default class DragBorder extends Border{
         let borderEndY = -Infinity;
         for(const key in ComponentRepository) {
             const shape = ComponentRepository.getComponentById(key);
-            if (!(shape instanceof Shape) && !(shape instanceof GText)) continue;
+            if (!(shape instanceof Components.Shape) && !(shape instanceof Components.GText)) continue;
 
             const startX = shape.x;
             const startY = shape.y;

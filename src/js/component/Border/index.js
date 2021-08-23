@@ -1,4 +1,4 @@
-import GraphicElement from '../GraphicElement';
+import GraphicElement from '../CommonElement/GraphicElement';
 import {BOARD_ID, BORDER, COLOR} from '../../service/constant';
 import ComponentRepository from '../../service/ComponentRepository';
 import {setDisablePointerEvent} from '../../service/util';

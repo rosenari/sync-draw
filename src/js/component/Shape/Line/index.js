@@ -1,6 +1,6 @@
 import Shape from '../index';
-import GraphicElement from '../../GraphicElement';
-import {BOARD_ID, COLOR, GROUP, MENU_BAR} from '../../../service/constant';
+import GraphicElement from '../../CommonElement/GraphicElement';
+import {BOARD_ID, COLOR, MENU_BAR} from '../../../service/constant';
 import ComponentRepository from '../../../service/ComponentRepository';
 import TransformManager from '../../../service/TransformManager';
 
