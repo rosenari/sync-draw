@@ -1,13 +1,23 @@
-import { Service } from '../../../service';
+import { ComponentRepository } from '../../../service';
 import { classFor } from '../../../service/util';
 
 export default class CustomElement {
-    _parentId = null;
-    _id = null;
-    _elem = null;
+    private _parentId: string = null;
+    private _id: string = null;
+    private _elem: Element = null;
 
     constructor({ parentId, id, tagName, content = '', classList = [],
-                    xmlns = null, handlers = {} }) {
+                    xmlns = null, handlers = {} }: {
+        parentId: string;
+        id: string;
+        tagName?: string;
+        content?: string;
+        classList?: Array<string>;
+        xmlns?: string;
+        handlers?: {
+            [key: string]: any;
+        }
+    }) {
         this.parentId = parentId;
         this.id = id;
 
@@ -24,7 +34,7 @@ export default class CustomElement {
             this.elem.setAttribute('class', classFor(classList));
         }
 
-        const parent = Service.ComponentRepository.getComponentById(this.parentId);
+        const parent = <CustomElement>ComponentRepository.getComponentById(this.parentId);
         parent.elem.appendChild(this.elem);
 
         for(const name in handlers){
@@ -32,30 +42,30 @@ export default class CustomElement {
         }
 
         this.elem.setAttribute('id', this.id);
-        Service.ComponentRepository.setComponentById(this.id, this);
+        ComponentRepository.setComponentById(this.id, this);
     }
 
-    get id(){
+    public get id(): string{
         return this._id;
     }
 
-    get elem() {
+    public get elem(): Element {
         return this._elem;
     }
 
-    get parentId() {
+    get parentId(): string {
         return this._parentId;
     }
 
-    set id(value){
+    public set id(value: string){
         this._id = value;
     }
 
-    set elem(value) {
+    public set elem(value: Element) {
         this._elem = value;
     }
 
-    set parentId(value) {
+    set parentId(value: string) {
         this._parentId = value;
     }
 }
