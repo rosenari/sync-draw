@@ -11,7 +11,7 @@ export const HISTORY_VIEW_ID = 'history-view';
 export const GROUP = {
     SHAPE_GROUP_ID  : 'shape-group',
     TEMP_GROUP_ID : 'temp-group'
-}
+} as const;
 
 export const MENU_BAR = {
     PAGE_MENU_BAR_ID : 'page-menu-bar',
@@ -19,7 +19,7 @@ export const MENU_BAR = {
     STYLE_MENU_BAR_ID : 'style-menu-bar',
     HISTORY_MENU_BAR_ID : 'history-menu-bar',
     ZOOM_MENU_BAR_ID : 'zoom-menu-bar'
-}
+} as const;
 
 export const BORDER = {
     BORDER_ID : 'border',
@@ -27,7 +27,7 @@ export const BORDER = {
     SIZE_BORDER_ID : 'size-border',
     DRAG_BORDER_ID : 'drag-border',
     GROUP_BORDER_ID : 'group-border'
-}
+} as const;
 
 export const STYLE_ELEM = {
     FONT_SIZE_TEXT_ID : 'style-font-size-text',
@@ -38,7 +38,7 @@ export const STYLE_ELEM = {
     FILL_INPUT_ID : 'style-fill-input',
     STROKE_TEXT_ID : 'style-stroke-text',
     STROKE_INPUT_ID : 'style-stroke-input'
-}
+} as const;
 
 export const FONT = {
     SIZE_1 : '8px',
@@ -47,7 +47,7 @@ export const FONT = {
     SIZE_4 : '14px',
     SIZE_5 : '16px',
     SIZE_6 : '18px'
-}
+} as const;
 
 export const RATIO_TEXT_ID = 'ratio-text';
 
@@ -59,7 +59,7 @@ export const BUTTON = {
     HISTORY_REDO_BTN_ID : 'history-redo-btn',
     ZOOM_IN_BTN_ID : 'zoom-in-btn',
     ZOOM_OUT_BTN_ID : 'zoom-out-btn'
-}
+} as const;
 
 export const RANDOM_MAX = 0x10000000;
 
@@ -69,7 +69,7 @@ export const COLOR = {
     BLACK : '#555555',
     GRAY : '#808080',
     WHITE : '#FFFFFF'
-}
+} as const;
 
 export const RATIO = {
     PERCENT_10: 0.1,
@@ -90,30 +90,35 @@ export const RATIO = {
     PERCENT_85: 0.85,
     PERCENT_90: 0.9,
     PERCENT_95: 0.95,
-}
+} as const;
 
 export const COMPONENT_TYPE = {
+    Shape: 'Shape',
     GText : 'GText',
     InnerText : 'InnerText',
+    Line: 'Line',
     GLine : 'GLine',
     GPolyline : 'GPolyline',
+    Path: 'Path',
     GDisk : 'GDisk',
     GDocument: 'GDocument',
+    Polygon: 'Polygon',
     GInputoutput : 'GInputoutput',
     GJudgment : 'GJudgment',
     GPageconn : 'GPageconn',
     GPinput : 'GPinput',
     GReady : 'GReady',
+    Rect: 'Rect',
     GProcess : 'GProcess',
     GTerminal : 'GTerminal'
-}
+} as const;
 
 export const CURSOR_TYPE = {
     MOUSE : 'mouse',
     GRAB : 'grab',
     CROSSHAIR : 'crosshair',
     SRESIZE : 's-resize'
-}
+} as const;
 
 export const PHRASES = {
     INIT : '정말 초기화 하시겠습니까 ?',
@@ -126,7 +131,7 @@ export const PHRASES = {
     NOT_EXIST_STORE : '저장내역이 존재하지 않습니다.',
     NOT_EXIST_NAME_STORE : '해당이름의 저장내역이 존재하지 않습니다.',
     AUTO_RESTORE : '자동저장내역을 복구 하시겠습니까 ?'
-}
+} as const;
 
 export const BEHAVIOR = {
     INIT: '초기화',
@@ -134,7 +139,7 @@ export const BEHAVIOR = {
     MODIFY : '수정',
     MOVE : '이동',
     DELETE : '삭제'
-}
+} as const;
 
 export const KEYEVENT = {
     deleteKey : 'Delete',
@@ -142,7 +147,7 @@ export const KEYEVENT = {
     UP : 'ArrowUp',
     RIGHT : 'ArrowRight',
     DOWN : 'ArrowDown',
-}
+} as const;
 
 export const ComponentKor = {
     All : '페이지',
@@ -164,12 +169,12 @@ export const ComponentKor = {
     GReady: '준비',
     GProcess: '처리',
     GTerminal: '단말'
-}
+} as const;
 
 export const MODAL = {
     CONFIRM_MODAL_ID : 'confirm-modal',
     PROMPT_MODAL_ID : 'prompt-modal',
     SELECT_MODAL_ID : 'select-modal'
-}
+} as const;
 
 export const TOAST_ID = 'toast';

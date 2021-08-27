@@ -4,6 +4,6 @@ import HistoryManager from './HistoryManager';
 import KeyboardManager from './KeyboardManager';
 import TransformManager from './TransformManager';
 
-export const Service = {
+export {
     ComponentRepository, EventController, HistoryManager, KeyboardManager, TransformManager
 }

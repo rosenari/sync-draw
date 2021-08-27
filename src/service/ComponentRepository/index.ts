@@ -1,25 +1,26 @@
-import {BOARD_ID, PLACE_HOLDER_ID} from '../constant';
+import { Board, Shape, Component } from '../../component';
+import { BOARD_ID, PLACE_HOLDER_ID } from '../constant';
 
-let Instance = null;
+let Instance: ComponentRepository;
 
 class ComponentRepository{
 
     constructor() { }
 
-    static getInstance(){
+    public static getInstance(): ComponentRepository{
         if(!Instance) Instance = new ComponentRepository();
         return Instance;
     }
 
-    getComponentById(id){
+    public getComponentById(id: string): Component{
         return this[id];
     }
 
-    setComponentById(id,component){
+    public setComponentById(id: string, component: Component){
         this[id] = component;
     }
 
-    removeComponentById(id){
+    public removeComponentById(id){
         document.getElementById(id)?.remove();
         document.getElementById(`${id}-innerText`)?.remove();
         delete this[id];
@@ -28,10 +29,10 @@ class ComponentRepository{
         delete this[`${id}-textbox`]
     }
 
-    getSvgElements(){
+    public getSvgElements(): Array<string>{
         const elements = [];
         for(const key in this) {
-            const component = this.getComponentById(key);
+            const component = <Shape>this.getComponentById(key);
             if(component?.serialize && component.id !== PLACE_HOLDER_ID) {
                 elements.push(component.serialize());
             }
@@ -40,14 +41,14 @@ class ComponentRepository{
         return elements;
     }
 
-    removeSvgElements(){
+    public removeSvgElements(): void{
         for(const key in this) {
-            const component = this.getComponentById(key);
+            const component = <Shape>this.getComponentById(key);
             if(component?.serialize && component.id !== PLACE_HOLDER_ID) {
                 this.removeComponentById(component.id);
             }
         }
-        this.getComponentById(BOARD_ID).destroyBorder();
+        (<Board>this.getComponentById(BOARD_ID)).destroyBorder();
     }
 }
 

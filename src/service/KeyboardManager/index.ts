@@ -1,31 +1,33 @@
-import { Service } from '../index';
-import {BOARD_ID, KEYEVENT, MENU_BAR} from "../constant";
+import { Board, PageMenubar, ZoomMenubar } from '../../component';
+import { ComponentRepository, HistoryManager } from '../index';
+import {BOARD_ID, KEYEVENT, MENU_BAR} from '../constant';
 
-let instance = null;
+let instance: KeyboardManager = null;
 class KeyboardManager {
 
     constructor() {}
 
-    static getInstance() {
+    public static getInstance(): KeyboardManager {
         if (!instance) instance = new KeyboardManager();
         return instance;
     }
 
-    eventInit({ board = Service.ComponentRepository.getComponentById(BOARD_ID),
-              pageMenuBar = Service.ComponentRepository.getComponentById(MENU_BAR.PAGE_MENU_BAR_ID),
-              zoomMenuBar = Service.ComponentRepository.getComponentById(MENU_BAR.ZOOM_MENU_BAR_ID) }){
+    public eventInit({ board = <Board>ComponentRepository.getComponentById(BOARD_ID),
+              pageMenubar = <PageMenubar>ComponentRepository.getComponentById(MENU_BAR.PAGE_MENU_BAR_ID),
+              zoomMenubar = <ZoomMenubar>ComponentRepository.getComponentById(MENU_BAR.ZOOM_MENU_BAR_ID)}
+                  : { board?: Board, pageMenubar?: PageMenubar, zoomMenubar?: ZoomMenubar }): void {
         const moveOffset = 10;
         window.addEventListener('keydown', (e) => {
             if(e.ctrlKey && e.key === 'z'){
-                Service.HistoryManager.undo();
+                HistoryManager.undo();
             }else if(e.ctrlKey && e.key === 'x'){
-                Service.HistoryManager.redo();
+                HistoryManager.redo();
             }else if(e.ctrlKey && e.key === 'n'){
-                pageMenuBar.newBtn.clickHandler();
+                pageMenubar.newBtn.clickHandler();
             }else if(e.ctrlKey && e.key === 's'){
-                pageMenuBar.saveBtn.clickHandler();
+                pageMenubar.saveBtn.clickHandler();
             }else if(e.ctrlKey && e.key === 'f'){
-                pageMenuBar.loadBtn.clickHandler();
+                pageMenubar.loadBtn.clickHandler();
             }else if(e.key === KEYEVENT.deleteKey){
                 board.border?.deleteHandler?.();
             }else if(e.key === KEYEVENT.LEFT){
@@ -39,18 +41,18 @@ class KeyboardManager {
             }
         });
 
-        window.addEventListener('mousewheel', (e) => {
+        window.addEventListener('mousewheel', (e: WheelEvent) => {
             if(e.ctrlKey){
                 if(e.deltaY < 0) { //down
-                    zoomMenuBar.zoomOutBtn.clickHandler();
+                    zoomMenubar.zoomOutBtn.clickHandler();
                 }else { //up
-                    zoomMenuBar.zoomInBtn.clickHandler();
+                    zoomMenubar.zoomInBtn.clickHandler();
                 }
             }
         });
     }
 
-    moveHandler({ board, dx, dy }){
+    protected moveHandler({ board, dx, dy }: { board: Board, dx: number, dy: number }): void{
         board.border?.startPointInit?.();
         board.border?.moveHandler?.({ dx, dy });
         board.border?.moveCompleteHandler();

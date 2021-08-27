@@ -1,67 +1,66 @@
-import { Service } from '../index';
-import { deserialize } from '../util';
-import {BEHAVIOR, COMPONENT_TYPE, HISTORY_VIEW_ID, MODAL, PHRASES} from '../constant';
+import { ComponentRepository } from '../index';
+import { deserialize, lineFirstSort } from '../util';
+import {BEHAVIOR, HISTORY_VIEW_ID, MODAL, PHRASES} from '../constant';
+import {HistoryView, Toast, Shape, CustomModal} from '../../component';
 
-let instance = null;
+type HistoryItem = {
+    behavior: string,
+    type: string,
+    svgElements: Array<string>
+};
+
+let instance: HistoryManager;
 class HistoryManager {
-    _history = [];
-    _historyIndex = -1;
-    _currentPage = [];
+    _history: Array<HistoryItem> = [];
+    _historyIndex: number = -1;
+    _currentPage: Array<string> = [];
 
     constructor() {
         setTimeout(() => this.restoreAutoStorePage());
     }
 
-    static getInstance() {
+    public static getInstance(): HistoryManager {
         if(!instance) instance = new HistoryManager();
         return instance;
     }
 
-    get history() {
+    public get history(): Array<HistoryItem> {
         return this._history;
     }
 
-    set history(value) {
+    public set history(value: Array<HistoryItem>) {
         this._history = value;
         this.renderHistoryView();
     }
 
-    get historyIndex() {
+    public get historyIndex(): number {
         return this._historyIndex;
     }
 
-    set historyIndex(value) {
+    public set historyIndex(value: number) {
         this._historyIndex = value;
         this.renderHistoryView();
     }
 
-    get running() {
-        return this._running;
-    }
-
-    set running(value) {
-        this._running = value;
-    }
-
-    get currentPage(){
+    public get currentPage(): Array<string>{
         return this._currentPage;
     }
 
-    set currentPage(value){
+    public set currentPage(value: Array<string>){
         this._currentPage = value;
     }
 
-    undo() {
+    public undo() {
         const prevIndex = this.historyIndex - 1;
         this.commonDo(prevIndex);
     }
 
-    redo() {
+    public redo() {
         const nextIndex = this.historyIndex + 1;
         this.commonDo(nextIndex);
     }
 
-    commonDo(Index, toast = Service.ComponentRepository.getComponentById('toast')) {
+    public commonDo(Index: number, toast: Toast = <Toast>ComponentRepository.getComponentById('toast')) {
         if(Index < -1){
             toast.content = PHRASES.NOT_EXIST_PREV_TASK;
             toast.show();
@@ -73,23 +72,23 @@ class HistoryManager {
         }
 
         this.historyIndex = Index;
-        Service.ComponentRepository.removeSvgElements();
+        ComponentRepository.removeSvgElements();
         if(this.history[Index]?.svgElements) {
             this.adjustSvgElements(this.history[Index].svgElements);
         }
 
-        this.currentPage = Service.ComponentRepository.getSvgElements();
+        this.currentPage = ComponentRepository.getSvgElements();
         this.autoStoreCurrentPage();
     }
 
-    adjustSvgElements(svgElements){
+    public adjustSvgElements(svgElements: Array<string>) {
         lineFirstSort(svgElements);
         for (const json of svgElements) {
             deserialize(json);
         }
     }
 
-    initHistory(svgElements){
+    public initHistory(svgElements: Array<string>){
         this.historyIndex = 0;
         this.history = [{
             behavior: BEHAVIOR.INIT,
@@ -98,15 +97,16 @@ class HistoryManager {
         }];
     }
 
-    removeLatestHistory(){
+    public removeLatestHistory(){
         const deleted = this.history.splice(this.historyIndex);
         if(deleted.length > 0){
             this.historyIndex -= 1;
         }
     }
 
-    updateHistoryToLatest({ behavior, type }) {
-        const svgElements = Service.ComponentRepository.getSvgElements();
+    public updateHistoryToLatest(params: { behavior: string, type: string }) {
+        const { behavior, type } = params;
+        const svgElements = ComponentRepository.getSvgElements();
         const nextIndex = this.historyIndex + 1;
         if(this.history.length > 0) this.history.splice(nextIndex);
         this.history.push({
@@ -120,18 +120,18 @@ class HistoryManager {
         this.autoStoreCurrentPage();
     }
 
-    autoStoreCurrentPage() {
+    public autoStoreCurrentPage() {
         const storeData = JSON.stringify(this.currentPage);
         localStorage.setItem('auto', storeData);
     }
 
-    storeCurrentPage(name){
+    public storeCurrentPage(name: string){
         const storeData = this.currentPage;
-        let prevStoreData = localStorage.getItem('storeData');
+        const prevStoreData = localStorage.getItem('storeData');
         if(prevStoreData){
-            prevStoreData = JSON.parse(prevStoreData).filter(data => data.name !== name);
+            const parsePrevStoreData = JSON.parse(prevStoreData).filter(data => data.name !== name);
             localStorage.setItem('storeData', JSON.stringify([
-                ...prevStoreData,
+                ...parsePrevStoreData,
                 {
                     name,
                     data:storeData
@@ -145,7 +145,7 @@ class HistoryManager {
         }]));
     }
 
-    restoreAutoStorePage(modal = Service.ComponentRepository.getComponentById(MODAL.CONFIRM_MODAL_ID)){
+    public restoreAutoStorePage(modal: CustomModal = <CustomModal>ComponentRepository.getComponentById(MODAL.CONFIRM_MODAL_ID)){
         const autoStoreData = localStorage.getItem('auto');
         if(autoStoreData) {
             modal.title = '⏰ 자동저장내역 복구';
@@ -164,22 +164,22 @@ class HistoryManager {
         }
     }
 
-    restorePage(name, toast = Service.ComponentRepository.getComponentById('toast')){
+    public restorePage(name: string, toast: Toast = <Toast>ComponentRepository.getComponentById('toast')){
         const prevStoreData = localStorage.getItem('storeData');
         if(!prevStoreData){
             toast.content = PHRASES.NOT_EXIST_STORE;
             toast.show();
             return;
         }
-        const storeData = JSON.parse(prevStoreData).find(data => data.name === name);
-        if(!storeData){
+        const parsePrevStoreData = JSON.parse(prevStoreData).find(data => data.name === name);
+        if(!parsePrevStoreData){
             toast.content = PHRASES.NOT_EXIST_NAME_STORE;
             toast.show();
             return;
         }
 
-        const svgElements = storeData.data;
-        Service.ComponentRepository.removeSvgElements();
+        const svgElements = parsePrevStoreData.data;
+        ComponentRepository.removeSvgElements();
         this.adjustSvgElements(svgElements);
         this.initHistory(svgElements);
 
@@ -187,16 +187,15 @@ class HistoryManager {
         this.autoStoreCurrentPage();
     }
 
-    deletePage(name){
-        let prevStoreData = localStorage.getItem('storeData');
+    public deletePage(name: string){
+        const prevStoreData = localStorage.getItem('storeData');
         if(prevStoreData){
-            prevStoreData = JSON.parse(prevStoreData).filter(data => data.name !== name);
-            localStorage.setItem('storeData', JSON.stringify(prevStoreData));
+            const parsePrevStoreData = JSON.parse(prevStoreData).filter(data => data.name !== name);
+            localStorage.setItem('storeData', JSON.stringify(parsePrevStoreData));
         }
     }
 
-
-    isStoreName(name) {
+    public isStoreName(name: string) {
         const prevStoreData = localStorage.getItem('storeData');
         if(!prevStoreData) return false;
 
@@ -204,7 +203,7 @@ class HistoryManager {
         return storeData.find(data => data.name === name);
     }
 
-    getStoreNames() {
+    public getStoreNames(): { [key: string]: string } {
         const result = {};
         const prevStoreData = localStorage.getItem('storeData');
         if(!prevStoreData) return result;
@@ -217,40 +216,26 @@ class HistoryManager {
         return result;
     }
 
-    clearHistory(){
+    public clearHistory(){
         this.historyIndex = -1;
         this.history = [];
     }
 
-    clearCurrentPage(){
-        Service.ComponentRepository.removeSvgElements();
+    public clearCurrentPage(){
+        ComponentRepository.removeSvgElements();
         this.currentPage = [];
         localStorage.removeItem('auto');
     }
 
-    clear(){
+    public clear(){
         this.clearHistory();
         this.clearCurrentPage();
     }
 
-    renderHistoryView(){
-        const historyView = Service.ComponentRepository.getComponentById(HISTORY_VIEW_ID);
+    public renderHistoryView(historyView: HistoryView = <HistoryView>ComponentRepository.getComponentById(HISTORY_VIEW_ID)){
         historyView.list = this.history;
         historyView.currentIndex = this.historyIndex;
     }
-}
-
-function lineFirstSort(elements) {
-    elements.sort((A, B) => {
-        const svgA = JSON.parse(A);
-        const svgB = JSON.parse(B);
-        if(svgA.type !== COMPONENT_TYPE.GLine && !svgB.type === COMPONENT_TYPE.GLine) {
-            return 1;
-        } else if(svgA.type === COMPONENT_TYPE.GLine && !svgB.type !== COMPONENT_TYPE.GLine){
-            return -1;
-        }
-        return 0;
-    });
 }
 
 export default HistoryManager.getInstance();
