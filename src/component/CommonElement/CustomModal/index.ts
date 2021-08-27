@@ -1,7 +1,13 @@
 import CustomElement from '../CustomElement';
 import {Component, CustomButton, CustomInput, CustomSelect} from '../../index';
-import { ClickElement } from '../../../interface';
+import {ClickElement, CreateOption} from '../../../interface';
 import './index.css';
+
+interface CustomModalOption extends CreateOption {
+    type?: string;
+    title?: string;
+    content? : string;
+}
 
 export default class CustomModal extends CustomElement implements ClickElement{
     private _type: string = null;
@@ -15,13 +21,7 @@ export default class CustomModal extends CustomElement implements ClickElement{
     private _deleteBtn: CustomButton = null;
     private _cancelBtn: CustomButton = null;
 
-    constructor({ parentId, id, type = 'confirm', title = '타이틀', content }: {
-        parentId: string;
-        id: string;
-        type?: string;
-        title?: string;
-        content?: string;
-    }) {
+    constructor({ parentId, id, type = 'confirm', title = '타이틀', content = '' }: CustomModalOption) {
         super({
             parentId,
             id,

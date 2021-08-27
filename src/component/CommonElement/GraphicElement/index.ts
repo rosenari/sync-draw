@@ -1,15 +1,9 @@
 import CustomElement from '../CustomElement';
 import { XMLNS } from '../../../service/constant';
+import { CreateOption } from '../../../interface';
 
 export default class GraphicElement extends CustomElement{
-    constructor({parentId, id, tagName, content = '', classList = [], handlers = {}}:{
-        parentId: string;
-        id: string;
-        tagName: string;
-        content?: string;
-        classList?: Array<string>;
-        handlers?: { [key: string]: any };
-    }){
+    constructor({parentId, id, tagName, content = '', classList = [], handlers = {}}: CreateOption){
         super({
             parentId,
             id,

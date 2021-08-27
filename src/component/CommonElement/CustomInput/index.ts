@@ -1,15 +1,12 @@
 import CustomElement from '../CustomElement';
+import {CreateOption} from '../../../interface';
+
+interface CustomInputOption extends CreateOption {
+    type?: string;
+}
 
 export default class CustomInput extends CustomElement{
-    constructor({ parentId, id, type = '', classList = [], handlers = {}}: {
-        parentId: string;
-        id: string;
-        type?: string;
-        classList?: Array<string>;
-        handlers?: {
-            [key: string]: any;
-        }
-    }) {
+    constructor({ parentId, id, type = '', classList = [], handlers = {}}: CustomInputOption) {
         super({
             parentId,
             id,

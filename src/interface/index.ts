@@ -7,9 +7,10 @@ import MouseMoveElement from './MouseMoveElement';
 import MouseUpElement from './MouseUpElement';
 import ChangeElement from './ChangeElement';
 import KeyUpElement from './KeyUpElement';
+import CreateOption from './CreateOption';
 
 export {
     BlurElement, ClickElement, DBClickElement, InputElement,
     MouseDownElement, MouseUpElement, MouseMoveElement,
-    ChangeElement, KeyUpElement
+    ChangeElement, KeyUpElement, CreateOption
 }

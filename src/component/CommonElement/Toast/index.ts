@@ -1,5 +1,6 @@
 import CustomElement from '../CustomElement';
 import { CustomButton } from '../../index';
+import { CreateOption } from '../../../interface';
 import './index.css';
 
 export default class Toast extends CustomElement{
@@ -7,11 +8,7 @@ export default class Toast extends CustomElement{
     private _body: CustomElement;
     private _cancelBtn: CustomButton = null;
 
-    constructor({ parentId, id, content = '알람' }: {
-        parentId: string;
-        id: string;
-        content?: string;
-    }) {
+    constructor({ parentId, id, content = '알람' }: CreateOption) {
         super({
             parentId,
             id,

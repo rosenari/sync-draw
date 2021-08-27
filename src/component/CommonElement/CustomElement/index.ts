@@ -1,23 +1,21 @@
+import {
+    ClickElement, BlurElement, DBClickElement, InputElement,
+    MouseDownElement, MouseUpElement, MouseMoveElement,
+    ChangeElement, KeyUpElement, CreateOption
+} from '../../../interface';
 import { ComponentRepository } from '../../../service';
 import { classFor } from '../../../service/util';
+import { Component } from '../../index';
 
-export default class CustomElement {
+export default class CustomElement implements BlurElement, ClickElement, DBClickElement, InputElement,
+    MouseDownElement, MouseUpElement, MouseMoveElement,
+    ChangeElement, KeyUpElement {
     private _parentId: string = null;
     private _id: string = null;
     private _elem: Element = null;
 
     constructor({ parentId, id, tagName, content = '', classList = [],
-                    xmlns = null, handlers = {} }: {
-        parentId: string;
-        id: string;
-        tagName?: string;
-        content?: string;
-        classList?: Array<string>;
-        xmlns?: string;
-        handlers?: {
-            [key: string]: any;
-        }
-    }) {
+                    xmlns = null, handlers = {} }: CreateOption) {
         this.parentId = parentId;
         this.id = id;
 
@@ -68,4 +66,22 @@ export default class CustomElement {
     set parentId(value: string) {
         this._parentId = value;
     }
+
+    blurHandler(e?: MouseEvent, component?: Component){ }
+
+    clickHandler(e?: MouseEvent, component?: Component){ }
+
+    dbClickHandler(e?: MouseEvent, component?: Component){ }
+
+    inputHandler(e?: MouseEvent, component?: Component){ }
+
+    mouseDownHandler(e?: MouseEvent, component?: Component){ }
+
+    mouseMoveHandler(e?: MouseEvent, component?: Component){ }
+
+    mouseUpHandler(e?: MouseEvent, component?: Component){ }
+
+    changeHandler(e?: MouseEvent, component?: Component){ }
+
+    keyUpHandler(e?: MouseEvent, component?: Component){ }
 }
