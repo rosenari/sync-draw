@@ -13,7 +13,7 @@ export function add(x: number, y: number): number{
     return x + y;
 }
 
-export function debounce(func, time): (...args: any[]) => void {
+export function debounce(func: Function, time: number): (...args: any[]) => void {
     let id = null;
 
     return function (...args): void {
@@ -32,7 +32,7 @@ export function classFor(classList: Array<string>): string {
     return classList.join(' ');
 }
 
-function genRandom8Hex(): string{
+function genRandom8Hex(): ColorCode{
     return Math.floor((Math.random() + 1) * RANDOM_MAX)
         .toString(16);
 }
@@ -62,7 +62,7 @@ export class IterableWeakMap{
 
     constructor() {}
 
-    public keys(): IterableIterator<any> {
+    public keys(): IterableIterator<Line> {
         this.sets.forEach(line => {
             if(!ComponentRepository.getComponentById(line.id)) this.sets.delete(line);
         })
