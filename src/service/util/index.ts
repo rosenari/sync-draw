@@ -13,7 +13,7 @@ export function add(x: number, y: number): number{
     return x + y;
 }
 
-export function debounce(func, time): (...args: any[]) => void {
+export function debounce(func: Function, time: number): (...args: any[]) => void {
     let id = null;
 
     return function (...args): void {
@@ -62,7 +62,7 @@ export class IterableWeakMap{
 
     constructor() {}
 
-    public keys(): IterableIterator<any> {
+    public keys(): IterableIterator<Line> {
         this.sets.forEach(line => {
             if(!ComponentRepository.getComponentById(line.id)) this.sets.delete(line);
         })
@@ -90,7 +90,7 @@ export class IterableWeakMap{
     }
 }
 
-export function rgbToHex(rgb){
+export function rgbToHex(rgb): ColorCode{
     const result = rgb.replace(/[^,\d]/g,'').split(',');
     return '#' + result.map(code => {
         const hex = Number(code).toString(16);
