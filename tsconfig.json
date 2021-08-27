@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowJs": true, //js파일 허용여부
+    "module": "ES6", //모듈 방식
+    "target": "ES5", //컴파일할 목표버전
+    "outDir": "./dist", //컴파일된 파일 저장위치
+    "moduleResolution": "Node", //Node.js의 모듈확인 메커니즘 사용,
+    "lib": ["ES6", "DOM", "DOM.Iterable"] //DOM.Iterable은 Dom List 내부적으로 사용되는 타입
+  },
+  "strict": true, //엄격한 유형검사 적용
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "webpack", "dist"]
+}
