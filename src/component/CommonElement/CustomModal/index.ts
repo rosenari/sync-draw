@@ -2,7 +2,6 @@ import CustomElement from '../CustomElement';
 import {Component, CustomButton, CustomInput, CustomSelect} from '../../index';
 import { ClickElement } from '../../../interface';
 import './index.css';
-import Shape from "../../Shape";
 
 export default class CustomModal extends CustomElement implements ClickElement{
     private _type: string = null;
